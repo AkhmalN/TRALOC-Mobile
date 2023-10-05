@@ -1,6 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screen/Home";
 import Riwayat from "../screen/Riwayat";
+import Profil from "../screen/Profil";
+import Aktivitas from "../screen/Aktivitas";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,8 +17,22 @@ const BottomTabBar = () => {
         }}
       />
       <Tab.Screen
+        name="Aktivitas"
+        component={Aktivitas}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
         name="Riwayat"
         component={Riwayat}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Profil"
+        component={Profil}
         options={{
           headerShown: false,
         }}

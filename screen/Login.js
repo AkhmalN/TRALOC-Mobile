@@ -58,7 +58,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   title: {
     marginTop: 20,
-    fontSize: 26,
+    fontSize: 30,
     marginLeft: 30,
   },
   desc: {
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "#F0F0F0",
+    backgroundColor: "#DDDDDD",
   },
   forgot: {
     marginTop: 10,

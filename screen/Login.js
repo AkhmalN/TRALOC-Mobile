@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 20,
     fontSize: 26,
-    marginLeft: 30,
+    marginLeft: 35,
   },
   desc: {
     fontSize: 15,
-    marginLeft: 30,
+    marginLeft: 35,
   },
   formBox: {
     marginTop: 10,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   forgot: {
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: 10,
+    marginLeft: 20,
     color: "#6499E9",
   },
   button: {

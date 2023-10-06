@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screen/Home";
 import Riwayat from "../screen/Riwayat";
 import Profil from "../screen/Profil";
-import Aktivitas from "../screen/Aktivitas";
 import { Image } from "react-native";
+import PosJaga from "../screen/PosJaga";
 
 const Tab = createBottomTabNavigator();
 
@@ -52,8 +52,8 @@ const BottomTabBar = () => {
       />
 
       <Tab.Screen
-        name="Aktivitas"
-        component={Aktivitas}
+        name="Daftar Pos"
+        component={PosJaga}
         options={{
           tabBarLabelStyle: { fontSize: 12, width: "100%" },
           headerShown: false,

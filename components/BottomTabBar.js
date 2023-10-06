@@ -4,6 +4,7 @@ import Riwayat from "../screen/Riwayat";
 import Profil from "../screen/Profil";
 import { Image } from "react-native";
 import PosJaga from "../screen/PosJaga";
+import TambahAktivitas from "../screen/TambahAktivitas";
 
 const Tab = createBottomTabNavigator();
 
@@ -71,6 +72,34 @@ const BottomTabBar = () => {
             ) : (
               <Image
                 source={require("../assets/share.png")}
+                resizeMode="cover"
+                style={{
+                  width: 25,
+                  height: 25,
+                }}
+              />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name="Tambah Aktivitas"
+        component={TambahAktivitas}
+        options={{
+          tabBarLabelStyle: { fontSize: 12, width: "100%" },
+          headerShown: false,
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <Image
+                source={require("../assets/restore.png")}
+                resizeMode="cover"
+                style={{
+                  width: 33,
+                  height: 33,
+                }}
+              />
+            ) : (
+              <Image
+                source={require("../assets/restore.png")}
                 resizeMode="cover"
                 style={{
                   width: 25,

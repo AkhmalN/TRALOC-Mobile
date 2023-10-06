@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ImageBackground,
+  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
@@ -13,6 +14,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
   const handleLogin = () => {
@@ -33,22 +36,29 @@ export default function Login() {
         <Text style={styles.title}>Login</Text>
         <Text style={styles.desc}>Tracking Location App</Text>
         <View style={styles.formBox}>
-          <View>
-            <TextInput
-              placeholder="Masukkan Username"
-              style={styles.formInput}
-            />
-            <TextInput
-              placeholder="Masukkan Password"
-              style={styles.formInput}
-            />
-            <Text style={styles.forgot}>Lupa kata sandi ?</Text>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText} onPress={handleLogin}>
-                Masuk
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <KeyboardAvoidingView behavior="padding">
+            <View>
+              <TextInput
+                placeholder="Masukkan Username"
+                style={styles.formInput}
+                value={email}
+                onChange={(text) => setEmail(text)}
+              />
+              <TextInput
+                placeholder="Masukkan Password"
+                style={styles.formInput}
+                value={password}
+                onChange={(text) => setPassword(text)}
+                secureTextEntry
+              />
+              <Text style={styles.forgot}>Lupa kata sandi ?</Text>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText} onPress={handleLogin}>
+                  Masuk
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
         </View>
       </View>
     </GestureHandlerRootView>

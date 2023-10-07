@@ -25,11 +25,7 @@ export default function App() {
           }}
         />
       </Stack.Navigator>
-      <StatusBar
-        hidden={false}
-        translucent={false}
-        backgroundColor="transparent"
-      />
+      <StatusBar hidden={false} translucent={false} backgroundColor="#F5F5F5" />
     </NavigationContainer>
   );
 }

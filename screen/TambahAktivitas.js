@@ -1,19 +1,21 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
+  TouchableOpacity,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
   FlatList,
 } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useState } from "react";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { formatDate } from "../components/Options";
 
 export default function TambahAktivitas() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const items = ["Item 1", "Item 2", "Item 3", "Item 4"]; // Your dropdown items
+  const [items, setItems] = useState(["Pos 1", "Pos 2", "Pos 3", "Pos 4"]); // Your dropdown items
+  const [showDateTimePick, setShowDateTimePick] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date()); // Set an initial date
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -23,11 +25,36 @@ export default function TambahAktivitas() {
     setSelectedItem(item);
     setDropdownVisible(false);
   };
+
+  const openDatePick = () => {
+    setShowDateTimePick(true);
+    setDropdownVisible(false);
+  };
+
+  const closeDatePick = () => {
+    setShowDateTimePick(false);
+  };
+
+  const toggleDatePicker = () => {
+    if (showDateTimePick) {
+      closeDatePick();
+    } else {
+      openDatePick();
+    }
+  };
+
+  const handleDateChange = (event, date) => {
+    if (date) {
+      setSelectedDate(date);
+    }
+    closeDatePick();
+  };
+
   return (
-    <SafeAreaView style={styles.formBox}>
+    <View style={styles.formBox}>
       <Text>Pos Jaga</Text>
-      {/* ntar dropdown */}
-      <View style={styles.container}>
+      {/* Dropdown */}
+      <View style={styles.containerDropdown}>
         <TouchableOpacity onPress={toggleDropdown}>
           <Text style={styles.dropdownToggle}>
             {selectedItem || "Select an item"}
@@ -49,20 +76,30 @@ export default function TambahAktivitas() {
         )}
       </View>
 
-      <Text>Tanggal Aktivitas</Text>
-      <TextInput placeholder="Masukkan Password" style={styles.formInput} />
-      <Text>Laporan Kegiatan</Text>
-      <TextInput
-        placeholder="Masukkan Password"
-        style={styles.formInput}
-        multiline={true}
-        numberOfLines={5}
-      />
-    </SafeAreaView>
+      {/* Date Picker */}
+      <View>
+        <Text>Waktu Aktivitas</Text>
+        <TouchableOpacity onPress={toggleDatePicker} style={styles.formInput}>
+          <Text>{formatDate(selectedDate)}</Text>
+        </TouchableOpacity>
+      </View>
+
+      {showDateTimePick && (
+        <RNDateTimePicker
+          value={selectedDate}
+          mode="date"
+          locale="id-ID"
+          onChange={handleDateChange}
+        />
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  containerDropdown: {
+    marginTop: 10,
+  },
   formBox: {
     marginTop: 10,
     paddingLeft: 30,
@@ -71,9 +108,7 @@ const styles = StyleSheet.create({
   formInput: {
     height: 50,
     borderRadius: 20,
-    paddingLeft: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    padding: 10,
     backgroundColor: "#DDDDDD",
   },
   dropdownToggle: {

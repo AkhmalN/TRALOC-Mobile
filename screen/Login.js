@@ -26,15 +26,15 @@ export default function Login() {
     <GestureHandlerRootView style={styles.container}>
       <View>
         <ImageBackground
-          source={require("../assets/5051402.jpg")}
+          source={require("../assets/Universitas_Nasional_Logo.png")}
           resizeMode="cover"
           style={{
-            width: "100%",
-            height: 400,
+            width: 300,
+            height: 380,
+            marginLeft: 30,
           }}
         />
         <Text style={styles.title}>Login</Text>
-        <Text style={styles.desc}>Tracking Location App</Text>
         <View style={styles.formBox}>
           <KeyboardAvoidingView behavior="padding">
             <View>
@@ -66,10 +66,14 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    alignItems: "center",
+  },
   title: {
     marginTop: 20,
     fontSize: 30,
-    marginLeft: 30,
+    marginLeft: 35,
   },
   desc: {
     fontSize: 15,
@@ -81,6 +85,7 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   formInput: {
+    width: 300,
     height: 50,
     borderRadius: 20,
     paddingLeft: 20,

@@ -31,7 +31,7 @@ const BottomTabBar = () => {
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/home.png")}
+                source={require("../assets/homecolor.png")}
                 resizeMode="cover"
                 style={{
                   width: 33,
@@ -61,7 +61,7 @@ const BottomTabBar = () => {
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/share.png")}
+                source={require("../assets/mapcolor.png")}
                 resizeMode="cover"
                 style={{
                   width: 33,
@@ -71,7 +71,7 @@ const BottomTabBar = () => {
               />
             ) : (
               <Image
-                source={require("../assets/share.png")}
+                source={require("../assets/map.png")}
                 resizeMode="cover"
                 style={{
                   width: 25,
@@ -82,7 +82,7 @@ const BottomTabBar = () => {
         }}
       />
       <Tab.Screen
-        name="Tambah Aktivitas"
+        name="Aktivitas"
         component={TambahAktivitas}
         options={{
           tabBarLabelStyle: { fontSize: 12, width: "100%" },
@@ -90,20 +90,22 @@ const BottomTabBar = () => {
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/restore.png")}
+                source={require("../assets/pluscolor.png")}
                 resizeMode="cover"
                 style={{
-                  width: 33,
-                  height: 33,
+                  width: 35,
+                  height: 35,
+                  marginBottom: 20,
                 }}
               />
             ) : (
               <Image
-                source={require("../assets/restore.png")}
+                source={require("../assets/plus.png")}
                 resizeMode="cover"
                 style={{
-                  width: 25,
-                  height: 25,
+                  width: 35,
+                  height: 35,
+                  marginBottom: 20,
                 }}
               />
             ),
@@ -118,7 +120,7 @@ const BottomTabBar = () => {
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/restore.png")}
+                source={require("../assets/historycolor.png")}
                 resizeMode="cover"
                 style={{
                   width: 33,
@@ -146,7 +148,7 @@ const BottomTabBar = () => {
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/user.png")}
+                source={require("../assets/usercolor.png")}
                 resizeMode="cover"
                 style={{
                   width: 33,

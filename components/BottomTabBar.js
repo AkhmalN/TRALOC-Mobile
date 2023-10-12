@@ -81,7 +81,7 @@ const BottomTabBar = () => {
             ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Aktivitas"
         component={TambahAktivitas}
         options={{
@@ -110,7 +110,7 @@ const BottomTabBar = () => {
               />
             ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Riwayat"
         component={Riwayat}

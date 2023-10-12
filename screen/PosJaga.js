@@ -52,9 +52,6 @@ function PosJaga() {
           </Marker>
         </MapView>
       </View>
-      <View style={styles.bottomContent}>
-        <Text>Hello</Text>
-      </View>
     </View>
   );
 }

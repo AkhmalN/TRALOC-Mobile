@@ -6,7 +6,7 @@ const Home = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <Text style={styles.title}>Tracking Location App</Text>
+        <Text style={styles.title}>E-Patrol Universitas Nasional</Text>
         <View style={styles.sectionProfile}>
           <Image
             source={require("../assets/userlogo.png")}
@@ -22,21 +22,29 @@ const Home = (props) => {
             <Text style={styles.professionProfile}>Satpam</Text>
           </View>
         </View>
-        <View style={styles.sectionHistory}>
+        {/* <View style={styles.sectionHistory}>
           <Text>E-Patrol Menu</Text>
           <View style={styles.cardHistory}>
             <Text style={styles.cardDescHistory}>SOS</Text>
             <Text style={styles.cardLocationHistory}>Kirim SOS | Send SOS</Text>
           </View>
-        </View>
-        <View style={styles.sectionHistory}>
+        </View> */}
+        <TouchableOpacity style={styles.sectionHistory}>
           <View style={styles.cardHistory}>
             <Text style={styles.cardDescHistory}>Absen Masuk</Text>
             <Text style={styles.cardLocationHistory}>
               Absen Masuk | Time In
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.sectionHistory}>
+          <View style={styles.cardHistory}>
+            <Text style={styles.cardDescHistory}>Absen Keluar</Text>
+            <Text style={styles.cardLocationHistory}>
+              Absen Keluar | Time Out
+            </Text>
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.sectionHistory}
           onPress={() => props.navigation.navigate("Patroli")}

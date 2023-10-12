@@ -1,7 +1,8 @@
 import { View, Text, Image, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Home = () => {
+const Home = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
@@ -22,28 +23,31 @@ const Home = () => {
           </View>
         </View>
         <View style={styles.sectionHistory}>
-          <Text>Aktifitas Terakhir</Text>
+          <Text>E-Patrol Menu</Text>
           <View style={styles.cardHistory}>
-            <Text style={styles.cardDateHistory}>22 OKtober 2023</Text>
-            <Text style={styles.cardDescHistory}>
-              lorem ipsum sir dolor amet
-            </Text>
-            <Text style={styles.cardLocationHistory}>
-              Lokasi : Blok 4 lantai 4
-            </Text>
+            <Text style={styles.cardDescHistory}>SOS</Text>
+            <Text style={styles.cardLocationHistory}>Kirim SOS | Send SOS</Text>
           </View>
         </View>
         <View style={styles.sectionHistory}>
           <View style={styles.cardHistory}>
-            <Text style={styles.cardDateHistory}>22 OKtober 2023</Text>
-            <Text style={styles.cardDescHistory}>
-              lorem ipsum sir dolor amet
-            </Text>
+            <Text style={styles.cardDescHistory}>Absen Masuk</Text>
             <Text style={styles.cardLocationHistory}>
-              Lokasi : Blok 4 lantai 4
+              Absen Masuk | Time In
             </Text>
           </View>
         </View>
+        <TouchableOpacity
+          style={styles.sectionHistory}
+          onPress={() => props.navigation.navigate("Patroli")}
+        >
+          <View style={styles.cardHistory}>
+            <Text style={styles.cardDescHistory}>Buat Patroli</Text>
+            <Text style={styles.cardLocationHistory}>
+              Buat Laporan Patroli | Create Patrol Report
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

@@ -3,6 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screen/Login";
 import BottomTabBar from "./components/BottomTabBar";
+import Patroli from "./screen/Patroli";
+import FormPatrol from "./components/FormPatrol";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +26,8 @@ export default function App() {
             headerShown: false,
           }}
         />
+        <Stack.Screen name="Patroli" component={Patroli} />
+        <Stack.Screen name="FormPatrol" component={FormPatrol} />
       </Stack.Navigator>
       <StatusBar hidden={false} translucent={false} backgroundColor="#F5F5F5" />
     </NavigationContainer>

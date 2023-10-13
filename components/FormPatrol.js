@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
@@ -30,43 +31,63 @@ export default function FormPatrol({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text>Lokasi Anda Saat ini {scanedData}</Text>
-      <Text>Waktu : 12/10/2023</Text>
-      <View>
-        <Text>Lokasi</Text>
-        <TextInput placeholder={scanedData} style={styles.formInput} />
-        <Text>Status</Text>
-        <View style={styles.containerDropdown}>
-          <TouchableOpacity onPress={toggleDropdown}>
-            <Text style={styles.dropdownToggle}>
-              {selectedItem || "Select an item"}
-            </Text>
-          </TouchableOpacity>
+      <View style={styles.formBox}>
+        <Text style={[styles.label, { textAlign: "center", fontSize: 18 }]}>
+          Anda Akan membuat laporan patroli dengan Lokasi Anda Saat ini
+          {scanedData}
+        </Text>
+        <View>
+          <Text style={styles.label}>Lokasi</Text>
+          <View style={styles.formInput}>
+            <Text>{scanedData}</Text>
+          </View>
+          <Text style={styles.label}>Status</Text>
+          <View style={styles.containerDropdown}>
+            <TouchableOpacity onPress={toggleDropdown}>
+              <Text style={styles.dropdownToggle}>
+                {selectedItem || "Select an item"}
+              </Text>
+            </TouchableOpacity>
 
-          {dropdownVisible && (
-            <View style={styles.dropdown}>
-              <FlatList
-                data={items}
-                keyExtractor={(item) => item}
-                renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => selectItem(item)}>
-                    <Text style={styles.dropdownItem}>{item}</Text>
-                  </TouchableOpacity>
-                )}
-              />
+            {dropdownVisible && (
+              <View style={styles.dropdown}>
+                <FlatList
+                  data={items}
+                  keyExtractor={(item) => item}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => selectItem(item)}>
+                      <Text style={styles.dropdownItem}>{item}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+            )}
+          </View>
+          <Text style={styles.label}>Catatan</Text>
+          <TextInput
+            placeholder="Masukkan Catatan"
+            style={styles.formCatatan}
+            maxLength={200}
+            multiline={true}
+          />
+          <Text style={styles.label}>Masukkan Gambar (Min 1)</Text>
+          <View style={styles.formImage}>
+            <View>
+              <Image />
             </View>
-          )}
+            <View>
+              <Text></Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.button}>
+            {/* <View style={styles.docIcon}>
+              <Image source={require("../assets/folder.png")} />
+            </View> */}
+            <View>
+              <Text style={styles.buttonText}>Input</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-        <Text>Catatan</Text>
-        <TextInput placeholder="Masukkan Catatan" style={styles.formInput} />
-        <Text>Dokumentasi</Text>
-        <TextInput
-          placeholder="Masukkan Dokumentasi"
-          style={styles.formInput}
-        />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Input</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -74,16 +95,55 @@ export default function FormPatrol({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+  },
+  label: {
+    color: "#FFFFFF",
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  formBox: {
+    backgroundColor: "#3C486B",
+    borderRadius: 20,
+    padding: 10,
   },
   formInput: {
-    width: 300,
-    height: 50,
+    width: 350,
+    height: 60,
     borderRadius: 20,
     paddingLeft: 20,
+    paddingRight: 20,
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: "#DDDDDD",
+  },
+  formCatatan: {
+    width: 350,
+    height: 120,
+    borderRadius: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "#DDDDDD",
+  },
+  formImage: {
+    height: 80,
+    width: 350,
+    borderRadius: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "#DDDDDD",
+  },
+  docIcon: {
+    width: 30,
+    height: 30,
   },
   button: {
     marginTop: 10,
@@ -103,9 +163,9 @@ const styles = StyleSheet.create({
   dropdownToggle: {
     backgroundColor: "#DDDDDD",
     borderRadius: 20,
-    height: 50,
+    height: 60,
     padding: 10,
-    width: 300,
+    width: 350,
   },
   dropdown: {
     position: "absolute",
@@ -113,14 +173,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#ccc",
-    width: 300,
+    width: 350,
     maxHeight: 400,
     zIndex: 1,
+    borderRadius: 20,
   },
   dropdownItem: {
     height: 50,
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
+    borderRadius: 20,
+    marginTop: 10,
+    fontSize: 16,
   },
 });

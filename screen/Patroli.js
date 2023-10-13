@@ -1,56 +1,107 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import React, { useEffect, useState } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { StatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Patroli() {
   const navigation = useNavigation();
   const [hasPersmission, setHasPermission] = useState(null);
   const [scanedData, setScannedData] = useState(false);
-  // asumsi sudah mengscan barcode Lokasi
-  useEffect(() => {
+  // asumsi mengscan barcode Lokasi
+
+  const askForCameraPermission = () => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
+  };
+
+  useEffect(() => {
+    askForCameraPermission();
   }, []);
 
-  if (!hasPersmission) {
+  if (hasPersmission === null) {
     return (
       <View style={styles.container}>
-        <Text>Please grant camera permissions to app.</Text>
+        <Text>Aplikasi Menunggu Persetujuan Akses Kamera</Text>
       </View>
     );
   }
 
+  if (hasPersmission === false) {
+    return (
+      <View style={styles.container}>
+        <Text>Aplikasi Tidak Mendapat Akses Kamera</Text>
+        <Button
+          title={"Setujui Akses"}
+          onPress={() => askForCameraPermission()}
+        />
+      </View>
+    );
+  }
+
+  const lokasiDatabase = {
+    "https://me-qr.com/iVT4O6jX": "Lokasi A",
+  };
   const handleBarCodeScanner = ({ type, data }) => {
-    setScannedData(data);
-    console.log(`Data = ${data}`);
-    console.log(`Type = ${type}`);
-    navigation.navigate("FormPatrol", { scanedData: data });
+    const namaLokasi = lokasiDatabase[data];
+    if (namaLokasi) {
+      setScannedData(true);
+      console.log(`Data = ${data}`);
+      console.log(`Type = ${type}`);
+      console.log(`Nama Lokasi = ${namaLokasi}`);
+      navigation.navigate("FormPatrol", { scanedData: namaLokasi });
+    }
   };
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
-        style={StyleSheet.absoluteFillObject}
-        onBarCodeScanned={scanedData ? undefined : handleBarCodeScanner}
-      />
+      <View style={styles.titleBox}>
+        <Text style={styles.titleBarcode}>Buat Patroli</Text>
+        <Text style={styles.childTitle}>Posisikan Barcode ditengah Kotak</Text>
+      </View>
+      <View style={styles.barcodeBox}>
+        <BarCodeScanner
+          onBarCodeScanned={scanedData ? undefined : handleBarCodeScanner}
+          style={{ height: 500, width: 400 }}
+        />
+      </View>
       {scanedData && (
-        <Button title="Scan Again?" onPress={() => setScannedData(undefined)} />
+        <Button
+          title={"Scan Ulang"}
+          onPress={() => setScannedData(false)}
+          color={"tomato"}
+        />
       )}
-      <StatusBar style="auto" />
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    flexDirection: "column",
     alignItems: "center",
+    backgroundColor: "#FFFFFF",
   },
-  scanner: {
-    ...StyleSheet.absoluteFillObject, // This makes the scanner cover the whole screen
+  titleBox: {
+    width: "100%",
+    padding: 20,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  titleBarcode: {
+    fontSize: 30,
+    marginBottom: 20,
+  },
+  childTitle: {
+    fontSize: 16,
+  },
+  barcodeBox: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 400,
+    width: 350,
+    overflow: "hidden",
+    borderRadius: 30,
   },
 });

@@ -26,8 +26,20 @@ export default function App() {
             headerShown: false,
           }}
         />
-        <Stack.Screen name="Patroli" component={Patroli} />
-        <Stack.Screen name="FormPatrol" component={FormPatrol} />
+        <Stack.Screen
+          name="Patroli"
+          component={Patroli}
+          options={{
+            headerTitle: "",
+          }}
+        />
+        <Stack.Screen
+          name="FormPatrol"
+          component={FormPatrol}
+          options={{
+            headerTitle: "",
+          }}
+        />
       </Stack.Navigator>
       <StatusBar hidden={false} translucent={false} backgroundColor="#F5F5F5" />
     </NavigationContainer>

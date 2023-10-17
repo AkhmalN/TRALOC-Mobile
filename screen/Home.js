@@ -6,54 +6,78 @@ const Home = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <Text style={styles.title}>E-Patrol Universitas Nasional</Text>
         <View style={styles.sectionProfile}>
           <Image
             source={require("../assets/userlogo.png")}
             style={{
               height: 60,
-              width: 80,
+              width: 70,
               marginTop: 10,
               borderRadius: 50,
             }}
           />
           <View style={styles.descProfile}>
-            <Text style={styles.nameProfile}>User 1</Text>
+            <Text style={styles.nameProfile}>Akhmal Novanda Aziz</Text>
             <Text style={styles.professionProfile}>Satpam</Text>
           </View>
         </View>
-        {/* <View style={styles.sectionHistory}>
-          <Text>E-Patrol Menu</Text>
-          <View style={styles.cardHistory}>
-            <Text style={styles.cardDescHistory}>SOS</Text>
-            <Text style={styles.cardLocationHistory}>Kirim SOS | Send SOS</Text>
+        <TouchableOpacity style={styles.cardContainer}>
+          <View style={styles.iconMenu}>
+            <Image
+              source={require("../assets/phone-camera.png")}
+              style={{ width: 60, height: 70 }}
+            />
           </View>
-        </View> */}
-        <TouchableOpacity style={styles.sectionHistory}>
-          <View style={styles.cardHistory}>
-            <Text style={styles.cardDescHistory}>Absen Masuk</Text>
-            <Text style={styles.cardLocationHistory}>
-              Absen Masuk | Time In
-            </Text>
+          <View style={styles.cardTitle}>
+            <Text style={styles.cardTextInd}>Absen Masuk</Text>
+            <Text style={styles.cardTextEng}>Absen Masuk | Time In</Text>
+          </View>
+          <View style={styles.iconRight}>
+            <Image
+              source={require("../assets/right-arrow.png")}
+              style={{ width: 20, height: 25 }}
+            />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.sectionHistory}>
-          <View style={styles.cardHistory}>
-            <Text style={styles.cardDescHistory}>Absen Keluar</Text>
-            <Text style={styles.cardLocationHistory}>
-              Absen Keluar | Time Out
-            </Text>
+        <TouchableOpacity style={styles.cardContainer}>
+          <View style={styles.iconMenu}>
+            <Image
+              source={require("../assets/exit.png")}
+              style={{ width: 50, height: 50 }}
+            />
+          </View>
+          <View style={styles.cardTitle}>
+            <Text style={styles.cardTextInd}>Absen Keluar</Text>
+            <Text style={styles.cardTextEng}>Absen Keluar | Time Out</Text>
+          </View>
+          <View style={styles.iconRight}>
+            <Image
+              source={require("../assets/right-arrow.png")}
+              style={{ width: 20, height: 25 }}
+            />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.sectionHistory}
+          style={styles.cardContainer}
           onPress={() => props.navigation.navigate("Patroli")}
         >
-          <View style={styles.cardHistory}>
-            <Text style={styles.cardDescHistory}>Buat Patroli</Text>
-            <Text style={styles.cardLocationHistory}>
+          <View style={styles.iconMenu}>
+            <Image
+              source={require("../assets/torch.png")}
+              style={{ width: 50, height: 50 }}
+            />
+          </View>
+          <View style={styles.cardTitle}>
+            <Text style={styles.cardTextInd}>Buat Patroli</Text>
+            <Text style={styles.cardTextEng}>
               Buat Laporan Patroli | Create Patrol Report
             </Text>
+          </View>
+          <View style={styles.iconRight}>
+            <Image
+              source={require("../assets/right-arrow.png")}
+              style={{ width: 20, height: 25 }}
+            />
           </View>
         </TouchableOpacity>
       </View>
@@ -66,8 +90,35 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
-  title: {
-    textAlign: "center",
+  nameProfile: {
+    color: "#abd1c6",
+  },
+  sectionProfile: {
+    backgroundColor: "#1b2d45",
+  },
+  cardContainer: {
+    flexDirection: "row",
+    backgroundColor: "#16C79A",
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 20,
+    padding: 6,
+    height: 90,
+    alignItems: "center",
+  },
+  iconMenu: {
+    width: "15%",
+  },
+  cardTitle: {
+    width: "70%",
+    borderRadius: 20,
+    padding: 10,
+    color: "#FAF7F0",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  iconRight: {
+    width: "15%",
   },
   sectionProfile: {
     padding: 10,
@@ -75,31 +126,22 @@ const styles = StyleSheet.create({
     height: 100,
   },
   descProfile: {
+    flex: 1,
     marginTop: 20,
     marginLeft: 10,
   },
   nameProfile: {
-    width: 60,
+    width: "100%",
     fontSize: 18,
   },
   professionProfile: {
     fontSize: 13,
   },
-  cardHistory: {
-    backgroundColor: "#6499E9",
-    borderRadius: 20,
-    padding: 10,
-    color: "#FAF7F0",
-    marginTop: 10,
-    marginBottom: 10,
+  cardTextInd: {
+    fontSize: 18,
+    color: "#F7F7F7",
   },
-  cardDateHistory: {
-    color: "#FAF7F0",
-  },
-  cardDescHistory: {
-    color: "#FAF7F0",
-  },
-  cardLocationHistory: {
-    color: "#FAF7F0",
+  cardTextEng: {
+    color: "#F7F7F7",
   },
 });

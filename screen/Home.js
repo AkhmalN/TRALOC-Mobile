@@ -8,9 +8,9 @@ const Home = (props) => {
       <View style={styles.wrapper}>
         <View style={styles.sectionProfile}>
           <Image
-            source={require("../assets/userlogo.png")}
+            source={require("../assets/person.jpg")}
             style={{
-              height: 60,
+              height: 70,
               width: 70,
               marginTop: 10,
               borderRadius: 50,

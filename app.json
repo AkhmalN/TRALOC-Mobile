@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "traloc",
-    "slug": "traloc",
+    "name": "unaspatrol",
+    "slug": "unaspatrol",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

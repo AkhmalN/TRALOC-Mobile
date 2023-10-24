@@ -6,6 +6,9 @@ import BottomTabBar from "./components/BottomTabBar";
 import Patroli from "./screen/Patroli";
 import FormPatrol from "./components/FormPatrol";
 import DetailRiwayat from "./screen/DetailRiwayat";
+import Absen from "./screen/Absen";
+import AbsenCamera from "./components/AbsenCamera";
+import PatrolCamera from "./components/PatrolCamera";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -47,6 +50,15 @@ export default function App() {
             headerTitle: "Detail Riwayat",
           }}
         />
+        <Stack.Screen name="Camera" component={AbsenCamera} />
+        <Stack.Screen
+          name="Absen"
+          component={Absen}
+          options={{
+            headerTitle: "Absensi",
+          }}
+        />
+        <Stack.Screen name="PatrolCamera" component={PatrolCamera} />
       </Stack.Navigator>
       <StatusBar hidden={false} translucent={false} backgroundColor="#F5F5F5" />
     </NavigationContainer>

@@ -8,9 +8,11 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { TextInput } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 export default function FormPatrol({ route }) {
-  const { scanedData } = route.params;
+  const navigation = useNavigation();
+  const { scanedData, savedPhoto } = route.params;
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [items, setItems] = useState([
@@ -18,7 +20,7 @@ export default function FormPatrol({ route }) {
     "Demonstrasi",
     "Kebakaran",
     "Pencurian",
-  ]); // Your dropdown items
+  ]);
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -36,6 +38,7 @@ export default function FormPatrol({ route }) {
           Anda Akan membuat laporan patroli dengan Lokasi Anda Saat ini
           {scanedData}
         </Text>
+
         <View>
           <Text style={styles.label}>Lokasi</Text>
           <View style={styles.formInput}>
@@ -71,18 +74,18 @@ export default function FormPatrol({ route }) {
             multiline={true}
           />
           <Text style={styles.label}>Masukkan Gambar (Min 1)</Text>
-          <View style={styles.formImage}>
-            <View>
-              <Image />
-            </View>
-            <View>
-              <Text></Text>
-            </View>
-          </View>
+          <TouchableOpacity
+            style={styles.formInput}
+            onPress={() => navigation.navigate("PatrolCamera")}
+          >
+            {savedPhoto && (
+              <Image
+                source={{ uri: savedPhoto.uri }}
+                style={{ width: 50, height: 40 }}
+              />
+            )}
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
-            {/* <View style={styles.docIcon}>
-              <Image source={require("../assets/folder.png")} />
-            </View> */}
             <View>
               <Text style={styles.buttonText}>Input</Text>
             </View>
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
   },
   formInput: {
     width: 350,
-    height: 60,
+    height: 70,
     borderRadius: 20,
     paddingLeft: 20,
     paddingRight: 20,
@@ -169,7 +172,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     position: "absolute",
-    top: 40, // Adjust the top position as needed
+    top: 40,
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#ccc",

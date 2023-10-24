@@ -1,8 +1,10 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 
 const Home = (props) => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
@@ -21,7 +23,10 @@ const Home = (props) => {
             <Text style={styles.professionProfile}>Satpam</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.cardContainer}>
+        <TouchableOpacity
+          style={styles.cardContainer}
+          onPress={() => navigation.navigate("Camera")}
+        >
           <View style={styles.iconMenu}>
             <Image
               source={require("../assets/phone-camera.png")}
@@ -39,7 +44,10 @@ const Home = (props) => {
             />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.cardContainer}>
+        <TouchableOpacity
+          style={styles.cardContainer}
+          onPress={() => navigation.navigate("Absen")}
+        >
           <View style={styles.iconMenu}>
             <Image
               source={require("../assets/exit.png")}

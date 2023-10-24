@@ -4,7 +4,7 @@ import Riwayat from "../screen/Riwayat";
 import Profil from "../screen/Profil";
 import { Image } from "react-native";
 import PosJaga from "../screen/PosJaga";
-import TambahAktivitas from "../screen/TambahAktivitas";
+// import TambahAktivitas from "../screen/TambahAktivitas";
 
 const Tab = createBottomTabNavigator();
 
@@ -13,12 +13,8 @@ const BottomTabBar = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          height: 55,
-          marginLeft: 20,
-          marginRight: 20,
-          borderRadius: 20,
-          marginBottom: 10,
-          paddingBottom: 5,
+          height: 60,
+          backgroundColor: "#618264",
         },
       }}
     >
@@ -26,26 +22,26 @@ const BottomTabBar = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarLabelStyle: { fontSize: 12, width: "100%" },
+          tabBarLabelStyle: { fontSize: 14, width: "100%", color: "#D0E7D2" },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/homecolor.png")}
+                source={require("../assets/icon/Home_fill_focused.png")}
                 resizeMode="cover"
                 style={{
-                  width: 33,
-                  height: 33,
-                  marginBottom: 15,
+                  width: 45,
+                  height: 45,
                 }}
               />
             ) : (
               <Image
-                source={require("../assets/home.png")}
+                source={require("../assets/icon/Home.png")}
                 resizeMode="cover"
                 style={{
-                  width: 25,
-                  height: 25,
+                  width: 40,
+                  height: 40,
+                  marginBottom: 5,
                 }}
               />
             ),
@@ -56,26 +52,26 @@ const BottomTabBar = () => {
         name="Daftar Pos"
         component={PosJaga}
         options={{
-          tabBarLabelStyle: { fontSize: 12, width: "100%" },
+          tabBarLabelStyle: { fontSize: 12, width: "100%", color: "#D0E7D2" },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/mapcolor.png")}
+                source={require("../assets/icon/Map_fill_focused.png")}
                 resizeMode="cover"
                 style={{
-                  width: 33,
-                  height: 33,
-                  marginBottom: 15,
+                  width: 50,
+                  height: 50,
+                  marginBottom: 5,
                 }}
               />
             ) : (
               <Image
-                source={require("../assets/map.png")}
+                source={require("../assets/icon/Map.png")}
                 resizeMode="cover"
                 style={{
-                  width: 25,
-                  height: 25,
+                  width: 40,
+                  height: 40,
                 }}
               />
             ),
@@ -115,25 +111,25 @@ const BottomTabBar = () => {
         name="Riwayat"
         component={Riwayat}
         options={{
-          tabBarLabelStyle: { fontSize: 12, width: "100%" },
+          tabBarLabelStyle: { fontSize: 12, width: "100%", color: "#D0E7D2" },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/historycolor.png")}
+                source={require("../assets/icon/Tumer_fill_focused.png")}
                 resizeMode="cover"
                 style={{
-                  width: 33,
-                  height: 33,
+                  width: 45,
+                  height: 45,
                 }}
               />
             ) : (
               <Image
-                source={require("../assets/restore.png")}
+                source={require("../assets/icon/Tumer.png")}
                 resizeMode="cover"
                 style={{
-                  width: 25,
-                  height: 25,
+                  width: 35,
+                  height: 35,
                 }}
               />
             ),
@@ -143,25 +139,25 @@ const BottomTabBar = () => {
         name="Profil"
         component={Profil}
         options={{
-          tabBarLabelStyle: { fontSize: 12, width: "100%" },
+          tabBarLabelStyle: { fontSize: 12, width: "100%", color: "#D0E7D2" },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Image
-                source={require("../assets/usercolor.png")}
+                source={require("../assets/icon/Tumer_fill_focused.png")}
                 resizeMode="cover"
                 style={{
-                  width: 33,
-                  height: 33,
+                  width: 40,
+                  height: 40,
                 }}
               />
             ) : (
               <Image
-                source={require("../assets/user.png")}
+                source={require("../assets/icon/User.png")}
                 resizeMode="cover"
                 style={{
-                  width: 25,
-                  height: 25,
+                  width: 37,
+                  height: 37,
                 }}
               />
             ),

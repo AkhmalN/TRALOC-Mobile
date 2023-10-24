@@ -19,8 +19,10 @@ const Home = (props) => {
             }}
           />
           <View style={styles.descProfile}>
-            <Text style={styles.nameProfile}>Akhmal Novanda Aziz</Text>
-            <Text style={styles.professionProfile}>Satpam</Text>
+            <Text style={{ color: "#D0E7D2", fontSize: 20 }}>
+              Akhmal Novanda Aziz
+            </Text>
+            <Text style={{ color: "#D0E7D2" }}>xxxxxx</Text>
           </View>
         </View>
         <TouchableOpacity
@@ -55,7 +57,7 @@ const Home = (props) => {
             />
           </View>
           <View style={styles.cardTitle}>
-            <Text style={styles.cardTextInd}>Absen Keluar</Text>
+            <Text style={styles.cardTextInd}>Absen Keluar </Text>
             <Text style={styles.cardTextEng}>Absen Keluar | Time Out</Text>
           </View>
           <View style={styles.iconRight}>
@@ -96,17 +98,19 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    flex: 1,
+    backgroundColor: "#79AC78",
+    padding: 20,
   },
   nameProfile: {
-    color: "#abd1c6",
+    color: "#D0E7D2",
   },
   sectionProfile: {
     backgroundColor: "#1b2d45",
   },
   cardContainer: {
     flexDirection: "row",
-    backgroundColor: "#16C79A",
+    backgroundColor: "#79AC78",
     marginTop: 10,
     marginBottom: 10,
     borderRadius: 20,
@@ -121,7 +125,7 @@ const styles = StyleSheet.create({
     width: "70%",
     borderRadius: 20,
     padding: 10,
-    color: "#FAF7F0",
+    color: "#D0E7D2",
     marginTop: 10,
     marginBottom: 10,
   },

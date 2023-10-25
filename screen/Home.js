@@ -9,6 +9,11 @@ const Home = (props) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <View style={styles.sectionProfile}>
+          <View style={styles.descProfile}>
+            <Text style={{ color: "#D0E7D2", fontSize: 20 }}>
+              Selamat Datang, Akhmal Novanda Aziz
+            </Text>
+          </View>
           <Image
             source={require("../assets/person.jpg")}
             style={{
@@ -18,12 +23,11 @@ const Home = (props) => {
               borderRadius: 50,
             }}
           />
-          <View style={styles.descProfile}>
-            <Text style={{ color: "#D0E7D2", fontSize: 20 }}>
-              Akhmal Novanda Aziz
-            </Text>
-            <Text style={{ color: "#D0E7D2" }}>xxxxxx</Text>
-          </View>
+        </View>
+        <View style={styles.sectionAtensi}>
+          <Text style={styles.textStyleAtensi}>
+            Tidak Ada Atensi yang ditampilkan
+          </Text>
         </View>
         <TouchableOpacity
           style={styles.cardContainer}
@@ -31,7 +35,7 @@ const Home = (props) => {
         >
           <View style={styles.iconMenu}>
             <Image
-              source={require("../assets/phone-camera.png")}
+              source={require("../assets/icon/selfie_1.png")}
               style={{ width: 60, height: 70 }}
             />
           </View>
@@ -41,7 +45,7 @@ const Home = (props) => {
           </View>
           <View style={styles.iconRight}>
             <Image
-              source={require("../assets/right-arrow.png")}
+              source={require("../assets/icon/Expand_right_stop.png")}
               style={{ width: 20, height: 25 }}
             />
           </View>
@@ -52,7 +56,7 @@ const Home = (props) => {
         >
           <View style={styles.iconMenu}>
             <Image
-              source={require("../assets/exit.png")}
+              source={require("../assets/icon/selfie_1.png")}
               style={{ width: 50, height: 50 }}
             />
           </View>
@@ -62,7 +66,7 @@ const Home = (props) => {
           </View>
           <View style={styles.iconRight}>
             <Image
-              source={require("../assets/right-arrow.png")}
+              source={require("../assets/icon/Expand_right_stop.png")}
               style={{ width: 20, height: 25 }}
             />
           </View>
@@ -73,7 +77,7 @@ const Home = (props) => {
         >
           <View style={styles.iconMenu}>
             <Image
-              source={require("../assets/torch.png")}
+              source={require("../assets/icon/check_1.png")}
               style={{ width: 50, height: 50 }}
             />
           </View>
@@ -85,7 +89,7 @@ const Home = (props) => {
           </View>
           <View style={styles.iconRight}>
             <Image
-              source={require("../assets/right-arrow.png")}
+              source={require("../assets/icon/Expand_right_stop.png")}
               style={{ width: 20, height: 25 }}
             />
           </View>
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#79AC78",
-    padding: 20,
+    padding: 10,
   },
   nameProfile: {
     color: "#D0E7D2",
@@ -108,18 +112,31 @@ const styles = StyleSheet.create({
   sectionProfile: {
     backgroundColor: "#1b2d45",
   },
+  sectionAtensi: {
+    marginTop: 20,
+    marginBottom: 20,
+    backgroundColor: "#D9D9D9",
+    height: 100,
+    padding: 10,
+    borderRadius: 10,
+    justifyContent: "center",
+  },
+  textStyleAtensi: {
+    textAlign: "center",
+  },
   cardContainer: {
     flexDirection: "row",
-    backgroundColor: "#79AC78",
+    backgroundColor: "#618264",
     marginTop: 10,
     marginBottom: 10,
     borderRadius: 20,
-    padding: 6,
-    height: 90,
+    padding: 10,
+    height: 100,
     alignItems: "center",
   },
   iconMenu: {
     width: "15%",
+    marginRight: 10,
   },
   cardTitle: {
     width: "70%",

@@ -1,70 +1,160 @@
-import { Camera, CameraType } from "expo-camera";
-import { useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import "react-native-vector-icons/";
+import { StatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Button,
+  Image,
+} from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Camera } from "expo-camera";
+import { shareAsync } from "expo-sharing";
+import * as MediaLibrary from "expo-media-library";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function AbsenCamera() {
-  const [type, setType] = useState(CameraType.back);
-  const [permission, requestPermission] = Camera.useCameraPermissions();
+export default function PatrolCamera() {
+  let cameraRef = useRef();
+  const navigation = useNavigation();
+  const [hasCameraPermission, setHasCameraPermission] = useState();
+  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
+  const [photo, setPhoto] = useState();
 
-  if (!permission) {
-    // Camera permissions are still loading
-    return <View />;
-  }
+  useEffect(() => {
+    (async () => {
+      const cameraPermission = await Camera.requestCameraPermissionsAsync();
+      const mediaLibraryPermission =
+        await MediaLibrary.requestPermissionsAsync();
+      setHasCameraPermission(cameraPermission.status === "granted");
+      setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
+    })();
+  }, []);
 
-  if (!permission.granted) {
-    // Camera permissions are not granted yet
+  if (hasCameraPermission === undefined) {
+    return <Text>Requesting permissions...</Text>;
+  } else if (!hasCameraPermission) {
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
+      <Text>
+        Permission for camera not granted. Please change this in settings.
+      </Text>
     );
   }
 
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
+  let takePic = async () => {
+    let options = {
+      quality: 1,
+      base64: true,
+      exif: false,
+    };
+
+    let newPhoto = await cameraRef.current.takePictureAsync(options);
+    setPhoto(newPhoto);
+  };
+
+  if (photo) {
+    let sharePic = () => {
+      shareAsync(photo.uri).then(() => {
+        setPhoto(undefined);
+      });
+    };
+
+    let savePhoto = () => {
+      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
+        navigation.navigate("FormAbsen", { savedPhoto: photo });
+        setPhoto(undefined);
+      });
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <Image
+          style={styles.preview}
+          source={{ uri: "data:image/jpg;base64," + photo.base64 }}
+        />
+        <View style={styles.actionCam}>
+          <TouchableOpacity onPress={sharePic} style={styles.buttonAction}>
+            <Text style={styles.buttonText}>Share</Text>
+            <Image
+              source={require("../assets/icon/Send.png")}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          {hasMediaLibraryPermission ? (
+            <TouchableOpacity onPress={savePhoto} style={styles.buttonAction}>
+              <Text style={styles.buttonText}>Save</Text>
+              <Image
+                source={require("../assets/icon/Arhive_load.png")}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          ) : undefined}
+          <TouchableOpacity
+            onPress={() => setPhoto(undefined)}
+            style={styles.buttonAction}
+          >
+            <Text style={styles.buttonText}>Discard</Text>
+            <Image
+              source={require("../assets/icon/Cancel.png")}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Camera style={styles.camera} type={type}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View>
-      </Camera>
-    </View>
+    <Camera style={styles.container} ref={cameraRef}>
+      <View style={styles.buttonContainer}>
+        <Button title="Take Pic" onPress={takePic} />
+      </View>
+      <StatusBar style="auto" />
+    </Camera>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#79AC78",
   },
-  camera: {
-    flex: 1,
+  actionCam: {
+    flexDirection: "row",
+    height: 80,
+    marginBottom: 20,
+    marginTop: 10,
+    justifyContent: "space-evenly",
+    backgroundColor: "#B0D9B1",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  buttonAction: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    width: 100,
+    margin: 10,
+    height: 50,
+    backgroundColor: "#79AC78",
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    margin: 5,
+  },
+  buttonText: {
+    color: "#FFFFFF",
   },
   buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "transparent",
-    margin: 64,
-  },
-  button: {
-    flex: 1,
+    backgroundColor: "#fff",
     alignSelf: "flex-end",
-    alignItems: "center",
   },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
+  preview: {
+    alignSelf: "stretch",
+    flex: 1,
   },
 });

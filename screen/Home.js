@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 const Home = (props) => {
   const navigation = useNavigation();
@@ -95,6 +96,7 @@ const Home = (props) => {
           </View>
         </TouchableOpacity>
       </View>
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 };
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#79AC78",
-    padding: 10,
+    padding: 15,
   },
   nameProfile: {
     color: "#D0E7D2",

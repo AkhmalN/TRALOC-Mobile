@@ -9,6 +9,7 @@ import DetailRiwayat from "./screen/DetailRiwayat";
 import Absen from "./screen/Absen";
 import AbsenCamera from "./components/AbsenCamera";
 import PatrolCamera from "./components/PatrolCamera";
+import FormAbsen from "./components/FormAbsen";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -54,6 +55,13 @@ export default function App() {
         <Stack.Screen
           name="Absen"
           component={Absen}
+          options={{
+            headerTitle: "Absensi",
+          }}
+        />
+        <Stack.Screen
+          name="FormAbsen"
+          component={FormAbsen}
           options={{
             headerTitle: "Absensi",
           }}

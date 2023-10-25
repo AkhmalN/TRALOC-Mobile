@@ -29,7 +29,8 @@
     "plugins": [
       "expo-router",
       "expo-camera",
-      "expo-media-library"
+      "expo-media-library",
+      "expo-location"
     ],
     "permissions": [
       "CAMERA",
@@ -37,7 +38,11 @@
     ],
     "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera.",
     "savePhotosPermission" : "Allow $(PRODUCT_NAME) to save your photos",
-    "isAccessMediaLocationEnabled" : "true"
-    
+    "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
+    "isAccessMediaLocationEnabled" : "true",
+    "androidStatusBar": {
+      "backgroundColor": "#C2185B",
+      "translucent": false
+    }
   }
 }

@@ -4,12 +4,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screen/Login";
 import BottomTabBar from "./components/BottomTabBar";
 import Patroli from "./screen/Patroli";
-import FormPatrol from "./components/FormPatrol";
 import DetailRiwayat from "./screen/DetailRiwayat";
 import Absen from "./screen/Absen";
 import AbsenCamera from "./components/AbsenCamera";
 import PatrolCamera from "./components/PatrolCamera";
 import FormAbsen from "./components/FormAbsen";
+import Barcode from "./components/Barcode";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -34,16 +34,23 @@ export default function App() {
           name="Patroli"
           component={Patroli}
           options={{
-            headerTitle: "",
+            headerTitle: "Buat Patroli",
+            headerStyle: {
+              backgroundColor: "#79AC78",
+            },
           }}
         />
         <Stack.Screen
-          name="FormPatrol"
-          component={FormPatrol}
+          name="Barcode"
+          component={Barcode}
           options={{
-            headerTitle: "",
+            headerTitle: "Scan Barcode Pos",
+            headerStyle: {
+              backgroundColor: "#618264",
+            },
           }}
         />
+        <Stack.Screen name="PatrolCamera" component={PatrolCamera} />
         <Stack.Screen
           name="DetailRiwayat"
           component={DetailRiwayat}
@@ -66,7 +73,6 @@ export default function App() {
             headerTitle: "Absensi",
           }}
         />
-        <Stack.Screen name="PatrolCamera" component={PatrolCamera} />
       </Stack.Navigator>
       <StatusBar hidden={false} translucent={false} backgroundColor="#F5F5F5" />
     </NavigationContainer>

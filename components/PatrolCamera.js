@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Button,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { Camera } from "expo-camera";
@@ -60,7 +61,7 @@ export default function PatrolCamera() {
 
     let savePhoto = () => {
       MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-        navigation.navigate("FormPatrol", { savedPhoto: photo });
+        navigation.navigate("Patroli", { savedPhoto: photo });
         setPhoto(undefined);
       });
     };
@@ -71,11 +72,34 @@ export default function PatrolCamera() {
           style={styles.preview}
           source={{ uri: "data:image/jpg;base64," + photo.base64 }}
         />
-        <Button title="Share" onPress={sharePic} />
-        {hasMediaLibraryPermission ? (
-          <Button title="Save" onPress={savePhoto} />
-        ) : undefined}
-        <Button title="Discard" onPress={() => setPhoto(undefined)} />
+        <View style={styles.actionCam}>
+          <TouchableOpacity onPress={sharePic} style={styles.buttonAction}>
+            <Text style={styles.buttonText}>Share</Text>
+            <Image
+              source={require("../assets/icon/Send.png")}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          {hasMediaLibraryPermission ? (
+            <TouchableOpacity onPress={savePhoto} style={styles.buttonAction}>
+              <Text style={styles.buttonText}>Save</Text>
+              <Image
+                source={require("../assets/icon/Arhive_load.png")}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          ) : undefined}
+          <TouchableOpacity
+            onPress={() => setPhoto(undefined)}
+            style={styles.buttonAction}
+          >
+            <Text style={styles.buttonText}>Discard</Text>
+            <Image
+              source={require("../assets/icon/Cancel.png")}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }
@@ -95,6 +119,35 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#79AC78",
+  },
+  actionCam: {
+    flexDirection: "row",
+    height: 80,
+    marginBottom: 20,
+    marginTop: 10,
+    justifyContent: "space-evenly",
+    backgroundColor: "#B0D9B1",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  buttonAction: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    width: 100,
+    margin: 10,
+    height: 50,
+    backgroundColor: "#79AC78",
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    margin: 5,
+  },
+  buttonText: {
+    color: "#FFFFFF",
   },
   buttonContainer: {
     backgroundColor: "#fff",

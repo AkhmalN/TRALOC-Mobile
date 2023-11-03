@@ -15,6 +15,7 @@ export default function Login() {
   const navigation = useNavigation();
   const handleLogin = () => {
     navigation.navigate("BottomTabBar");
+    console.log({ email, password });
   };
 
   return (
@@ -35,7 +36,8 @@ export default function Login() {
             <TextInput
               placeholder="Email"
               value={email}
-              onChange={(text) => setEmail(text)}
+              onChangeText={(text) => setEmail(text)}
+              style={styles.TextInput}
             />
           </View>
           <View style={styles.formInput}>
@@ -46,8 +48,9 @@ export default function Login() {
             <TextInput
               placeholder="Password"
               value={password}
-              onChange={(text) => setPassword(text)}
+              onChangeText={(text) => setPassword(text)}
               secureTextEntry
+              style={styles.TextInput}
             />
           </View>
           <Text style={styles.forgot}>Lupa kata sandi ?</Text>
@@ -99,6 +102,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#B0D9B1",
     color: "#D0E7D2",
+  },
+  TextInput: {
+    width: "70%",
   },
   icon: {
     width: 40,

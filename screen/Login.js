@@ -9,13 +9,35 @@ import {
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigation = useNavigation();
+
   const handleLogin = () => {
-    navigation.navigate("BottomTabBar");
-    console.log({ email, password });
+    const data = {
+      username: username,
+      password: password,
+    };
+    axios
+      .post("http://192.168.192.180:8083/api/auth/", data)
+      .then((response) => {
+        console.log(response.data.message);
+        if (response.data.message === "Login succses") {
+          AsyncStorage.setItem("username", username);
+          navigation.navigate("BottomTabBar");
+        } else {
+          setError("Username atau Password yang anda masukkan salah!");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setError("Terjadi kesalahan saat login");
+      });
   };
 
   return (
@@ -35,8 +57,8 @@ export default function Login() {
             />
             <TextInput
               placeholder="Email"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
+              value={username}
+              onChangeText={(text) => setUsername(text)}
               style={styles.TextInput}
             />
           </View>
@@ -54,10 +76,8 @@ export default function Login() {
             />
           </View>
           <Text style={styles.forgot}>Lupa kata sandi ?</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText} onPress={handleLogin}>
-              Masuk
-            </Text>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Masuk</Text>
           </TouchableOpacity>
         </View>
       </View>

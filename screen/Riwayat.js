@@ -2,40 +2,65 @@ import { SafeAreaView } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Riwayat = () => {
+  const [patrolData, setPatrolData] = useState([]);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    // Ambil username dari AsyncStorage saat komponen di-mount
+    AsyncStorage.getItem("username")
+      .then((username) => {
+        console.log(username);
+        if (username) {
+          axios
+            .get(`http://192.168.192.180:8083/api/users/patrol/${username}`)
+            .then((response) => {
+              console.log(response.data);
+              setPatrolData(response.data);
+            })
+            .catch((error) => {
+              console.error("Gagal mengambil data patroli:", error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const handleDetail = (detailData) => {
+    navigation.navigate("DetailRiwayat", { detailData });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.headerTitle}>Laporan Aktivitas</Text>
-      <TouchableOpacity onPress={() => navigation.navigate("DetailRiwayat")}>
-        <View style={styles.cardActivity}>
-          <View style={styles.titleActivity}>
-            <Text style={styles.title}>
-              Pos Cyber Library, 20/08/2023 15:12:10
-            </Text>
-          </View>
-          <View>
-            <Text>Waktu : 20/08/2023 15:12:10</Text>
-            <Text>Lokasi : Pos Cyber Library</Text>
-            <Text>Status : Aman</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <View style={styles.cardActivity}>
-          <View style={styles.titleActivity}>
-            <Text style={styles.title}>
-              Pos Cyber Library, 20/08/2023 15:12:10
-            </Text>
-          </View>
-          <View>
-            <Text>Waktu : 20/08/2023 15:12:10</Text>
-            <Text>Lokasi : Pos Cyber Library</Text>
-            <Text>Status : Kehilangan</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
+      {patrolData.map((data, index) => {
+        return (
+          <TouchableOpacity onPress={() => handleDetail(data)} key={index}>
+            <View style={styles.cardActivity}>
+              <View style={styles.titleActivity}>
+                <Text style={styles.title}>
+                  {data.name}, {new Date(data.createdAt).toLocaleDateString()}
+                </Text>
+              </View>
+              <View>
+                <Text>
+                  Waktu : {new Date(data.createdAt).toLocaleDateString()}
+                </Text>
+                <Text>
+                  Coordinate : {data.latitude} {data.longitude}
+                </Text>
+                <Text>Status : {data.status}</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
     </SafeAreaView>
   );
 };

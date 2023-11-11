@@ -1,16 +1,17 @@
 import { View, Text, StyleSheet, Image, TextInput } from "react-native";
 import MapView, { Marker, Callout } from "react-native-maps";
 import React from "react";
+import { useRoute } from "@react-navigation/native";
 
 export default function DetailRiwayat() {
+  const route = useRoute();
+  const { detailData } = route.params;
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: -6.280837731894491,
-            longitude: 106.8394826451089,
             latitudeDelta: 0.001, // This sets the zoom level
             longitudeDelta: 0.001, // This sets the zoom level
           }}
@@ -18,31 +19,20 @@ export default function DetailRiwayat() {
           <Marker
             key={1}
             coordinate={{
-              latitude: -6.280837731894491,
-              longitude: 106.8394826451089,
+              latitude: detailData.latitude,
+              longitude: detailData.longitude,
             }}
             title="Parkiran Mobil Depan Loby"
-          >
-            <Callout>
-              <View>
-                <Text>Lokasi : Parkiran Mobil depan Loby</Text>
-                <Image
-                  source={require("../assets/home.png")}
-                  style={{ width: 100, height: 100 }}
-                />
-              </View>
-            </Callout>
-          </Marker>
+          ></Marker>
         </MapView>
       </View>
       <View style={styles.bottomContent}>
-        <Text>Waktu : 20/08/2023 15:12:10</Text>
-        <Text>Lokasi : Pos Cyber Library</Text>
-        <Text>Status : Aman</Text>
-        <TextInput
-          value="keadaan aman terkendali keadaan aman terkendali keadaan aman terkendali keadaan aman terkendali "
-          editable={false}
-        />
+        <Text>
+          Waktu : {new Date(detailData.createdAt).toLocaleDateString()}
+        </Text>
+        <Text>Lokasi : {detailData.name}</Text>
+        <Text>Status : {detailData.status}</Text>
+        <TextInput value={detailData.notes} editable={false} />
       </View>
     </View>
   );

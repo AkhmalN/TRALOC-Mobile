@@ -3,16 +3,33 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = (props) => {
+  const [username, setUsername] = useState("");
   const navigation = useNavigation();
+
+  useEffect(() => {
+    // Ambil username dari AsyncStorage saat komponen di-mount
+    AsyncStorage.getItem("username")
+      .then((value) => {
+        if (value) {
+          setUsername(value);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <View style={styles.sectionProfile}>
           <View style={styles.descProfile}>
             <Text style={{ color: "#D0E7D2", fontSize: 20 }}>
-              Selamat Datang, Akhmal Novanda Aziz
+              Selamat Datang, {username}
             </Text>
           </View>
           <Image

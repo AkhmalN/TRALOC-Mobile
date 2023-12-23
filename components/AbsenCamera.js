@@ -14,11 +14,12 @@ import * as MediaLibrary from "expo-media-library";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function PatrolCamera() {
+export default function AbsenCamera() {
   let cameraRef = useRef();
   const navigation = useNavigation();
   const [hasCameraPermission, setHasCameraPermission] = useState();
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type.front);
   const [photo, setPhoto] = useState();
 
   useEffect(() => {
@@ -103,11 +104,24 @@ export default function PatrolCamera() {
       </SafeAreaView>
     );
   }
-
+  const toggleCameraType = () => {
+    setCameraType(
+      cameraType === Camera.Constants.Type.front
+        ? Camera.Constants.Type.back
+        : Camera.Constants.Type.front
+    );
+  };
   return (
-    <Camera style={styles.container} ref={cameraRef}>
+    <Camera style={styles.container} type={cameraType} ref={cameraRef}>
       <View style={styles.buttonContainer}>
-        <Button title="Take Pic" onPress={takePic} />
+        <Button title="Ambil Foto" onPress={takePic} style={styles.button} />
+        <TouchableOpacity onPress={toggleCameraType} style={styles.button}>
+          <Text style={styles.buttonText}>
+            {cameraType === Camera.Constants.Type.front
+              ? "Ganti ke Kamera Belakang"
+              : "Ganti ke Kamera Depan"}
+          </Text>
+        </TouchableOpacity>
       </View>
       <StatusBar style="auto" />
     </Camera>
@@ -130,6 +144,39 @@ const styles = StyleSheet.create({
     backgroundColor: "#B0D9B1",
     alignItems: "center",
     borderRadius: 10,
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 20,
+    width: "100%",
+    alignItems: "center",
+  },
+  button: {
+    backgroundColor: "#B0D9B1",
+    padding: 15,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+  },
+  actionCam: {
+    flexDirection: "row",
+    height: 80,
+    marginBottom: 20,
+    marginTop: 10,
+    justifyContent: "space-evenly",
+    backgroundColor: "#B0D9B1",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  switchButton: {
+    backgroundColor: "#4A7C59",
+    padding: 10,
+    borderRadius: 5,
+  },
+  switchButtonText: {
+    color: "white",
   },
   buttonAction: {
     flexDirection: "row",

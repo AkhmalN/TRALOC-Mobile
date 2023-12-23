@@ -4,6 +4,7 @@ import Riwayat from "../screen/Riwayat";
 import Profil from "../screen/Profil";
 import { Image } from "react-native";
 import PosJaga from "../screen/PosJaga";
+import { Ionicons } from "react-native-vector-icons";
 // import TambahAktivitas from "../screen/TambahAktivitas";
 
 const Tab = createBottomTabNavigator();
@@ -13,8 +14,8 @@ const BottomTabBar = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          height: 60,
-          backgroundColor: "#618264",
+          height: 70,
+          backgroundColor: "#FFFFFF",
         },
       }}
     >
@@ -22,28 +23,16 @@ const BottomTabBar = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarLabelStyle: { fontSize: 14, width: "100%", color: "#D0E7D2" },
+          tabBarLabelStyle: ({ focused }) =>
+            focused
+              ? { fontSize: 16, width: "100%", color: "#0D1282" }
+              : { fontSize: 14, width: "100%", color: "#352F44" },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Image
-                source={require("../assets/icon/Home_fill_focused.png")}
-                resizeMode="cover"
-                style={{
-                  width: 45,
-                  height: 45,
-                }}
-              />
+              <Ionicons name="home" size={32} color="#0D1282" />
             ) : (
-              <Image
-                source={require("../assets/icon/Home.png")}
-                resizeMode="cover"
-                style={{
-                  width: 40,
-                  height: 40,
-                  marginBottom: 5,
-                }}
-              />
+              <Ionicons name="home-outline" size={30} color="#B0A695" />
             ),
         }}
       />
@@ -52,86 +41,34 @@ const BottomTabBar = () => {
         name="Daftar Pos"
         component={PosJaga}
         options={{
-          tabBarLabelStyle: { fontSize: 12, width: "100%", color: "#D0E7D2" },
+          tabBarLabelStyle: ({ focused }) =>
+            focused
+              ? { fontSize: 16, width: "100%", color: "#0D1282" }
+              : { fontSize: 14, width: "100%", color: "#352F44" },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Image
-                source={require("../assets/icon/Map_fill_focused.png")}
-                resizeMode="cover"
-                style={{
-                  width: 50,
-                  height: 50,
-                  marginBottom: 5,
-                }}
-              />
+              <Ionicons name="location" size={32} color="#0D1282" />
             ) : (
-              <Image
-                source={require("../assets/icon/Map.png")}
-                resizeMode="cover"
-                style={{
-                  width: 40,
-                  height: 40,
-                }}
-              />
+              <Ionicons name="location-outline" size={30} color="#B0A695" />
             ),
         }}
       />
-      {/* <Tab.Screen
-        name="Aktivitas"
-        component={TambahAktivitas}
-        options={{
-          tabBarLabelStyle: { fontSize: 12, width: "100%" },
-          headerShown: false,
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <Image
-                source={require("../assets/pluscolor.png")}
-                resizeMode="cover"
-                style={{
-                  width: 35,
-                  height: 35,
-                  marginBottom: 20,
-                }}
-              />
-            ) : (
-              <Image
-                source={require("../assets/plus.png")}
-                resizeMode="cover"
-                style={{
-                  width: 35,
-                  height: 35,
-                  marginBottom: 20,
-                }}
-              />
-            ),
-        }}
-      /> */}
+
       <Tab.Screen
         name="Riwayat"
         component={Riwayat}
         options={{
-          tabBarLabelStyle: { fontSize: 12, width: "100%", color: "#D0E7D2" },
+          tabBarLabelStyle: ({ focused }) =>
+            focused
+              ? { fontSize: 16, width: "100%", color: "#0D1282" }
+              : { fontSize: 14, width: "100%", color: "#352F44" },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Image
-                source={require("../assets/icon/Tumer_fill_focused.png")}
-                resizeMode="cover"
-                style={{
-                  width: 45,
-                  height: 45,
-                }}
-              />
+              <Ionicons name="clipboard" size={32} color="#0D1282" />
             ) : (
-              <Image
-                source={require("../assets/icon/Tumer.png")}
-                resizeMode="cover"
-                style={{
-                  width: 35,
-                  height: 35,
-                }}
-              />
+              <Ionicons name="clipboard-outline" size={30} color="#B0A695" />
             ),
         }}
       />
@@ -139,27 +76,16 @@ const BottomTabBar = () => {
         name="Profil"
         component={Profil}
         options={{
-          tabBarLabelStyle: { fontSize: 12, width: "100%", color: "#D0E7D2" },
+          tabBarLabelStyle: ({ focused }) =>
+            focused
+              ? { fontSize: 16, width: "100%", color: "#0D1282" }
+              : { fontSize: 14, width: "100%", color: "#352F44" },
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Image
-                source={require("../assets/icon/Tumer_fill_focused.png")}
-                resizeMode="cover"
-                style={{
-                  width: 40,
-                  height: 40,
-                }}
-              />
+              <Ionicons name="person" size={32} color="#0D1282" />
             ) : (
-              <Image
-                source={require("../assets/icon/User.png")}
-                resizeMode="cover"
-                style={{
-                  width: 37,
-                  height: 37,
-                }}
-              />
+              <Ionicons name="person-outline" size={30} color="#B0A695" />
             ),
         }}
       />

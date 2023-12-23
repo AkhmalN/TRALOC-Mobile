@@ -24,11 +24,12 @@ export default function Login() {
       password: password,
     };
     axios
-      .post("http://192.168.192.180:8083/api/auth/", data)
+      .post("http://192.168.1.40:8083/api/v1/auth/", data)
       .then((response) => {
         console.log(response.data.message);
         if (response.data.message === "Login succses") {
           AsyncStorage.setItem("username", username);
+          AsyncStorage.setItem("userId", response.data.userId);
           navigation.navigate("BottomTabBar");
         } else {
           setError("Username atau Password yang anda masukkan salah!");

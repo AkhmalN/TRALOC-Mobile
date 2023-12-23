@@ -28,19 +28,10 @@ const Home = (props) => {
       <View style={styles.wrapper}>
         <View style={styles.sectionProfile}>
           <View style={styles.descProfile}>
-            <Text style={{ color: "#D0E7D2", fontSize: 20 }}>
+            <Text style={{ color: "#3F2305", fontSize: 18 }}>
               Selamat Datang, {username}
             </Text>
           </View>
-          <Image
-            source={require("../assets/person.jpg")}
-            style={{
-              height: 70,
-              width: 70,
-              marginTop: 10,
-              borderRadius: 50,
-            }}
-          />
         </View>
         <View style={styles.sectionAtensi}>
           <Text style={styles.textStyleAtensi}>
@@ -49,12 +40,12 @@ const Home = (props) => {
         </View>
         <TouchableOpacity
           style={styles.cardContainer}
-          onPress={() => navigation.navigate("Camera")}
+          onPress={() => navigation.navigate("AbsenCamera")}
         >
           <View style={styles.iconMenu}>
             <Image
               source={require("../assets/icon/selfie_1.png")}
-              style={{ width: 60, height: 70 }}
+              style={{ width: 50, height: 50 }}
             />
           </View>
           <View style={styles.cardTitle}>
@@ -113,7 +104,7 @@ const Home = (props) => {
           </View>
         </TouchableOpacity>
       </View>
-      <StatusBar style="light" />
+      <StatusBar style="#91C8E4" />
     </SafeAreaView>
   );
 };
@@ -122,11 +113,11 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#79AC78",
-    padding: 15,
+    backgroundColor: "#F5F5F5",
+    padding: 7,
   },
   nameProfile: {
-    color: "#D0E7D2",
+    color: "#3F2305",
   },
   sectionProfile: {
     backgroundColor: "#1b2d45",
@@ -145,12 +136,12 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flexDirection: "row",
-    backgroundColor: "#618264",
+    backgroundColor: "#4682A9",
     marginTop: 10,
     marginBottom: 10,
     borderRadius: 20,
     padding: 10,
-    height: 100,
+    height: 80,
     alignItems: "center",
   },
   iconMenu: {
@@ -167,6 +158,7 @@ const styles = StyleSheet.create({
   },
   iconRight: {
     width: "15%",
+    marginRight: 10,
   },
   sectionProfile: {
     padding: 10,

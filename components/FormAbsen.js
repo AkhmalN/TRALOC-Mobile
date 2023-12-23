@@ -1,13 +1,47 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 export default function FormAbsen({ route }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const { savedPhoto } = route.params;
+  const [username, setUsername] = useState([]);
+  const [userId, setUserId] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [images, setImages] = useState("");
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    // Ambil username dari AsyncStorage saat komponen di-mount
+    AsyncStorage.getItem("username")
+      .then((value) => {
+        if (value) {
+          // console.log(value);
+          setUsername(value);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    AsyncStorage.getItem("userId")
+      .then((ID) => {
+        if (ID) {
+          // console.log(ID);
+          setUserId(ID);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -19,16 +53,91 @@ export default function FormAbsen({ route }) {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+      setLatitude(location.coords.latitude);
+      console.log(latitude);
+      setLongitude(location.coords.longitude);
+      console.log(longitude);
     })();
   }, []);
 
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       setErrorMsg("Permission to access location was denied");
+  //       return;
+  //     }
+
+  //     const locationSubscription = await Location.watchPositionAsync(
+  //       {
+  //         accuracy: Location.Accuracy.High,
+  //         timeInterval: 1000,
+  //         distanceInterval: 1,
+  //       },
+  //       (location) => {
+  //         setLocation(location);
+  //         setLatitude(location.coords.latitude);
+  //         setLongitude(location.coords.longitude);
+  //         console.log(latitude, longitude);
+  //       }
+  //     );
+
+  //     return () => {
+  //       if (locationSubscription) {
+  //         locationSubscription.remove();
+  //       }
+  //     };
+  //   })();
+  // }, []);
+
+  useEffect(() => {
+    if (savedPhoto) {
+      setImages([savedPhoto.uri]); // Assuming savedPhoto.uri is the image URI
+      console.log(savedPhoto.uri);
+    }
+  }, [savedPhoto]);
   let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
     text = JSON.stringify(location);
-    console.log(text);
+    // console.log(text);
   }
+
+  const handleOnSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("userId", userId);
+      formData.append("username", username);
+      formData.append("latitude", latitude);
+      formData.append("longitude", longitude);
+      formData.append("image", {
+        uri: savedPhoto.uri,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+
+      const response = await axios.post(
+        "http://192.168.1.40:8083/api/v1/absensi/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        // setIsSuccses(true);
+        // setShowAlert(!showAlert);
+        // setIsSuccses(response.data.message);
+        // navigation.navigate("Home");
+      }
+      console.log(response.data);
+    } catch (error) {
+      // setIsSuccses(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
@@ -48,7 +157,7 @@ export default function FormAbsen({ route }) {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
               }}
-              title="Parkiran Mobil Depan Loby"
+              title="Lokasi Anda"
             ></Marker>
           </MapView>
         ) : (
@@ -60,7 +169,7 @@ export default function FormAbsen({ route }) {
           <View>
             {location ? (
               <View>
-                <Text>Posisi Anda Saat ini :</Text>
+                <Text>koordinat Anda Saat ini :</Text>
                 <View style={styles.form}>
                   <Text>
                     {location.coords.latitude},{location.coords.longitude}
@@ -84,13 +193,20 @@ export default function FormAbsen({ route }) {
             />
           )}
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleOnSubmit}>
           <Text style={styles.buttonText}>Kirim Absen</Text>
           <Image
             source={require("../assets/icon/Send.png")}
             style={styles.icon}
           />
         </TouchableOpacity>
+        {/* <TouchableOpacity
+          style={styles.button}
+          onPress={() => setShowAlert(!showAlert)}
+        >
+          <Text style={styles.buttonText}>Kirim Absen</Text>
+        </TouchableOpacity>
+        {showAlert && <ToastNotification />} */}
       </View>
     </View>
   );
@@ -143,6 +259,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#B0D9B1",
     color: "#D0E7D2",
+    fontSize: 20,
   },
   button: {
     flexDirection: "row",
@@ -152,10 +269,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   buttonText: {
     color: "#D0E7D2",
-    fontSize: 16,
+    fontSize: 18,
   },
 });

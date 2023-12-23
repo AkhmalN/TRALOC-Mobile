@@ -17,7 +17,7 @@ const Riwayat = () => {
         console.log(username);
         if (username) {
           axios
-            .get(`http://192.168.192.180:8083/api/users/patrol/${username}`)
+            .get(`http://192.168.192.180:8083/api/patrol/${username}`)
             .then((response) => {
               console.log(response.data);
               setPatrolData(response.data);

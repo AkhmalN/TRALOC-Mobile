@@ -50,7 +50,13 @@ export default function App() {
             },
           }}
         />
-        <Stack.Screen name="PatrolCamera" component={PatrolCamera} />
+        <Stack.Screen
+          name="PatrolCamera"
+          component={PatrolCamera}
+          options={{
+            headerTitle: "Capture Dokumentasi",
+          }}
+        />
         <Stack.Screen
           name="DetailRiwayat"
           component={DetailRiwayat}
@@ -58,7 +64,13 @@ export default function App() {
             headerTitle: "Detail Riwayat",
           }}
         />
-        <Stack.Screen name="Camera" component={AbsenCamera} />
+        <Stack.Screen
+          name="AbsenCamera"
+          component={AbsenCamera}
+          options={{
+            headerTitle: "Capture Absensi",
+          }}
+        />
         <Stack.Screen
           name="Absen"
           component={Absen}

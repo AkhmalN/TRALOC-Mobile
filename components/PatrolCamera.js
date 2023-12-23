@@ -107,7 +107,7 @@ export default function PatrolCamera() {
   return (
     <Camera style={styles.container} ref={cameraRef}>
       <View style={styles.buttonContainer}>
-        <Button title="Take Pic" onPress={takePic} />
+        <Button title="Ambil Foto" onPress={takePic} style={styles.button} />
       </View>
       <StatusBar style="auto" />
     </Camera>
@@ -130,6 +130,39 @@ const styles = StyleSheet.create({
     backgroundColor: "#B0D9B1",
     alignItems: "center",
     borderRadius: 10,
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 20,
+    width: "100%",
+    alignItems: "center",
+  },
+  button: {
+    backgroundColor: "#B0D9B1",
+    padding: 15,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+  },
+  actionCam: {
+    flexDirection: "row",
+    height: 80,
+    marginBottom: 20,
+    marginTop: 10,
+    justifyContent: "space-evenly",
+    backgroundColor: "#B0D9B1",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  switchButton: {
+    backgroundColor: "#4A7C59",
+    padding: 10,
+    borderRadius: 5,
+  },
+  switchButtonText: {
+    color: "white",
   },
   buttonAction: {
     flexDirection: "row",

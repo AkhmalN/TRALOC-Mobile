@@ -1,10 +1,12 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, ImageBackground } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
+import { BackgroundImage } from "@rneui/base";
 
 const Home = (props) => {
   const [username, setUsername] = useState("");
@@ -24,28 +26,33 @@ const Home = (props) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
-        <View style={styles.sectionProfile}>
-          <View style={styles.descProfile}>
-            <Text style={{ color: "#3F2305", fontSize: 18 }}>
-              Selamat Datang, {username}
-            </Text>
+    <View style={styles.container}>
+      <ImageBackground
+        source={require("../assets/BG.jpg")}
+        style={styles.profile}
+      >
+        <Image source={require("../assets/person.jpg")} style={styles.avatar} />
+        <View style={styles.userInfo}>
+          <Text style={styles.nameText}>{username}</Text>
+          <View style={styles.roleContainer}>
+            <Ionicons name="man-outline" style={styles.roleIcon} size={18} />
+            <Text style={styles.jobtext}>Security</Text>
           </View>
         </View>
-        <View style={styles.sectionAtensi}>
-          <Text style={styles.textStyleAtensi}>
-            Tidak Ada Atensi yang ditampilkan
-          </Text>
-        </View>
+      </ImageBackground>
+      <View style={styles.sectionAtensi}>
+        <Text>Tidak ada atensi yang ditampilkan</Text>
+      </View>
+      <View style={styles.featureContent}>
         <TouchableOpacity
           style={styles.cardContainer}
           onPress={() => navigation.navigate("AbsenCamera")}
         >
           <View style={styles.iconMenu}>
-            <Image
-              source={require("../assets/icon/selfie_1.png")}
-              style={{ width: 50, height: 50 }}
+            <Ionicons
+              name="arrow-forward-circle-outline"
+              size={35}
+              color={"#FFF"}
             />
           </View>
           <View style={styles.cardTitle}>
@@ -64,9 +71,10 @@ const Home = (props) => {
           onPress={() => navigation.navigate("Absen")}
         >
           <View style={styles.iconMenu}>
-            <Image
-              source={require("../assets/icon/selfie_1.png")}
-              style={{ width: 50, height: 50 }}
+            <Ionicons
+              name="arrow-back-circle-outline"
+              size={35}
+              color={"#FFF"}
             />
           </View>
           <View style={styles.cardTitle}>
@@ -87,7 +95,7 @@ const Home = (props) => {
           <View style={styles.iconMenu}>
             <Image
               source={require("../assets/icon/check_1.png")}
-              style={{ width: 50, height: 50 }}
+              style={{ width: 35, height: 40 }}
             />
           </View>
           <View style={styles.cardTitle}>
@@ -105,39 +113,83 @@ const Home = (props) => {
         </TouchableOpacity>
       </View>
       <StatusBar style="#91C8E4" />
-    </SafeAreaView>
+    </View>
   );
 };
 export default Home;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#F5F5F5",
-    padding: 7,
   },
-  nameProfile: {
-    color: "#3F2305",
+
+  profile: {
+    flexDirection: "row",
+    marginBottom: 20,
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#96EFFF", // You can set a background color with some transparency
+    borderBottomLeftRadius: 20, // Adjust the border radius as needed
+    borderBottomRightRadius: 20, // Adjust the border radius as needed
+    borderBottomColor: "#ccc",
+    overflow: "hidden",
   },
-  sectionProfile: {
-    backgroundColor: "#1b2d45",
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+  },
+
+  userInfo: {
+    flexDirection: "column",
+  },
+  nameText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    backgroundColor: "#088395",
+    color: "#FFF",
+    textAlign: "center",
+    borderRadius: 20,
+    alignItems: "center",
+    paddingBottom: 2,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  roleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5,
+  },
+  roleIcon: {
+    marginRight: 5,
+    color: "#FFF",
+  },
+  jobtext: {
+    fontSize: 14,
+    color: "#FFF", // You can change the text color as needed
   },
   sectionAtensi: {
-    marginTop: 20,
+    marginLeft: 7,
+    marginRight: 7,
     marginBottom: 20,
     backgroundColor: "#D9D9D9",
     height: 100,
-    padding: 10,
     borderRadius: 10,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  featureContent: {
+    paddingLeft: 7,
+    paddingRight: 7,
   },
   textStyleAtensi: {
     textAlign: "center",
   },
   cardContainer: {
     flexDirection: "row",
-    backgroundColor: "#4682A9",
-    marginTop: 10,
+    backgroundColor: "#088395",
     marginBottom: 10,
     borderRadius: 20,
     padding: 10,
@@ -145,11 +197,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   iconMenu: {
-    width: "15%",
+    width: "10%",
     marginRight: 10,
   },
   cardTitle: {
-    width: "70%",
+    width: "80%",
     borderRadius: 20,
     padding: 10,
     color: "#D0E7D2",
@@ -157,22 +209,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   iconRight: {
-    width: "15%",
+    width: "10%",
     marginRight: 10,
   },
   sectionProfile: {
     padding: 10,
     flexDirection: "row",
     height: 100,
-  },
-  descProfile: {
-    flex: 1,
-    marginTop: 20,
-    marginLeft: 10,
-  },
-  nameProfile: {
-    width: "100%",
-    fontSize: 18,
   },
   professionProfile: {
     fontSize: 13,

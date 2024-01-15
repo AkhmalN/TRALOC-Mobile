@@ -29,12 +29,13 @@ const Profil = () => {
     >
       <ScrollView style={styles.container}>
         <View style={styles.sectionImage}>
-          <Text style={styles.title}>Profil</Text>
           <View style={styles.imageContainer}>
             <Image
               source={require("../assets/person.jpg")}
-              style={{ width: 110, height: 110, borderRadius: 50 }}
+              style={{ width: 90, height: 80, borderRadius: 50 }}
             />
+            <Text style={styles.title}>Lonnie</Text>
+            <Text style={styles.subTitle}>Security</Text>
           </View>
         </View>
         <View style={styles.sectionForm}>
@@ -69,7 +70,7 @@ const Profil = () => {
               <TextInput value={phone} style={styles.formInput} />
             </View>
             <TouchableOpacity style={styles.submitForm}>
-              <Text>Simpan</Text>
+              <Text style={styles.sumbitText}>Simpan</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -85,14 +86,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sectionImage: {
-    backgroundColor: "#16C79A",
-    padding: 30,
+    marginTop: 10,
   },
   title: {
-    color: "#FFFFFF",
-    fontSize: 20,
-    marginBottom: 10,
-    textAlign: "center",
+    marginTop: 10,
+  },
+  subTitle: {
+    color: "grey",
   },
   imageContainer: {
     alignItems: "center",
@@ -103,17 +103,16 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   label: {
-    fontSize: 17,
+    fontSize: 14,
     marginTop: 5,
     marginBottom: 5,
   },
   formInput: {
     color: "#000000",
-    fontWeight: "bold",
     width: "100%",
     borderRadius: 20,
     paddingLeft: 10,
-    height: 40,
+    height: 30,
     marginTop: 10,
     marginBottom: 10,
     fontSize: 16,
@@ -127,11 +126,15 @@ const styles = StyleSheet.create({
   },
   submitForm: {
     marginTop: 20,
-    backgroundColor: "#16C79A",
+    backgroundColor: "#0B815A",
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    color: "#F5F5F5",
+
     borderRadius: 20,
+  },
+  sumbitText: {
+    color: "#FFF",
+    fontSize: 16,
   },
 });

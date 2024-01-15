@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, Alert } from "react-native";
+import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MapView, { Marker, Callout } from "react-native-maps";
@@ -16,6 +16,8 @@ export default function FormAbsen({ route }) {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [images, setImages] = useState("");
+  const [loading, setLoading] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(null);
 
   const navigation = useNavigation();
 
@@ -24,23 +26,17 @@ export default function FormAbsen({ route }) {
     AsyncStorage.getItem("username")
       .then((value) => {
         if (value) {
-          // console.log(value);
           setUsername(value);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
     AsyncStorage.getItem("userId")
       .then((ID) => {
         if (ID) {
-          // console.log(ID);
           setUserId(ID);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 
   useEffect(() => {
@@ -54,45 +50,14 @@ export default function FormAbsen({ route }) {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
       setLatitude(location.coords.latitude);
-      console.log(latitude);
       setLongitude(location.coords.longitude);
-      console.log(longitude);
     })();
   }, []);
 
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       setErrorMsg("Permission to access location was denied");
-  //       return;
-  //     }
-
-  //     const locationSubscription = await Location.watchPositionAsync(
-  //       {
-  //         accuracy: Location.Accuracy.High,
-  //         timeInterval: 1000,
-  //         distanceInterval: 1,
-  //       },
-  //       (location) => {
-  //         setLocation(location);
-  //         setLatitude(location.coords.latitude);
-  //         setLongitude(location.coords.longitude);
-  //         console.log(latitude, longitude);
-  //       }
-  //     );
-
-  //     return () => {
-  //       if (locationSubscription) {
-  //         locationSubscription.remove();
-  //       }
-  //     };
-  //   })();
-  // }, []);
-
   useEffect(() => {
     if (savedPhoto) {
-      setImages([savedPhoto.uri]); // Assuming savedPhoto.uri is the image URI
-      console.log(savedPhoto.uri);
+      setImages([savedPhoto]); // Assuming savedPhoto.uri is the image URI
+      console.log(savedPhoto);
     }
   }, [savedPhoto]);
   let text = "Waiting..";
@@ -104,6 +69,7 @@ export default function FormAbsen({ route }) {
   }
 
   const handleOnSubmit = async () => {
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append("userId", userId);
@@ -117,7 +83,7 @@ export default function FormAbsen({ route }) {
       });
 
       const response = await axios.post(
-        "http://192.168.1.40:8083/api/v1/absensi/",
+        "http://192.168.100.123:8083/api/v1/absensi/",
         formData,
         {
           headers: {
@@ -131,16 +97,28 @@ export default function FormAbsen({ route }) {
         // setShowAlert(!showAlert);
         // setIsSuccses(response.data.message);
         // navigation.navigate("Home");
+        setLoading(false);
+        setIsSuccess(true);
+        setTimeout(() => {
+          setIsSuccess(null);
+        }, 4000);
       }
       console.log(response.data);
     } catch (error) {
-      // setIsSuccses(false);
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
+        {isSuccess !== null && (
+          <View style={isSuccess ? styles.alertSuccess : styles.alertError}>
+            <Text style={styles.alertText}>
+              {isSuccess ? "Berhasil Mengirim Absen" : "Gagal Mengirim Absen"}
+            </Text>
+          </View>
+        )}
         {location ? (
           <MapView
             style={styles.map}
@@ -161,52 +139,57 @@ export default function FormAbsen({ route }) {
             ></Marker>
           </MapView>
         ) : (
-          <Text>Loading ...</Text>
+          <Text>Loading location ...</Text>
         )}
       </View>
       <View style={styles.bottomContent}>
-        <View style={styles.containerTitle}>
-          <View>
+        <View style={styles.formContainer}>
+          <View style={styles.formSection}>
             {location ? (
               <View>
-                <Text>koordinat Anda Saat ini :</Text>
+                <Text style={styles.label}>koordinat Anda Saat ini :</Text>
                 <View style={styles.form}>
                   <Text>
                     {location.coords.latitude},{location.coords.longitude}
                   </Text>
                 </View>
-                <Text>Waktu Saat ini :</Text>
+                <Text style={styles.label}>Waktu Saat ini :</Text>
                 <View style={styles.form}>
                   <Text>{new Date(location.timestamp).toLocaleString()}</Text>
                 </View>
               </View>
             ) : (
-              <Text>Loading location data...</Text>
+              <Text>Loading data...</Text>
+            )}
+          </View>
+          <View style={styles.imageSection}>
+            {savedPhoto && (
+              <Image
+                source={{ uri: savedPhoto.uri }}
+                style={{ width: 150, height: 120, borderRadius: 10 }}
+              />
             )}
           </View>
         </View>
-        <View style={styles.containerImage}>
-          {savedPhoto && (
-            <Image
-              source={{ uri: savedPhoto.uri }}
-              style={{ width: 100, height: 100 }}
-            />
-          )}
-        </View>
         <TouchableOpacity style={styles.button} onPress={handleOnSubmit}>
-          <Text style={styles.buttonText}>Kirim Absen</Text>
-          <Image
-            source={require("../assets/icon/Send.png")}
-            style={styles.icon}
-          />
+          {loading ? (
+            <>
+              <Text style={styles.buttonText}>Mengirim Absen</Text>
+              <ActivityIndicator
+                size={"small"}
+                style={{ marginLeft: 10, marginRight: 10 }}
+              />
+            </>
+          ) : (
+            <>
+              <Text style={styles.buttonText}>Kirim Absen</Text>
+              <Image
+                source={require("../assets/icon/Send.png")}
+                style={styles.icon}
+              />
+            </>
+          )}
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={styles.button}
-          onPress={() => setShowAlert(!showAlert)}
-        >
-          <Text style={styles.buttonText}>Kirim Absen</Text>
-        </TouchableOpacity>
-        {showAlert && <ToastNotification />} */}
       </View>
     </View>
   );
@@ -215,25 +198,40 @@ export default function FormAbsen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    height: 500,
-    backgroundColor: "#79AC78",
   },
   mapContainer: {
     flex: 1,
+    alignItems: "center",
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  bottomContent: {
+  alertSuccess: {
+    position: "absolute",
+    backgroundColor: "#088395",
+    zIndex: 1,
     padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  alertError: {
+    position: "absolute",
+    backgroundColor: "red",
+    zIndex: 1,
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  alertText: {
+    fontSize: 19,
+    color: "#FFF",
+  },
+  bottomContent: {
     width: "100%",
     marginTop: 20,
     flex: 1,
     alignContent: "center",
-    backgroundColor: "#D9D9D9",
     height: 60,
-    justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
     borderRadius: 10,
@@ -243,36 +241,42 @@ const styles = StyleSheet.create({
     height: 25,
     margin: 5,
   },
-  containerTitle: {
+  formContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  formSection: {
+    marginRight: 20,
+  },
+  imageSection: {
     marginBottom: 10,
   },
-  containerImage: {
-    marginBottom: 10,
+  label: {
+    fontWeight: "bold",
   },
   form: {
     justifyContent: "center",
-    paddingLeft: 10,
-    width: 300,
     height: 35,
     borderRadius: 10,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "#B0D9B1",
     color: "#D0E7D2",
     fontSize: 20,
   },
   button: {
     flexDirection: "row",
-    backgroundColor: "#79AC78",
+    backgroundColor: "#088395",
     height: 50,
-    width: 150,
-    justifyContent: "center",
+    width: "100%",
     alignItems: "center",
     borderRadius: 10,
+    marginTop: 20,
     marginBottom: 8,
+    padding: 10,
   },
   buttonText: {
-    color: "#D0E7D2",
+    color: "#FFF",
     fontSize: 18,
+    marginLeft: 10,
   },
 });

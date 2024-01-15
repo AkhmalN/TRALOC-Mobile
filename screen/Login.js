@@ -5,82 +5,121 @@ import {
   Text,
   TextInput,
   View,
+  ActivityIndicator,
   Image,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(null);
   const [error, setError] = useState("");
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(null);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = () => {
+    if (!username || !password) {
+      setError("Masukkan username dan password!");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      return;
+    }
+
+    setLoading(true);
     const data = {
       username: username,
       password: password,
     };
     axios
-      .post("http://192.168.1.40:8083/api/v1/auth/", data)
+      .post("https://server-smartpatrol.vercel.app/api/v1/auth/", data)
       .then((response) => {
-        console.log(response.data.message);
-        if (response.data.message === "Login succses") {
+        if (response.status === 200) {
+          setLoading(false);
           AsyncStorage.setItem("username", username);
           AsyncStorage.setItem("userId", response.data.userId);
+          setTimeout(() => {
+            setLoading(false);
+          }, 1500);
           navigation.navigate("BottomTabBar");
-        } else {
-          setError("Username atau Password yang anda masukkan salah!");
         }
       })
+
       .catch((error) => {
-        console.log(error);
-        setError("Terjadi kesalahan saat login");
+        if (error.response) {
+          const status = error.response.status;
+          if (status === 400) {
+            setError("Username atau password salah!");
+            setTimeout(() => {
+              setError("");
+              setLoading(false);
+            }, 2000);
+          } else {
+            setError("Terjadi kesalahan saat login atau ulangi!");
+            setTimeout(() => {
+              setError("");
+              setLoading(false);
+            }, 2000);
+          }
+        }
       });
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      style={styles.container}
     >
-      <View style={styles.container}>
-        <View style={styles.title}>
-          <Text style={styles.titleText}>Welcome!!</Text>
-        </View>
-        <View style={styles.formBox}>
-          <View style={styles.formInput}>
-            <Image
-              source={require("../assets/icon/User_box_duotone.png")}
-              style={styles.icon}
-            />
-            <TextInput
-              placeholder="Email"
-              value={username}
-              onChangeText={(text) => setUsername(text)}
-              style={styles.TextInput}
-            />
+      <View style={styles.formBox}>
+        <Image
+          source={require("../assets/LOGO.png")}
+          style={{ width: 300, height: 50 }}
+        />
+        <Text style={styles.title}>Smart Solutions for Safer Communities</Text>
+        {error && (
+          <View style={styles.errorField}>
+            <Text style={styles.errorText}>{error}</Text>
           </View>
-          <View style={styles.formInput}>
-            <Image
-              source={require("../assets/icon/View_alt_fill.png")}
-              style={styles.icon}
-            />
-            <TextInput
-              placeholder="Password"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              secureTextEntry
-              style={styles.TextInput}
-            />
-          </View>
-          <Text style={styles.forgot}>Lupa kata sandi ?</Text>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Masuk</Text>
-          </TouchableOpacity>
+        )}
+        <Text style={styles.label}>Username :</Text>
+        <View style={styles.inputField}>
+          <TextInput
+            placeholder="Username"
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+            style={styles.input}
+          />
         </View>
+        <Text style={styles.label}>Password :</Text>
+        <View style={styles.inputField}>
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry={showPassword}
+            style={styles.input}
+          />
+          <Ionicons
+            name={showPassword ? "eye-outline" : "eye-off-outline"}
+            size={25}
+            color={"#0B815A"}
+            onPress={handleShowPassword}
+          />
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>
+            {loading ? <ActivityIndicator size={"small"} /> : "Login"}
+          </Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
@@ -89,71 +128,66 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#E8E8E8",
     justifyContent: "center",
-    backgroundColor: "#79AC78",
-    padding: 20,
-  },
-  title: {
-    flexDirection: "row",
-    fontWeight: "400",
-  },
-  titleText: {
-    textAlign: "left",
-    color: "#D0E7D2",
-    fontSize: 30,
-    justifyContent: "flex-start",
-    alignContent: "flex-start",
-    alignItems: "flex-start",
+    flexDirection: "column",
+    padding: 10,
   },
   formBox: {
-    marginTop: 10,
-    backgroundColor: "#D0E7D2",
+    margin: 20,
+    backgroundColor: "#FFFFFF",
     padding: 20,
     borderRadius: 20,
+    flexDirection: "column",
     justifyContent: "center",
-  },
-  formInput: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: 300,
-    height: 50,
-    borderRadius: 20,
-    paddingLeft: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    backgroundColor: "#B0D9B1",
-    color: "#D0E7D2",
-  },
-  TextInput: {
-    width: "70%",
   },
   icon: {
-    width: 40,
-    height: 40,
-    marginRight: 10,
+    width: 100,
+    height: 100,
+    marginBottom: 5,
   },
-  forgot: {
-    marginTop: 10,
-    marginBottom: 20,
-    marginLeft: 10,
-    color: "#79AC78",
+  errorField: {
+    backgroundColor: "#EF4040",
+    padding: 10,
+    borderRadius: 10,
+  },
+  errorText: {
+    color: "#FFF",
+  },
+  title: {
+    fontSize: 20,
+    marginBottom: 10,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#088395",
+  },
+  label: {
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  inputField: {
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 10,
+  },
+  input: {
+    width: "85%",
   },
   button: {
-    marginTop: 20,
-    marginBottom: 10,
+    textAlign: "right",
+    width: "100%",
     height: 50,
-    textAlign: "center",
-    alignSelf: "center",
-    alignContent: "center",
-    alignItems: "center",
+    backgroundColor: "#0B815A",
+    borderRadius: 10,
     justifyContent: "center",
-    borderRadius: 20,
-    width: 150,
-    backgroundColor: "#79AC78",
+    alignItems: "center",
+    marginTop: 15,
   },
   buttonText: {
-    padding: 10,
-    textAlign: "center",
-    color: "#D0E7D2",
+    color: "#FFFFFF",
+    fontSize: 18,
   },
 });

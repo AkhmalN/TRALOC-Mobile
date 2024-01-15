@@ -12,8 +12,8 @@ export default function Absen() {
           initialRegion={{
             latitude: -6.280837731894491,
             longitude: 106.8394826451089,
-            latitudeDelta: 0.001, // This sets the zoom level
-            longitudeDelta: 0.001, // This sets the zoom level
+            latitudeDelta: 0.001, 
+            longitudeDelta: 0.001, 
           }}
         >
           <Marker

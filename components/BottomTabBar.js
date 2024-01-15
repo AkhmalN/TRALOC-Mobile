@@ -2,10 +2,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screen/Home";
 import Riwayat from "../screen/Riwayat";
 import Profil from "../screen/Profil";
-import { Image } from "react-native";
+import { View, Image } from "react-native";
 import PosJaga from "../screen/PosJaga";
-import { Ionicons } from "react-native-vector-icons";
-// import TambahAktivitas from "../screen/TambahAktivitas";
+import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,8 +13,8 @@ const BottomTabBar = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          height: 70,
-          backgroundColor: "#FFFFFF",
+          height: 50,
+          padding: 5,
         },
       }}
     >
@@ -23,16 +22,25 @@ const BottomTabBar = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarLabelStyle: ({ focused }) =>
-            focused
-              ? { fontSize: 16, width: "100%", color: "#0D1282" }
-              : { fontSize: 14, width: "100%", color: "#352F44" },
-          headerShown: false,
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: "bold",
+          },
+          headerTitle: () => (
+            <View style={{ width: 200 }}>
+              <Image
+                source={require("../assets/LOGO.png")}
+                style={{ width: 200, height: 30 }}
+              />
+            </View>
+          ),
+          tabBarInactiveTintColor: "#607274",
+          tabBarActiveTintColor: "#088395",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Ionicons name="home" size={32} color="#0D1282" />
+              <Ionicons name="home" size={28} color={"#088395"} />
             ) : (
-              <Ionicons name="home-outline" size={30} color="#B0A695" />
+              <Ionicons name="home-outline" size={26} color="grey" />
             ),
         }}
       />
@@ -41,14 +49,16 @@ const BottomTabBar = () => {
         name="Daftar Pos"
         component={PosJaga}
         options={{
-          tabBarLabelStyle: ({ focused }) =>
-            focused
-              ? { fontSize: 16, width: "100%", color: "#0D1282" }
-              : { fontSize: 14, width: "100%", color: "#352F44" },
-          headerShown: false,
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: "bold",
+          },
+          tabBarInactiveTintColor: "#607274",
+          tabBarActiveTintColor: "#088395",
+
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Ionicons name="location" size={32} color="#0D1282" />
+              <Ionicons name="location" size={28} color="#088395" />
             ) : (
               <Ionicons name="location-outline" size={30} color="#B0A695" />
             ),
@@ -59,16 +69,17 @@ const BottomTabBar = () => {
         name="Riwayat"
         component={Riwayat}
         options={{
-          tabBarLabelStyle: ({ focused }) =>
-            focused
-              ? { fontSize: 16, width: "100%", color: "#0D1282" }
-              : { fontSize: 14, width: "100%", color: "#352F44" },
-          headerShown: false,
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: "bold",
+          },
+          tabBarInactiveTintColor: "#607274",
+          tabBarActiveTintColor: "#088395",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Ionicons name="clipboard" size={32} color="#0D1282" />
+              <Ionicons name="clipboard" size={26} color="#088395" />
             ) : (
-              <Ionicons name="clipboard-outline" size={30} color="#B0A695" />
+              <Ionicons name="clipboard-outline" size={28} color="#B0A695" />
             ),
         }}
       />
@@ -76,16 +87,17 @@ const BottomTabBar = () => {
         name="Profil"
         component={Profil}
         options={{
-          tabBarLabelStyle: ({ focused }) =>
-            focused
-              ? { fontSize: 16, width: "100%", color: "#0D1282" }
-              : { fontSize: 14, width: "100%", color: "#352F44" },
-          headerShown: false,
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: "bold",
+          },
+          tabBarInactiveTintColor: "#607274",
+          tabBarActiveTintColor: "#088395",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Ionicons name="person" size={32} color="#0D1282" />
+              <Ionicons name="person" size={26} color="#088395" />
             ) : (
-              <Ionicons name="person-outline" size={30} color="#B0A695" />
+              <Ionicons name="person-outline" size={28} color="#B0A695" />
             ),
         }}
       />

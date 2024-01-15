@@ -1,18 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Button,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Image } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { Camera } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function AbsenCamera() {
   let cameraRef = useRef();
@@ -52,7 +46,6 @@ export default function AbsenCamera() {
     let newPhoto = await cameraRef.current.takePictureAsync(options);
     setPhoto(newPhoto);
   };
-
   if (photo) {
     let sharePic = () => {
       shareAsync(photo.uri).then(() => {
@@ -69,10 +62,7 @@ export default function AbsenCamera() {
 
     return (
       <SafeAreaView style={styles.container}>
-        <Image
-          style={styles.preview}
-          source={{ uri: "data:image/jpg;base64," + photo.base64 }}
-        />
+        <Image style={styles.preview} source={{ uri: photo.uri }} />
         <View style={styles.actionCam}>
           <TouchableOpacity onPress={sharePic} style={styles.buttonAction}>
             <Text style={styles.buttonText}>Share</Text>
@@ -114,12 +104,22 @@ export default function AbsenCamera() {
   return (
     <Camera style={styles.container} type={cameraType} ref={cameraRef}>
       <View style={styles.buttonContainer}>
-        <Button title="Ambil Foto" onPress={takePic} style={styles.button} />
+        <TouchableOpacity onPress={takePic} style={styles.button}>
+          <Text style={styles.buttonText}>
+            <Ionicons name="radio-button-on-outline" size={60} />
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={toggleCameraType} style={styles.button}>
           <Text style={styles.buttonText}>
-            {cameraType === Camera.Constants.Type.front
-              ? "Ganti ke Kamera Belakang"
-              : "Ganti ke Kamera Depan"}
+            {cameraType === Camera.Constants.Type.front ? (
+              <Ionicons name="reload-outline" size={50} />
+            ) : (
+              <Ionicons
+                name="reload-outline"
+                size={50}
+                style={{ transform: [{ rotate: "180deg" }] }}
+              />
+            )}
           </Text>
         </TouchableOpacity>
       </View>
@@ -131,30 +131,24 @@ export default function AbsenCamera() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#79AC78",
   },
-  actionCam: {
-    flexDirection: "row",
-    height: 80,
-    marginBottom: 20,
-    marginTop: 10,
-    justifyContent: "space-evenly",
-    backgroundColor: "#B0D9B1",
-    alignItems: "center",
-    borderRadius: 10,
-  },
+
   buttonContainer: {
     position: "absolute",
     bottom: 20,
+    flexDirection: "row",
+    justifyContent: "center",
     width: "100%",
-    alignItems: "center",
+    paddingHorizontal: 40,
   },
   button: {
-    backgroundColor: "#B0D9B1",
+    backgroundColor: "#088395",
     padding: 15,
     borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 0.4, // Sesuaikan lebar tombol
+    margin: 10,
   },
   buttonText: {
     color: "white",
@@ -166,7 +160,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 10,
     justifyContent: "space-evenly",
-    backgroundColor: "#B0D9B1",
     alignItems: "center",
     borderRadius: 10,
   },
@@ -186,7 +179,7 @@ const styles = StyleSheet.create({
     width: 100,
     margin: 10,
     height: 50,
-    backgroundColor: "#79AC78",
+    backgroundColor: "#088395",
   },
   icon: {
     width: 25,
@@ -196,10 +189,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#FFFFFF",
   },
-  buttonContainer: {
-    backgroundColor: "#fff",
-    alignSelf: "flex-end",
-  },
+
   preview: {
     alignSelf: "stretch",
     flex: 1,

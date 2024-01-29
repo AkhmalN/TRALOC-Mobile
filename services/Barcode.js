@@ -40,9 +40,6 @@ export default function Barcode() {
     );
   }
 
-  // const lokasiDatabase = {
-  //   "https://me-qr.com/iVT4O6jX": "Lokasi A",
-  // };
   const handleBarCodeScanner = ({ type, data }) => {
     setScannedData(true);
     // console.log(`Data = ${data}`);
@@ -70,13 +67,6 @@ export default function Barcode() {
       queryMatch &&
       queryMatch > 1
     ) {
-      // const latitude = parseFloat(coordinatesMatch[0]);
-      // setScanedLatitude(latitude)
-      // const longitude = parseFloat(coordinatesMatch[1]);
-      // setScanedLatitude(longitude)
-      // const label = decodeURIComponent(queryMatch[1]);
-      // setScanedLabel(label)
-
       navigation.navigate("ScreenLain", {
         scanedData: coordinatesMatch,
       });

@@ -1,75 +1,103 @@
-import { SafeAreaView } from "react-native";
+import { Image, SafeAreaView, TouchableWithoutFeedback } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+import Absensi from "../controllers/get-absensi";
+import Patroli from "../controllers/get-patroli";
 
 const Riwayat = () => {
-  const [patrolData, setPatrolData] = useState([]);
   const navigation = useNavigation();
+  const [selectedNavigation, setSelectedNavigation] = useState("Absensi");
+  const [showAbsensi, setShowAbsensi] = useState(true);
+  const [showPatroli, setShowPatroli] = useState(false);
 
-  useEffect(() => {
-    // Ambil username dari AsyncStorage saat komponen di-mount
-    AsyncStorage.getItem("username")
-      .then((username) => {
-        console.log(username);
-        if (username) {
-          axios
-            .get(`http://192.168.192.180:8083/api/patrol/${username}`)
-            .then((response) => {
-              console.log(response.data);
-              setPatrolData(response.data);
-            })
-            .catch((error) => {
-              console.error("Gagal mengambil data patroli:", error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  const handleDetail = (detailData) => {
-    navigation.navigate("DetailRiwayat", { detailData });
+  const handleToAbsensi = () => {
+    setSelectedNavigation("GetAbsensi");
+    setShowAbsensi(true);
+    setShowPatroli(false);
+  };
+  const handleToPatroli = () => {
+    setSelectedNavigation("GetPatroli");
+    setShowAbsensi(false);
+    setShowPatroli(true);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.headerTitle}>Laporan Aktivitas</Text>
-      {patrolData.map((data, index) => {
-        return (
-          <TouchableOpacity onPress={() => handleDetail(data)} key={index}>
-            <View style={styles.cardActivity}>
-              <View style={styles.titleActivity}>
-                <Text style={styles.title}>
-                  {data.name}, {new Date(data.createdAt).toLocaleDateString()}
-                </Text>
-              </View>
-              <View>
-                <Text>
-                  Waktu : {new Date(data.createdAt).toLocaleDateString()}
-                </Text>
-                <Text>
-                  Coordinate : {data.latitude} {data.longitude}
-                </Text>
-                <Text>Status : {data.status}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        );
-      })}
-    </SafeAreaView>
+    <ScrollView style={styles.container}>
+      <View style={styles.containerSelector}>
+        <TouchableOpacity
+          style={
+            showPatroli
+              ? styles.buttonSelectorActive
+              : styles.buttonSelectorinActive
+          }
+          onPress={handleToPatroli}
+        >
+          <Text
+            style={
+              showPatroli ? styles.buttonTextActive : styles.buttonTextinActive
+            }
+          >
+            Patroli
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={
+            showAbsensi
+              ? styles.buttonSelectorActive
+              : styles.buttonSelectorinActive
+          }
+          onPress={handleToAbsensi}
+        >
+          <Text
+            style={
+              showAbsensi ? styles.buttonTextActive : styles.buttonTextinActive
+            }
+          >
+            Absensi
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.containerCard}>
+        {showAbsensi && <Absensi />}
+        {showPatroli && <Patroli />}
+      </View>
+    </ScrollView>
   );
 };
 export default Riwayat;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
+  container: {},
+  containerSelector: {
+    flexDirection: "row",
+    padding: 10,
   },
+  buttonSelectorActive: {
+    flexDirection: "row",
+    marginRight: 10,
+    backgroundColor: "#088395",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonSelectorinActive: {
+    flexDirection: "row",
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: "#088395",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonTextActive: {
+    color: "#FFF",
+  },
+  buttonTextinActive: {
+    color: "#088395",
+  },
+  containerCard: {},
   headerTitle: {
     fontSize: 20,
   },

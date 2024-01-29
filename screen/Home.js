@@ -46,13 +46,15 @@ const Home = (props) => {
       <View style={styles.featureContent}>
         <TouchableOpacity
           style={styles.cardContainer}
-          onPress={() => navigation.navigate("AbsenCamera")}
+          onPress={() =>
+            navigation.navigate("AbsenCamera", { absenType: "masuk" })
+          }
         >
           <View style={styles.iconMenu}>
             <Ionicons
               name="arrow-forward-circle-outline"
               size={35}
-              color={"#FFF"}
+              color={"#088395"}
             />
           </View>
           <View style={styles.cardTitle}>
@@ -60,21 +62,24 @@ const Home = (props) => {
             <Text style={styles.cardTextEng}>Absen Masuk | Time In</Text>
           </View>
           <View style={styles.iconRight}>
-            <Image
-              source={require("../assets/icon/Expand_right_stop.png")}
-              style={{ width: 20, height: 25 }}
+            <Ionicons
+              name="chevron-forward-outline"
+              size={30}
+              color={"#088395"}
             />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.cardContainer}
-          onPress={() => navigation.navigate("Absen")}
+          onPress={() =>
+            navigation.navigate("AbsenCamera", { absenType: "keluar" })
+          }
         >
           <View style={styles.iconMenu}>
             <Ionicons
               name="arrow-back-circle-outline"
               size={35}
-              color={"#FFF"}
+              color={"#088395"}
             />
           </View>
           <View style={styles.cardTitle}>
@@ -82,9 +87,10 @@ const Home = (props) => {
             <Text style={styles.cardTextEng}>Absen Keluar | Time Out</Text>
           </View>
           <View style={styles.iconRight}>
-            <Image
-              source={require("../assets/icon/Expand_right_stop.png")}
-              style={{ width: 20, height: 25 }}
+            <Ionicons
+              name="chevron-forward-outline"
+              size={30}
+              color={"#088395"}
             />
           </View>
         </TouchableOpacity>
@@ -93,10 +99,7 @@ const Home = (props) => {
           onPress={() => props.navigation.navigate("Patroli")}
         >
           <View style={styles.iconMenu}>
-            <Image
-              source={require("../assets/icon/check_1.png")}
-              style={{ width: 35, height: 40 }}
-            />
+            <Ionicons name="walk-outline" size={35} color={"#088395"} />
           </View>
           <View style={styles.cardTitle}>
             <Text style={styles.cardTextInd}>Buat Patroli</Text>
@@ -105,9 +108,31 @@ const Home = (props) => {
             </Text>
           </View>
           <View style={styles.iconRight}>
-            <Image
-              source={require("../assets/icon/Expand_right_stop.png")}
-              style={{ width: 20, height: 25 }}
+            <Ionicons
+              name="chevron-forward-outline"
+              size={30}
+              color={"#088395"}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cardContainer}
+          onPress={() => props.navigation.navigate("Aktivitas")}
+        >
+          <View style={styles.iconMenu}>
+            <Ionicons name="reader-outline" size={35} color={"#088395"} />
+          </View>
+          <View style={styles.cardTitle}>
+            <Text style={styles.cardTextInd}>Buat Aktivitas</Text>
+            <Text style={styles.cardTextEng}>
+              Buat Laporan Aktivitas | Create Activity Report
+            </Text>
+          </View>
+          <View style={styles.iconRight}>
+            <Ionicons
+              name="chevron-forward-outline"
+              size={30}
+              color={"#088395"}
             />
           </View>
         </TouchableOpacity>
@@ -167,14 +192,13 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   jobtext: {
-    fontSize: 14,
+    fontSize: 16,
     color: "#FFF", // You can change the text color as needed
   },
   sectionAtensi: {
     marginLeft: 7,
     marginRight: 7,
     marginBottom: 20,
-    backgroundColor: "#D9D9D9",
     height: 100,
     borderRadius: 10,
     justifyContent: "center",
@@ -189,12 +213,13 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flexDirection: "row",
-    backgroundColor: "#088395",
     marginBottom: 10,
     borderRadius: 20,
     padding: 10,
     height: 80,
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#088395",
   },
   iconMenu: {
     width: "10%",
@@ -203,8 +228,6 @@ const styles = StyleSheet.create({
   cardTitle: {
     width: "80%",
     borderRadius: 20,
-    padding: 10,
-    color: "#D0E7D2",
     marginTop: 10,
     marginBottom: 10,
   },
@@ -222,9 +245,9 @@ const styles = StyleSheet.create({
   },
   cardTextInd: {
     fontSize: 18,
-    color: "#F7F7F7",
+    color: "#088395",
   },
   cardTextEng: {
-    color: "#F7F7F7",
+    color: "#088395",
   },
 });

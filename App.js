@@ -2,14 +2,17 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screen/Login";
-import BottomTabBar from "./components/BottomTabBar";
-import Patroli from "./screen/Patroli";
-import DetailRiwayat from "./screen/DetailRiwayat";
-import Absen from "./screen/Absen";
-import AbsenCamera from "./components/AbsenCamera";
-import PatrolCamera from "./components/PatrolCamera";
-import FormAbsen from "./components/FormAbsen";
-import Barcode from "./components/Barcode";
+import BarStack from "./BarStack";
+import Patroli from "./controllers/add-patroli";
+import GetAbsensi from "./controllers/get-absensi";
+import AbsenCamera from "./services/AbsenCamera";
+import PatrolCamera from "./services/PatrolCamera";
+import AbsenMasuk from "./controllers/add-AbsenMasuk";
+import AbsenKeluar from "./controllers/add-AbsenKeluar";
+import Barcode from "./services/Barcode";
+import DetailAbsensi from "./screen/DetailAbsensi";
+import Aktivitas from "./screen/Aktivitas";
+import ActivityCamera from "./services/ActivityCamera";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -25,7 +28,7 @@ export default function App() {
         />
         <Stack.Screen
           name="BottomTabBar"
-          component={BottomTabBar}
+          component={BarStack}
           options={{
             headerShown: false,
           }}
@@ -35,9 +38,6 @@ export default function App() {
           component={Patroli}
           options={{
             headerTitle: "Buat Patroli",
-            headerStyle: {
-              backgroundColor: "#79AC78",
-            },
           }}
         />
         <Stack.Screen
@@ -45,9 +45,6 @@ export default function App() {
           component={Barcode}
           options={{
             headerTitle: "Scan Barcode Pos",
-            headerStyle: {
-              backgroundColor: "#618264",
-            },
           }}
         />
         <Stack.Screen
@@ -58,10 +55,10 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="DetailRiwayat"
-          component={DetailRiwayat}
+          name="DetailAbsensi"
+          component={DetailAbsensi}
           options={{
-            headerTitle: "Detail Riwayat",
+            headerTitle: "Detail Absensi",
           }}
         />
         <Stack.Screen
@@ -72,17 +69,38 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="Absen"
-          component={Absen}
+          name="GetAbsensi"
+          component={GetAbsensi}
           options={{
-            headerTitle: "Absensi",
+            headerShown: false,
           }}
         />
         <Stack.Screen
-          name="FormAbsen"
-          component={FormAbsen}
+          name="AbsenMasuk"
+          component={AbsenMasuk}
           options={{
-            headerTitle: "Absensi",
+            headerTitle: "Absensi Masuk",
+          }}
+        />
+        <Stack.Screen
+          name="AbsenKeluar"
+          component={AbsenKeluar}
+          options={{
+            headerTitle: "Absensi Keluar",
+          }}
+        />
+        <Stack.Screen
+          name="Aktivitas"
+          component={Aktivitas}
+          options={{
+            headerTitle: "Buat Aktivitas",
+          }}
+        />
+        <Stack.Screen
+          name="ActivityCamera"
+          component={ActivityCamera}
+          options={{
+            headerTitle: "Capture Activity",
           }}
         />
       </Stack.Navigator>

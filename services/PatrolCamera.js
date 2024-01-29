@@ -7,8 +7,10 @@ import * as MediaLibrary from "expo-media-library";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
 
-export default function AbsenCamera() {
+export default function PatrolCamera() {
+  const absenRoute = useRoute();
   let cameraRef = useRef();
   const navigation = useNavigation();
   const [hasCameraPermission, setHasCameraPermission] = useState();
@@ -55,7 +57,7 @@ export default function AbsenCamera() {
 
     let savePhoto = () => {
       MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-        navigation.navigate("FormAbsen", { savedPhoto: photo });
+        navigation.navigate("Patroli", { savedPhoto: photo });
         setPhoto(undefined);
       });
     };

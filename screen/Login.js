@@ -7,6 +7,7 @@ import {
   View,
   ActivityIndicator,
   Image,
+  ImageBackground,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -79,48 +80,64 @@ export default function Login() {
       behavior={Platform.OS === "ios" ? "padding" : null}
       style={styles.container}
     >
-      <View style={styles.formBox}>
-        <Image
-          source={require("../assets/LOGO.png")}
-          style={{ width: 300, height: 50 }}
-        />
-        <Text style={styles.title}>Smart Solutions for Safer Communities</Text>
-        {error && (
-          <View style={styles.errorField}>
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        )}
-        <Text style={styles.label}>Username :</Text>
-        <View style={styles.inputField}>
-          <TextInput
-            placeholder="Username"
-            value={username}
-            onChangeText={(text) => setUsername(text)}
-            style={styles.input}
+      <ImageBackground
+        source={require("../assets/BG_LOGIN.png")}
+        style={{
+          width: "100%",
+          height: "100%",
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <View style={styles.formBox}>
+          <Image
+            source={require("../assets/LOGO.png")}
+            style={{ width: 300, height: 50 }}
           />
-        </View>
-        <Text style={styles.label}>Password :</Text>
-        <View style={styles.inputField}>
-          <TextInput
-            placeholder="Password"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry={showPassword}
-            style={styles.input}
-          />
-          <Ionicons
-            name={showPassword ? "eye-outline" : "eye-off-outline"}
-            size={25}
-            color={"#0B815A"}
-            onPress={handleShowPassword}
-          />
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>
-            {loading ? <ActivityIndicator size={"small"} /> : "Login"}
+          <Text style={styles.title}>
+            Smart Solutions for Safer Communities
           </Text>
-        </TouchableOpacity>
-      </View>
+          {error && (
+            <View style={styles.errorField}>
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          )}
+          <Text style={styles.label}>Username :</Text>
+          <View style={styles.inputField}>
+            <TextInput
+              placeholder="Username"
+              value={username}
+              onChangeText={(text) => setUsername(text)}
+              style={styles.input}
+            />
+          </View>
+          <Text style={styles.label}>Password :</Text>
+          <View style={styles.inputField}>
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              secureTextEntry={showPassword}
+              style={styles.input}
+            />
+            <Ionicons
+              name={showPassword ? "eye-outline" : "eye-off-outline"}
+              size={25}
+              color={"#0B815A"}
+              onPress={handleShowPassword}
+            />
+          </View>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>
+              {loading ? (
+                <ActivityIndicator size={"small"} color={"#FFF"} />
+              ) : (
+                "Login"
+              )}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 }
@@ -128,10 +145,6 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E8E8E8",
-    justifyContent: "center",
-    flexDirection: "column",
-    padding: 10,
   },
   formBox: {
     margin: 20,

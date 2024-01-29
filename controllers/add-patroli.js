@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Patroli({ route }) {
   const navigation = useNavigation();
@@ -69,7 +70,6 @@ export default function Patroli({ route }) {
 
   const handleBarCodeScanner = ({ type, data }) => {
     setScannedData(true);
-    // console.log(`Data = ${data}`);
     console.log(`Type = ${type}`);
     const coordinatesMatch = data.match(/-?\d+\.\d+/g);
     if (coordinatesMatch && coordinatesMatch.length >= 2) {
@@ -94,14 +94,17 @@ export default function Patroli({ route }) {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ justifyContent: "center" }}
-    >
+    <ScrollView style={styles.container}>
       <View style={styles.barcodeBox}>
         <BarCodeScanner
           onBarCodeScanned={scanedData ? undefined : handleBarCodeScanner}
-          style={{ height: 400, width: 400, borderRadius: 20 }}
+          style={{
+            flex: 1,
+            alignSelf: "center", // Align the scanner horizontally center
+            justifyContent: "center", // Center the content vertically
+            height: 600, // Adjust the height as needed
+            width: 600, // Adjust the width as needed
+          }}
         />
       </View>
       {scanedData && (
@@ -119,7 +122,7 @@ export default function Patroli({ route }) {
             {scannedLatitude !== undefined &&
             scannedLongitude !== undefined &&
             scannedLabel !== undefined ? (
-              <Text>
+              <Text style={styles.valueForm}>
                 {scannedLatitude} {scannedLongitude} ({scannedLabel})
               </Text>
             ) : (
@@ -132,7 +135,9 @@ export default function Patroli({ route }) {
           <TouchableOpacity onPress={toggleDropdown}>
             <View style={styles.dropdownToggle}>
               <View style={{ width: "80%" }}>
-                <Text>{selectedItem || "Select an item"}</Text>
+                <Text style={styles.valueForm}>
+                  {selectedItem || "Select an item"}
+                </Text>
               </View>
               <View>
                 <Image
@@ -162,14 +167,14 @@ export default function Patroli({ route }) {
         />
         <Text style={styles.label}>Masukkan Gambar (Min 1)</Text>
         <TouchableOpacity
-          style={styles.formInput}
+          style={savedPhoto ? styles.formHasImage : styles.formInput}
           onPress={() => navigation.navigate("PatrolCamera")}
         >
           <View>
             {savedPhoto && (
               <Image
                 source={{ uri: savedPhoto.uri }}
-                style={{ width: 50, height: 40 }}
+                style={{ width: 100, height: 90, borderRadius: 20 }}
               />
             )}
           </View>
@@ -183,8 +188,9 @@ export default function Patroli({ route }) {
         <View style={{ alignItems: "flex-end" }}>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Kirim Patroli</Text>
-            <Image
-              source={require("../assets/icon/Send.png")}
+            <Ionicons
+              name="paper-plane-outline"
+              size={25}
               style={styles.icon}
             />
           </TouchableOpacity>
@@ -197,26 +203,27 @@ export default function Patroli({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    backgroundColor: "#79AC78",
   },
   icon: {
-    width: 25,
-    height: 25,
-    margin: 5,
+    marginLeft: 10,
   },
   barcodeBox: {
+    marginTop: 20,
     marginBottom: 20,
     borderRadius: 20,
   },
   label: {
-    color: "#000000",
+    color: "#FFF",
     marginBottom: 10,
     marginTop: 10,
   },
+  valueForm: {
+    fontSize: 16,
+  },
   formBox: {
-    backgroundColor: "#D9D9D9",
-    borderRadius: 20,
+    backgroundColor: "#088395",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     padding: 10,
     marginTop: 10,
   },
@@ -228,7 +235,22 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "#B0D9B1",
+    backgroundColor: "#EEF5FF",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  formHasImage: {
+    width: "100%",
+    height: 100,
+    borderRadius: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: "#EEF5FF",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -236,13 +258,12 @@ const styles = StyleSheet.create({
 
   formCatatan: {
     width: "100%",
-    height: 120,
+    height: 100,
     borderRadius: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
+    padding: 10,
     marginTop: 10,
     marginBottom: 10,
-    backgroundColor: "#B0D9B1",
+    backgroundColor: "#EEF5FF",
   },
   formImage: {
     height: 80,
@@ -259,7 +280,7 @@ const styles = StyleSheet.create({
     height: 30,
   },
   dropdownToggle: {
-    backgroundColor: "#B0D9B1",
+    backgroundColor: "#EEF5FF",
     borderRadius: 20,
     height: 60,
     padding: 10,
@@ -292,7 +313,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flexDirection: "row",
-    backgroundColor: "#79AC78",
+    backgroundColor: "#EEF5FF",
     height: 50,
     width: 150,
     justifyContent: "center",
@@ -301,7 +322,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonText: {
-    color: "#D0E7D2",
+    color: "#092635",
     fontSize: 16,
   },
 });

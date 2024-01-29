@@ -57,7 +57,6 @@ export default function FormAbsen({ route }) {
   useEffect(() => {
     if (savedPhoto) {
       setImages([savedPhoto]); // Assuming savedPhoto.uri is the image URI
-      console.log(savedPhoto);
     }
   }, [savedPhoto]);
   let text = "Waiting..";
@@ -93,14 +92,11 @@ export default function FormAbsen({ route }) {
       );
 
       if (response.status === 201) {
-        // setIsSuccses(true);
-        // setShowAlert(!showAlert);
-        // setIsSuccses(response.data.message);
-        // navigation.navigate("Home");
         setLoading(false);
         setIsSuccess(true);
         setTimeout(() => {
           setIsSuccess(null);
+          navigation.navigate("Home");
         }, 4000);
       }
       console.log(response.data);

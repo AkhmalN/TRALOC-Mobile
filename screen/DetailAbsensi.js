@@ -3,15 +3,17 @@ import MapView, { Marker, Callout } from "react-native-maps";
 import React from "react";
 import { useRoute } from "@react-navigation/native";
 
-export default function DetailRiwayat() {
+export default function DetailAbsensi() {
   const route = useRoute();
-  const { detailData } = route.params;
+  const data = route.params?.data;
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           initialRegion={{
+            latitude: data.latitude,
+            longitude: data.longitude,
             latitudeDelta: 0.001, // This sets the zoom level
             longitudeDelta: 0.001, // This sets the zoom level
           }}
@@ -19,20 +21,28 @@ export default function DetailRiwayat() {
           <Marker
             key={1}
             coordinate={{
-              latitude: detailData.latitude,
-              longitude: detailData.longitude,
+              latitude: data.latitude,
+              longitude: data.longitude,
             }}
-            title="Parkiran Mobil Depan Loby"
+            title="Lokasi Anda"
           ></Marker>
         </MapView>
       </View>
       <View style={styles.bottomContent}>
+        <Text>Waktu : {data.createdAt}</Text>
         <Text>
-          Waktu : {new Date(detailData.createdAt).toLocaleDateString()}
+          Lokasi : {data.latitude}, {data.longitude}
         </Text>
-        <Text>Lokasi : {detailData.name}</Text>
-        <Text>Status : {detailData.status}</Text>
-        <TextInput value={detailData.notes} editable={false} />
+        <Text>Status : Absen Masuk</Text>
+        <Image
+          source={{
+            uri: `http://192.168.141.180:8083/uploads/${data.image.replace(
+              "public\\uploads\\",
+              ""
+            )}`,
+          }}
+          style={{ width: 100, height: 100 }}
+        />
       </View>
     </View>
   );

@@ -4,16 +4,19 @@ import { View, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
   ScrollView,
-  TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { getUserAbsen } from "../api/absensi";
+import { DateFormat } from "../utils/DateFormat";
+import { imageUrl } from "../api/apiConfig";
 
 const Absensi = () => {
   const [absensiData, setAbsensiData] = useState([]);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(null);
   const navigation = useNavigation();
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     AsyncStorage.getItem("userId")
@@ -26,23 +29,20 @@ const Absensi = () => {
   }, []);
 
   const getAbsensiData = async () => {
+    setIsLoading(true);
     try {
-      await axios
-        .get(`http://192.168.100.123:8083/api/v1/absensi/`)
-        .then((response) => {
-          if (response.status === 201) {
-            setAbsensiData(response.data);
-          }
-        })
-        .catch((error) => {
-          console.error("Gagal mengambil data patroli:", error);
-        });
-    } catch (error) {}
+      const absenData = await getUserAbsen(userId);
+      setAbsensiData(absenData);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     getAbsensiData();
-  }, []);
+  }, [userId]);
 
   const handleDetail = (data) => {
     navigation.navigate("DetailAbsensi", { data: data });
@@ -50,49 +50,45 @@ const Absensi = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.headerTitle}>Laporan Absensi</Text>
-      {absensiData.length > 0 ? (
-        <View style={styles.containerCard}>
-          {absensiData.map((data, index) => {
-            return (
-              <TouchableWithoutFeedback
-                onPress={() => handleDetail(data)}
-                key={index}
-                style={styles.card}
-              >
-                <View style={styles.cardActivity}>
-                  <View style={styles.containerImage}>
-                    <Image
-                      source={{
-                        uri: `http://192.168.100.123:8083/uploads/${data.image.replace(
-                          "public\\uploads\\",
-                          ""
-                        )}`,
-                      }}
-                      style={{ width: 90, height: 80, borderRadius: 10 }}
-                    />
-                  </View>
-                  <View style={styles.containerText}>
-                    <Text style={styles.title}>
-                      {data.latitude},{data.longitude}
-                    </Text>
-                    <Text>
-                      Waktu : {new Date(data.createdAt).toLocaleDateString()}
-                    </Text>
-                    <Text>
-                      Coordinate : {data.latitude} {data.longitude}
-                    </Text>
-                    <Text>Status : Absen Masuk</Text>
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            );
-          })}
-        </View>
-      ) : (
+      <Text style={styles.headerTitle}>Riwayat absensi</Text>
+      {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#088395" />
         </View>
+      ) : absensiData && absensiData.length > 0 ? (
+        absensiData.map((data, index) => (
+          <View style={styles.containerCard} key={index}>
+            <TouchableWithoutFeedback
+              onPress={() => handleDetail(data)}
+              style={styles.card}
+            >
+              <View style={styles.cardActivity}>
+                <View style={styles.containerImage}>
+                  <Image
+                    source={{
+                      uri: `${imageUrl}/absensi/${data.image.replace(
+                        "public\\absensi\\",
+                        ""
+                      )}`,
+                    }}
+                    style={{ width: 90, height: 80, borderRadius: 10 }}
+                  />
+                </View>
+                <View style={styles.containerText}>
+                  <Text style={{ fontSize: 16 }}>
+                    Waktu : {DateFormat(data.createdAt)}
+                  </Text>
+                  <Text style={{ fontSize: 16 }}>
+                    Coordinate : {data.latitude} {data.longitude}
+                  </Text>
+                  <Text style={{ fontSize: 16 }}>Status : Absen Masuk</Text>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        ))
+      ) : (
+        <Text>{error}</Text>
       )}
     </ScrollView>
   );
@@ -110,16 +106,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginRight: 10,
   },
-  containerCard: {
-    padding: 5,
-  },
+
   containerImage: {
     marginRight: 10,
     marginLeft: 5,
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 22,
     textAlign: "center",
+    color: "#088395",
   },
   card: {
     backgroundColor: "#fff",
@@ -135,7 +130,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
   },
-  flexCard: {},
+  containerCard: {
+    flexDirection: "column",
+    padding: 5,
+  },
+  containerText: {
+    flexDirection: "column",
+    justifyContent: "center",
+  },
   cardActivity: {
     flexDirection: "row",
     marginTop: 10,
@@ -145,7 +147,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   loadingContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },

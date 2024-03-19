@@ -6,6 +6,8 @@ import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { Notifikasi } from "../components/Notifikasi";
+import { baseUrl } from "../api/apiConfig";
 
 export default function FormAbsen({ route }) {
   const [location, setLocation] = useState(null);
@@ -18,8 +20,13 @@ export default function FormAbsen({ route }) {
   const [images, setImages] = useState("");
   const [loading, setLoading] = useState(null);
   const [isSuccess, setIsSuccess] = useState(null);
+  const [notifikasiVisible, setNotifikasiVisible] = useState(false);
 
   const navigation = useNavigation();
+
+  const hideNotifikasi = () => {
+    setNotifikasiVisible(false);
+  };
 
   useEffect(() => {
     // Ambil username dari AsyncStorage saat komponen di-mount
@@ -81,39 +88,36 @@ export default function FormAbsen({ route }) {
         name: "photo.jpg",
       });
 
-      const response = await axios.post(
-        "http://192.168.100.123:8083/api/v1/absensi/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(`${baseUrl}/absensi/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 201) {
         setLoading(false);
         setIsSuccess(true);
+        setNotifikasiVisible(true);
         setTimeout(() => {
-          setIsSuccess(null);
+          setNotifikasiVisible(false);
           navigation.navigate("Home");
-        }, 4000);
+        }, 5000);
       }
       console.log(response.data);
     } catch (error) {
       setLoading(false);
+      console.log(error);
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
-        {isSuccess !== null && (
-          <View style={isSuccess ? styles.alertSuccess : styles.alertError}>
-            <Text style={styles.alertText}>
-              {isSuccess ? "Berhasil Mengirim Absen" : "Gagal Mengirim Absen"}
-            </Text>
-          </View>
+        {isSuccess && notifikasiVisible && (
+          <Notifikasi
+            message={"Berhasil mengirim absensi"}
+            hideModal={hideNotifikasi}
+          />
         )}
         {location ? (
           <MapView
@@ -174,6 +178,7 @@ export default function FormAbsen({ route }) {
               <ActivityIndicator
                 size={"small"}
                 style={{ marginLeft: 10, marginRight: 10 }}
+                color={"#FFF"}
               />
             </>
           ) : (

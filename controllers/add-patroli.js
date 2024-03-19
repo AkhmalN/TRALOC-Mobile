@@ -5,60 +5,85 @@ import {
   TouchableOpacity,
   Button,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import {
+  ScrollView,
+  TextInput,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
+import { LocationScanner } from "../utils/LocationScanner";
+import {
+  askForCameraPermission,
+  renderPermissionMessage,
+} from "../permission/CameraPermission";
+import { addPatroli } from "../api/patroli";
+import { Notifikasi } from "../components/Notifikasi";
 
 export default function Patroli({ route }) {
   const navigation = useNavigation();
   const { savedPhoto } = route ? route.params || {} : {};
-  const [hasPersmission, setHasPermission] = useState(null);
-  const [scanedData, setScannedData] = useState(false);
-  const [scannedLatitude, setScannedLatitude] = useState();
-  const [scannedLongitude, setScannedLongitude] = useState();
-  const [scannedLabel, setScannedLabel] = useState();
+  const [hasPermission, setHasPermission] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [scanedData, setScannedData] = useState(false);
   const [items, setItems] = useState([
     "Aman",
     "Demonstrasi",
     "Kebakaran",
     "Pencurian",
   ]);
-
-  const askForCameraPermission = () => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  };
+  const [username, setUsername] = useState("");
+  const [userId, setUserId] = useState("");
+  const [notes, setNotes] = useState("");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [scannedLatitude, setScannedLatitude] = useState();
+  const [scannedLongitude, setScannedLongitude] = useState();
+  const [scannedLabel, setScannedLabel] = useState();
+  const [images, setImages] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setIsSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [notifikasiVisible, setNotifikasiVisible] = useState(false);
 
   useEffect(() => {
-    askForCameraPermission();
+    if (savedPhoto) {
+      setImages([savedPhoto]);
+    }
+  }, [savedPhoto]);
+
+  useEffect(() => {
+    AsyncStorage.getItem("userId")
+      .then((ID) => {
+        if (ID) {
+          setUserId(ID);
+        }
+      })
+      .catch((error) => {});
+    AsyncStorage.getItem("username")
+      .then((value) => {
+        if (value) {
+          setUsername(value);
+        }
+      })
+      .catch((error) => {});
   }, []);
 
-  if (hasPersmission === null) {
-    return (
-      <View style={styles.container}>
-        <Text>Aplikasi Menunggu Persetujuan Akses Kamera</Text>
-      </View>
-    );
-  }
-
-  if (hasPersmission === false) {
-    return (
-      <View style={styles.container}>
-        <Text>Aplikasi Tidak Mendapat Akses Kamera</Text>
-        <Button
-          title={"Setujui Akses"}
-          onPress={() => askForCameraPermission()}
-        />
-      </View>
-    );
-  }
+  useEffect(() => {
+    const requestCameraPermission = async () => {
+      const permissionStatus = await askForCameraPermission();
+      setHasPermission(permissionStatus);
+    };
+    requestCameraPermission();
+  }, []);
+  const handleRequestCameraPermission = async () => {
+    const permissionStatus = await askForCameraPermission();
+    setHasPermission(permissionStatus);
+  };
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -68,131 +93,176 @@ export default function Patroli({ route }) {
     setDropdownVisible(false);
   };
 
-  const handleBarCodeScanner = ({ type, data }) => {
-    setScannedData(true);
-    console.log(`Type = ${type}`);
-    const coordinatesMatch = data.match(/-?\d+\.\d+/g);
-    if (coordinatesMatch && coordinatesMatch.length >= 2) {
-      const latitude = parseFloat(coordinatesMatch[0]);
-      setScannedLatitude(latitude);
-      const longitude = parseFloat(coordinatesMatch[1]);
-      setScannedLongitude(longitude);
-      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-    } else {
-      console.log("Koordinat geografis tidak ditemukan.");
-    }
+  const hideNotifikasi = () => {
+    setNotifikasiVisible(false);
+  };
 
-    // Ekstrak string kueri (query)
-    const queryMatch = data.match(/\?q=(.*)/);
-    if (queryMatch && queryMatch.length > 1) {
-      const query = decodeURIComponent(queryMatch[1]);
-      setScannedLabel(query);
-      console.log(`Label: ${query}`);
-    } else {
-      console.log("String kueri tidak ditemukan.");
+  const handleBarCodeScanner = ({ data }) => {
+    LocationScanner({
+      data,
+      setScannedData,
+      setScannedLatitude,
+      setScannedLongitude,
+      setScannedLabel,
+    });
+  };
+  const handleOnSubmit = async () => {
+    setLoading(true);
+    try {
+      const response = await addPatroli({
+        userId,
+        username,
+        scannedLabel,
+        selectedItem,
+        notes,
+        scannedLatitude,
+        scannedLongitude,
+        savedPhoto,
+      });
+      if (response) {
+        setLoading(false);
+        setIsSuccess(true);
+        setNotifikasiVisible(true);
+        setTimeout(() => {
+          setNotifikasiVisible(false);
+        }, 5000);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error);
     }
   };
 
   return (
     <ScrollView style={styles.container}>
+      {renderPermissionMessage(hasPermission, handleRequestCameraPermission)}
+      {success && notifikasiVisible && (
+        <Notifikasi
+          message={"Berhasil mengirim patroli"}
+          hideModal={hideNotifikasi}
+        />
+      )}
+
       <View style={styles.barcodeBox}>
         <BarCodeScanner
           onBarCodeScanned={scanedData ? undefined : handleBarCodeScanner}
           style={{
             flex: 1,
-            alignSelf: "center", // Align the scanner horizontally center
-            justifyContent: "center", // Center the content vertically
-            height: 600, // Adjust the height as needed
-            width: 600, // Adjust the width as needed
+            alignSelf: "center",
+            justifyContent: "center",
+            height: 400,
+            width: 400,
           }}
         />
+        <Text style={styles.overlayBarcode}>Dekatkan camera ke barcode</Text>
       </View>
       {scanedData && (
-        <Button
-          title={"Scan Ulang ?"}
-          onPress={() => setScannedData(false)}
-          color={"tomato"}
-        />
+        <View
+          style={{
+            width: "50%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            title={"Scan Ulang ?"}
+            onPress={() => setScannedData(false)}
+            color={"#cf352e"}
+          />
+        </View>
       )}
       <View style={styles.formBox}>
-        <Text style={styles.label}>Lokasi</Text>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Ionicons name="remove-outline" color={"#FFF"} size={50} />
+        </View>
+        <View style={{ padding: 10 }}>
+          <Text style={styles.label}>Lokasi</Text>
 
-        <TouchableOpacity style={styles.formInput}>
-          <View style={{ width: "100%" }}>
-            {scannedLatitude !== undefined &&
-            scannedLongitude !== undefined &&
-            scannedLabel !== undefined ? (
-              <Text style={styles.valueForm}>
-                {scannedLatitude} {scannedLongitude} ({scannedLabel})
-              </Text>
-            ) : (
-              <Text>Scan Barcode Pada Pos</Text>
+          <TouchableWithoutFeedback style={styles.formInput}>
+            <View style={{ width: "100%" }}>
+              {scannedLatitude !== undefined &&
+              scannedLongitude !== undefined &&
+              scannedLabel !== undefined ? (
+                <Text style={styles.valueForm}>{scannedLabel}</Text>
+              ) : (
+                <Text style={{ fontSize: 18 }}>Scan Barcode Pada Pos</Text>
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+          <Text style={styles.label}>Status</Text>
+          <View style={styles.containerDropdown}>
+            <TouchableOpacity onPress={toggleDropdown}>
+              <View style={styles.dropdownToggle}>
+                <View style={{ width: "80%" }}>
+                  <Text style={styles.valueForm}>
+                    {selectedItem || "Pilih status"}
+                  </Text>
+                </View>
+                <View>
+                  <Image
+                    source={require("../assets/icon/Expand_down.png")}
+                    style={styles.docIcon}
+                  />
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            {dropdownVisible && (
+              <View style={styles.dropdown}>
+                {items.map((item) => (
+                  <TouchableOpacity key={item} onPress={() => selectItem(item)}>
+                    <Text style={styles.dropdownItem}>{item}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             )}
           </View>
-        </TouchableOpacity>
-        <Text style={styles.label}>Status</Text>
-        <View style={styles.containerDropdown}>
-          <TouchableOpacity onPress={toggleDropdown}>
-            <View style={styles.dropdownToggle}>
-              <View style={{ width: "80%" }}>
-                <Text style={styles.valueForm}>
-                  {selectedItem || "Select an item"}
-                </Text>
-              </View>
-              <View>
+          <Text style={styles.label}>Catatan</Text>
+          <TextInput
+            placeholder="Masukkan Catatan"
+            style={styles.formCatatan}
+            maxLength={200}
+            multiline={true}
+            onChangeText={(text) => setNotes(text)}
+          />
+          <Text style={styles.label}>Masukkan Gambar (Min 1)</Text>
+          <TouchableOpacity
+            style={savedPhoto ? styles.formHasImage : styles.formInput}
+            onPress={() => navigation.navigate("PatrolCamera")}
+          >
+            <View>
+              {savedPhoto && (
                 <Image
-                  source={require("../assets/icon/Expand_down.png")}
-                  style={styles.docIcon}
+                  source={{ uri: savedPhoto.uri }}
+                  style={{ width: 100, height: 70, borderRadius: 10 }}
                 />
-              </View>
+              )}
+            </View>
+            <View>
+              <Image
+                source={require("../assets/icon/Camera.png")}
+                style={styles.docIcon}
+              />
             </View>
           </TouchableOpacity>
-
-          {dropdownVisible && (
-            <View style={styles.dropdown}>
-              {items.map((item) => (
-                <TouchableOpacity key={item} onPress={() => selectItem(item)}>
-                  <Text style={styles.dropdownItem}>{item}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
         </View>
-        <Text style={styles.label}>Catatan</Text>
-        <TextInput
-          placeholder="Masukkan Catatan"
-          style={styles.formCatatan}
-          maxLength={200}
-          multiline={true}
-        />
-        <Text style={styles.label}>Masukkan Gambar (Min 1)</Text>
-        <TouchableOpacity
-          style={savedPhoto ? styles.formHasImage : styles.formInput}
-          onPress={() => navigation.navigate("PatrolCamera")}
-        >
-          <View>
-            {savedPhoto && (
-              <Image
-                source={{ uri: savedPhoto.uri }}
-                style={{ width: 100, height: 90, borderRadius: 20 }}
-              />
+        <View style={{ alignItems: "flex-end", marginRight: 20 }}>
+          <TouchableOpacity style={styles.button} onPress={handleOnSubmit}>
+            {loading ? (
+              <>
+                <Text>Mengirim</Text>
+                <ActivityIndicator size={20} color={"#088395"} />
+              </>
+            ) : (
+              <>
+                <Text style={styles.buttonText}>Kirim Patroli</Text>
+                <Ionicons
+                  name="paper-plane-outline"
+                  size={25}
+                  style={styles.icon}
+                />
+              </>
             )}
-          </View>
-          <View>
-            <Image
-              source={require("../assets/icon/Camera.png")}
-              style={styles.docIcon}
-            />
-          </View>
-        </TouchableOpacity>
-        <View style={{ alignItems: "flex-end" }}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Kirim Patroli</Text>
-            <Ionicons
-              name="paper-plane-outline"
-              size={25}
-              style={styles.icon}
-            />
           </TouchableOpacity>
         </View>
       </View>
@@ -207,24 +277,64 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: 10,
   },
+  alertSuccess: {
+    position: "absolute",
+    backgroundColor: "#088395",
+    padding: 10,
+    borderRadius: 10,
+    zIndex: 2,
+    alignSelf: "center",
+    marginTop: 10,
+  },
+  alertError: {
+    position: "absolute",
+    backgroundColor: "red",
+    zIndex: 1,
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  alertText: {
+    fontSize: 19,
+    color: "#FFF",
+  },
   barcodeBox: {
+    position: "relative",
     marginTop: 20,
     marginBottom: 20,
     borderRadius: 20,
+  },
+  overlayBarcode: {
+    position: "absolute",
+    top: "10%",
+    left: "50%",
+    transform: [{ translateX: -25 }, { translateY: -25 }],
+    color: "white",
+    backgroundColor: "red",
+    padding: 5,
+    borderRadius: 5,
   },
   label: {
     color: "#FFF",
     marginBottom: 10,
     marginTop: 10,
+    fontSize: 18,
   },
   valueForm: {
-    fontSize: 16,
+    fontSize: 18,
   },
   formBox: {
     backgroundColor: "#088395",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 10,
     marginTop: 10,
   },
   formInput: {
@@ -242,7 +352,7 @@ const styles = StyleSheet.create({
   },
   formHasImage: {
     width: "100%",
-    height: 100,
+    height: 80,
     borderRadius: 20,
     paddingTop: 10,
     paddingBottom: 10,
@@ -258,12 +368,13 @@ const styles = StyleSheet.create({
 
   formCatatan: {
     width: "100%",
-    height: 100,
+    height: 120,
     borderRadius: 20,
-    padding: 10,
+    padding: 20,
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: "#EEF5FF",
+    fontSize: 18,
   },
   formImage: {
     height: 80,

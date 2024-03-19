@@ -1,253 +1,158 @@
-import { View, Text, Image, StyleSheet, ImageBackground } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Footer from "../components/Footer";
+import { DateFormat } from "../utils/DateFormat";
+import KodeSos from "../components/KodeSos";
+import AbsenMasuk from "../components/AbsenMasuk";
+import AbsenKeluar from "../components/AbsenKeluar";
+import Patroli from "../components/Patroli";
+import Aktivitas from "../components/Aktivitas";
+import CountAbsensi from "../components/CountAbsensi";
+import CountPatrol from "../components/CountPatrol";
+import CountActivity from "../components/CountActivity";
+import axios from "axios";
+import { getUserPatroli } from "../api/patroli";
+import { getUserAbsenLength } from "../api/absensi";
 import { Ionicons } from "@expo/vector-icons";
-import { BackgroundImage } from "@rneui/base";
 
-const Home = (props) => {
+const Home = () => {
   const [username, setUsername] = useState("");
-  const navigation = useNavigation();
+  const [userId, setUserId] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [valueAbsensi, setValueAbsensi] = useState(0);
+  const [valuePatroli, setValuePatroli] = useState(0);
+  const [valueAktivitas, setValueAktivitas] = useState(0);
+
+  const currentDate = new Date();
 
   useEffect(() => {
-    // Ambil username dari AsyncStorage saat komponen di-mount
     AsyncStorage.getItem("username")
-      .then((value) => {
-        if (value) {
-          setUsername(value);
-        }
+      .then((NAME) => {
+        setUsername(NAME);
       })
       .catch((error) => {
-        console.log(error);
+        throw new Error(error);
+      });
+    AsyncStorage.getItem("userId")
+      .then((ID) => {
+        setUserId(ID);
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   }, []);
 
+  const getCountAttendance = async () => {
+    setLoading(true);
+    try {
+      const response = await getUserAbsenLength(userId);
+      setValueAbsensi(response.length);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getCountAttendance();
+  }, [userId]);
+
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require("../assets/BG.jpg")}
-        style={styles.profile}
+    <ScrollView>
+      <LinearGradient
+        colors={["#ffffff", "#088395"]}
+        style={styles.banner}
+        start={[0, 0]}
+        end={[0, 1]}
+        angle={45}
       >
-        <Image source={require("../assets/person.jpg")} style={styles.avatar} />
         <View style={styles.userInfo}>
-          <Text style={styles.nameText}>{username}</Text>
-          <View style={styles.roleContainer}>
-            <Ionicons name="man-outline" style={styles.roleIcon} size={18} />
-            <Text style={styles.jobtext}>Security</Text>
+          <View>
+            <Text style={styles.textDate}>{DateFormat(currentDate)}</Text>
+            <Text style={styles.helloText}>Selamat Datang, {username}</Text>
+          </View>
+          <View>
+            <Ionicons name="reload-circle-outline" size={30} />
           </View>
         </View>
-      </ImageBackground>
-      <View style={styles.sectionAtensi}>
-        <Text>Tidak ada atensi yang ditampilkan</Text>
-      </View>
+
+        <View style={styles.sectionAtensi}>
+          <Text style={styles.textStyleAtensi}>
+            Tidak ada atensi yang ditampilkan!
+          </Text>
+        </View>
+
+        <View style={styles.fragment}>
+          <CountAbsensi isLoading={loading} value={valueAbsensi} />
+          <CountPatrol />
+          <CountActivity />
+        </View>
+      </LinearGradient>
+
       <View style={styles.featureContent}>
-        <TouchableOpacity
-          style={styles.cardContainer}
-          onPress={() =>
-            navigation.navigate("AbsenCamera", { absenType: "masuk" })
-          }
-        >
-          <View style={styles.iconMenu}>
-            <Ionicons
-              name="arrow-forward-circle-outline"
-              size={35}
-              color={"#088395"}
-            />
-          </View>
-          <View style={styles.cardTitle}>
-            <Text style={styles.cardTextInd}>Absen Masuk</Text>
-            <Text style={styles.cardTextEng}>Absen Masuk | Time In</Text>
-          </View>
-          <View style={styles.iconRight}>
-            <Ionicons
-              name="chevron-forward-outline"
-              size={30}
-              color={"#088395"}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.cardContainer}
-          onPress={() =>
-            navigation.navigate("AbsenCamera", { absenType: "keluar" })
-          }
-        >
-          <View style={styles.iconMenu}>
-            <Ionicons
-              name="arrow-back-circle-outline"
-              size={35}
-              color={"#088395"}
-            />
-          </View>
-          <View style={styles.cardTitle}>
-            <Text style={styles.cardTextInd}>Absen Keluar </Text>
-            <Text style={styles.cardTextEng}>Absen Keluar | Time Out</Text>
-          </View>
-          <View style={styles.iconRight}>
-            <Ionicons
-              name="chevron-forward-outline"
-              size={30}
-              color={"#088395"}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.cardContainer}
-          onPress={() => props.navigation.navigate("Patroli")}
-        >
-          <View style={styles.iconMenu}>
-            <Ionicons name="walk-outline" size={35} color={"#088395"} />
-          </View>
-          <View style={styles.cardTitle}>
-            <Text style={styles.cardTextInd}>Buat Patroli</Text>
-            <Text style={styles.cardTextEng}>
-              Buat Laporan Patroli | Create Patrol Report
-            </Text>
-          </View>
-          <View style={styles.iconRight}>
-            <Ionicons
-              name="chevron-forward-outline"
-              size={30}
-              color={"#088395"}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.cardContainer}
-          onPress={() => props.navigation.navigate("Aktivitas")}
-        >
-          <View style={styles.iconMenu}>
-            <Ionicons name="reader-outline" size={35} color={"#088395"} />
-          </View>
-          <View style={styles.cardTitle}>
-            <Text style={styles.cardTextInd}>Buat Aktivitas</Text>
-            <Text style={styles.cardTextEng}>
-              Buat Laporan Aktivitas | Create Activity Report
-            </Text>
-          </View>
-          <View style={styles.iconRight}>
-            <Ionicons
-              name="chevron-forward-outline"
-              size={30}
-              color={"#088395"}
-            />
-          </View>
-        </TouchableOpacity>
+        <KodeSos />
+        <AbsenMasuk />
+        <AbsenKeluar />
+        <Patroli />
+        <Aktivitas />
       </View>
-      <StatusBar style="#91C8E4" />
-    </View>
+      <Footer />
+    </ScrollView>
   );
 };
-export default Home;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#F5F5F5",
-  },
-
-  profile: {
-    flexDirection: "row",
-    marginBottom: 20,
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "#96EFFF", // You can set a background color with some transparency
-    borderBottomLeftRadius: 20, // Adjust the border radius as needed
-    borderBottomRightRadius: 20, // Adjust the border radius as needed
-    borderBottomColor: "#ccc",
-    overflow: "hidden",
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
+  banner: {
+    width: "100%",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    marginBottom: 50,
+    height: "30%",
   },
 
   userInfo: {
-    flexDirection: "column",
-  },
-  nameText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    backgroundColor: "#088395",
-    color: "#FFF",
-    textAlign: "center",
-    borderRadius: 20,
-    alignItems: "center",
-    paddingBottom: 2,
-    paddingLeft: 5,
-    paddingRight: 5,
-  },
-  roleContainer: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 5,
+    marginBottom: 10,
+    marginTop: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
-  roleIcon: {
-    marginRight: 5,
-    color: "#FFF",
-  },
-  jobtext: {
+  textDate: {
     fontSize: 16,
-    color: "#FFF", // You can change the text color as needed
+    fontWeight: "bold",
+    color: "grey",
+  },
+  helloText: {
+    fontSize: 25,
+  },
+  fragment: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   sectionAtensi: {
-    marginLeft: 7,
-    marginRight: 7,
-    marginBottom: 20,
+    marginVertical: 10,
+    marginHorizontal: 10,
     height: 100,
-    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#FFF",
+    borderRadius: 20,
   },
   featureContent: {
     paddingLeft: 7,
     paddingRight: 7,
+    margin: 10,
   },
   textStyleAtensi: {
     textAlign: "center",
-  },
-  cardContainer: {
-    flexDirection: "row",
-    marginBottom: 10,
-    borderRadius: 20,
-    padding: 10,
-    height: 80,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#088395",
-  },
-  iconMenu: {
-    width: "10%",
-    marginRight: 10,
-  },
-  cardTitle: {
-    width: "80%",
-    borderRadius: 20,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  iconRight: {
-    width: "10%",
-    marginRight: 10,
-  },
-  sectionProfile: {
-    padding: 10,
-    flexDirection: "row",
-    height: 100,
-  },
-  professionProfile: {
-    fontSize: 13,
-  },
-  cardTextInd: {
-    fontSize: 18,
-    color: "#088395",
-  },
-  cardTextEng: {
-    color: "#088395",
+    fontSize: 16,
+    color: "#344955",
   },
 });
+
+export default Home;

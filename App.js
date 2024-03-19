@@ -13,9 +13,10 @@ import Barcode from "./services/Barcode";
 import DetailAbsensi from "./screen/DetailAbsensi";
 import Aktivitas from "./screen/Aktivitas";
 import ActivityCamera from "./services/ActivityCamera";
+import DetailPatroli from "./screen/DetailPatroli";
 const Stack = createStackNavigator();
 
-export default function App() {
+function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
@@ -59,6 +60,13 @@ export default function App() {
           component={DetailAbsensi}
           options={{
             headerTitle: "Detail Absensi",
+          }}
+        />
+        <Stack.Screen
+          name="DetailPatroli"
+          component={DetailPatroli}
+          options={{
+            headerTitle: "Detail Patroli",
           }}
         />
         <Stack.Screen
@@ -108,3 +116,4 @@ export default function App() {
     </NavigationContainer>
   );
 }
+export default App;

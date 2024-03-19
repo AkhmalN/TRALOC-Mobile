@@ -4,11 +4,10 @@
     "slug": "unaspatrol",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon/LOGOICON.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover"
+      "image": "./assets/LOGO.png"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -16,7 +15,8 @@
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
         "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos"
-      }
+      },
+      "bundleIdentifier": "com.akhmaln.unaspatrol"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,17 +24,16 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
+        "CAMERA",
+        "LOCATION",
         "android.permission.RECORD_AUDIO",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
-        "CAMERA",
-        "LOCATION",
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
-        "INTERNET"
+        "INTERNET",
+        "android.permission.CAMERA"
       ],
       "package": "com.akhmaln.unaspatrol"
     },
@@ -45,7 +44,8 @@
       "expo-router",
       "expo-camera",
       "expo-media-library",
-      "expo-location"
+      "expo-location",
+      "expo-notifications"
     ],
     "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera.",
     "savePhotosPermission": "Allow $(PRODUCT_NAME) to save your photos",
@@ -60,7 +60,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "cbe9bc11-c4e2-4e82-bd3c-370703b46607"
+        "projectId": "2e68cc1e-ba07-4332-8b0c-430523de5d53"
       }
     }
   }

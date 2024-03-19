@@ -1,13 +1,27 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { Camera } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import { DateFormat } from "../utils/DateFormat";
+import { TimeFormat } from "../utils/TimeFormat";
+import { FontAwesome } from "@expo/vector-icons";
+import MapView, { Marker } from "react-native-maps";
+import { getCurrentLocation } from "../utils/CurentLocation";
 
 export default function AbsenCamera() {
   const absenRoute = useRoute();
@@ -17,6 +31,40 @@ export default function AbsenCamera() {
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.front);
   const [photo, setPhoto] = useState();
+  const [username, setUsername] = useState([]);
+  const [userId, setUserId] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    AsyncStorage.getItem("username")
+      .then((value) => {
+        if (value) {
+          setUsername(value);
+        }
+      })
+      .catch((error) => {});
+    AsyncStorage.getItem("userId")
+      .then((ID) => {
+        if (ID) {
+          setUserId(ID);
+        }
+      })
+      .catch((error) => {});
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const currentLocation = await getCurrentLocation();
+        setLocation(currentLocation);
+      } catch (error) {
+        console.error("Gagal mendapatkan koordinat", error);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -47,59 +95,14 @@ export default function AbsenCamera() {
 
     let newPhoto = await cameraRef.current.takePictureAsync(options);
     setPhoto(newPhoto);
+    console.log(photo);
   };
   if (photo) {
-    let sharePic = () => {
-      shareAsync(photo.uri).then(() => {
-        setPhoto(undefined);
-      });
-    };
-
-    let savePhoto = () => {
-      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-        const absenType = absenRoute.params?.absenType;
-        console.log(absenType);
-        navigation.navigate(
-          absenType === "masuk" ? "AbsenMasuk" : "AbsenKeluar",
-          { savedPhoto: photo }
-        );
-        setPhoto(undefined);
-      });
-    };
-
-    return (
-      <SafeAreaView style={styles.container}>
-        <Image style={styles.preview} source={{ uri: photo.uri }} />
-        <View style={styles.actionCam}>
-          <TouchableOpacity onPress={sharePic} style={styles.buttonAction}>
-            <Text style={styles.buttonText}>Share</Text>
-            <Image
-              source={require("../assets/icon/Send.png")}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-          {hasMediaLibraryPermission ? (
-            <TouchableOpacity onPress={savePhoto} style={styles.buttonAction}>
-              <Text style={styles.buttonText}>Save</Text>
-              <Image
-                source={require("../assets/icon/Arhive_load.png")}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          ) : undefined}
-          <TouchableOpacity
-            onPress={() => setPhoto(undefined)}
-            style={styles.buttonAction}
-          >
-            <Text style={styles.buttonText}>Discard</Text>
-            <Image
-              source={require("../assets/icon/Cancel.png")}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    );
+    const absenType = absenRoute.params?.absenType;
+    navigation.navigate(absenType === "masuk" ? "AbsenMasuk" : "AbsenKeluar", {
+      savedPhoto: photo,
+    });
+    setPhoto(undefined);
   }
   const toggleCameraType = () => {
     setCameraType(
@@ -111,24 +114,74 @@ export default function AbsenCamera() {
   return (
     <Camera style={styles.container} type={cameraType} ref={cameraRef}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={takePic} style={styles.button}>
-          <Text style={styles.buttonText}>
-            <Ionicons name="radio-button-on-outline" size={60} />
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={toggleCameraType} style={styles.button}>
-          <Text style={styles.buttonText}>
-            {cameraType === Camera.Constants.Type.front ? (
-              <Ionicons name="reload-outline" size={50} />
-            ) : (
-              <Ionicons
-                name="reload-outline"
-                size={50}
-                style={{ transform: [{ rotate: "180deg" }] }}
-              />
-            )}
-          </Text>
-        </TouchableOpacity>
+        {absenRoute.params && absenRoute.params.absenType === "masuk" && (
+          <View style={styles.flexOverlay}>
+            <View style={styles.locationContainer}>
+              <View>
+                {location ? (
+                  <View>
+                    <Text style={{ fontSize: 18, color: "#FFF" }}>
+                      <Text>Koordinat :</Text>
+                      {location.latitude}, {location.longitude}
+                    </Text>
+                  </View>
+                ) : (
+                  <ActivityIndicator />
+                )}
+              </View>
+              <Text style={{ fontSize: 18, color: "#FFF" }}>
+                Date : {DateFormat(new Date())}
+              </Text>
+              <Text style={{ fontSize: 18, color: "#FFF" }}>
+                Time : {TimeFormat(new Date())}
+              </Text>
+            </View>
+            {/* <View style={styles.mapContainer}>
+              <MapView
+                style={styles.map}
+                region={{
+                  latitude: latitude,
+                  longitude: longitude,
+                  latitudeDelta: 0.1,
+                  longitudeDelta: 0.1,
+                }}
+              >
+                <Marker
+                  coordinate={{
+                    latitude: latitude,
+                    longitude: longitude,
+                  }}
+                  title="Lokasi Anda"
+                  anchor={{ x: 0.5, y: 0.5 }} // Memusatkan marker di tengah
+                >
+                  <FontAwesome name="map-marker" size={40} color="red" />
+                </Marker>
+              </MapView>
+            </View> */}
+          </View>
+        )}
+
+        <View style={styles.buttonFlex}>
+          <TouchableOpacity onPress={takePic} style={styles.button}>
+            <Text style={styles.buttonText}>
+              <Ionicons name="radio-button-on-outline" size={80} />
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={toggleCameraType} style={styles.button}>
+            <Text style={styles.buttonText}>
+              {cameraType === Camera.Constants.Type.front ? (
+                <Ionicons name="reload-outline" size={70} />
+              ) : (
+                <Ionicons
+                  name="reload-outline"
+                  size={70}
+                  style={{ transform: [{ rotate: "180deg" }] }}
+                />
+              )}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <StatusBar style="auto" />
     </Camera>
@@ -140,16 +193,45 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 10,
+  },
+  flexOverlay: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  locationContainer: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    borderWidth: 1,
+    borderRadius: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black background
+    padding: 5,
+  },
+  mapContainer: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+  },
+  map: {
+    flex: 1,
+  },
   buttonContainer: {
     position: "absolute",
     bottom: 20,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     width: "100%",
-    paddingHorizontal: 40,
+  },
+  buttonFlex: {
+    flexDirection: "row",
+    justifyContent: "center",
   },
   button: {
-    backgroundColor: "#088395",
     padding: 15,
     borderRadius: 10,
     justifyContent: "center",
@@ -157,10 +239,7 @@ const styles = StyleSheet.create({
     flex: 0.4, // Sesuaikan lebar tombol
     margin: 10,
   },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-  },
+
   actionCam: {
     flexDirection: "row",
     height: 80,

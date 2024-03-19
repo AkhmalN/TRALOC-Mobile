@@ -12,7 +12,7 @@ import { useRoute } from "@react-navigation/native";
 import { DateFormat } from "../utils/DateFormat";
 import { imageUrl } from "../api/apiConfig";
 
-export default function DetailAbsensi() {
+export default function DetailPatroli() {
   const route = useRoute();
   const data = route.params?.data;
   return (
@@ -39,20 +39,18 @@ export default function DetailAbsensi() {
       </View>
       <View style={styles.bottomContent}>
         <View style={styles.textContent}>
-          <Text style={{ fontSize: 18 }}>Username : {data.username}</Text>
+          <Text style={{ fontSize: 18 }}>{data.location}</Text>
           <Text style={{ fontSize: 18 }}>
             Waktu : {DateFormat(data.createdAt)}
           </Text>
-          <Text style={{ fontSize: 18 }}>
-            Koordinat : {data.latitude}, {data.longitude}
-          </Text>
-          <Text style={{ fontSize: 18 }}>Keterangan : Absen Masuk</Text>
+          <Text style={{ fontSize: 18 }}>Status : {data.status}</Text>
+          <Text style={{ fontSize: 18 }}>Catatan : {data.notes}</Text>
         </View>
         <View style={styles.imageContent}>
           <Image
             source={{
-              uri: `${imageUrl}/absensi/${data.image.replace(
-                "public\\absensi\\",
+              uri: `${imageUrl}/patroli/${data.image.replace(
+                "public\\patroli\\",
                 ""
               )}`,
             }}

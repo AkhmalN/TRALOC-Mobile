@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
+import { baseUrl } from "../api/apiConfig";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -30,8 +31,10 @@ export default function Login() {
   const handleLogin = () => {
     if (!username || !password) {
       setError("Masukkan username dan password!");
+      setLoading(true);
       setTimeout(() => {
         setError("");
+        setLoading(false);
       }, 3000);
       return;
     }
@@ -42,12 +45,15 @@ export default function Login() {
       password: password,
     };
     axios
-      .post("https://server-smartpatrol.vercel.app/api/v1/auth/", data)
+      .post(`${baseUrl}/auth/`, data)
       .then((response) => {
+        console.log(response.data);
         if (response.status === 200) {
           setLoading(false);
-          AsyncStorage.setItem("username", username);
-          AsyncStorage.setItem("userId", response.data.userId);
+          if (response.data.username && response.data.userId) {
+            AsyncStorage.setItem("username", response.data.username);
+            AsyncStorage.setItem("userId", response.data.userId);
+          }
           setTimeout(() => {
             setLoading(false);
           }, 1500);
@@ -59,7 +65,7 @@ export default function Login() {
         if (error.response) {
           const status = error.response.status;
           if (status === 400) {
-            setError("Username atau password salah!");
+            setError("Username atau password salah");
             setTimeout(() => {
               setError("");
               setLoading(false);
@@ -153,6 +159,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flexDirection: "column",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   icon: {
     width: 100,
@@ -177,9 +190,10 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 5,
     marginBottom: 5,
+    fontSize: 16,
   },
   inputField: {
-    height: 50,
+    height: 60,
     borderWidth: 1,
     borderRadius: 10,
     flexDirection: "row",
@@ -188,6 +202,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "85%",
+    fontSize: 20,
   },
   button: {
     textAlign: "right",

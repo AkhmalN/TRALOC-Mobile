@@ -108,17 +108,17 @@ export default function PatrolCamera() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={takePic} style={styles.button}>
           <Text style={styles.buttonText}>
-            <Ionicons name="radio-button-on-outline" size={60} />
+            <Ionicons name="radio-button-on-outline" size={80} />
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleCameraType} style={styles.button}>
           <Text style={styles.buttonText}>
             {cameraType === Camera.Constants.Type.front ? (
-              <Ionicons name="reload-outline" size={50} />
+              <Ionicons name="reload-outline" size={70} />
             ) : (
               <Ionicons
                 name="reload-outline"
-                size={50}
+                size={70}
                 style={{ transform: [{ rotate: "180deg" }] }}
               />
             )}
@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   button: {
-    backgroundColor: "#088395",
     padding: 15,
     borderRadius: 10,
     justifyContent: "center",

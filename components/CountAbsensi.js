@@ -1,14 +1,25 @@
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import React, { useState, useEffect } from "react";
+import React from "react";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getUserAbsenLength } from "../api/absensi";
+import { useNavigation } from "@react-navigation/native";
 
 const CountAbsensi = ({ isLoading, value }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate("Riwayat Absensi"); // Replace "NamaHalamanTujuan" with the name of the target screen
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
       <View style={styles.textLength}>
-        <Text style={styles.textName}>Absensi</Text>
+        <Text style={styles.textName}>Riwayat Absensi</Text>
         <Text style={styles.countText}>
           {isLoading ? (
             <ActivityIndicator size={"small"} />
@@ -18,20 +29,19 @@ const CountAbsensi = ({ isLoading, value }) => {
         </Text>
       </View>
       <View>
-        <Ionicons name="walk-outline" size={30} />
+        <Ionicons name="walk-outline" size={30} color={"#FFF"} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
-export default CountAbsensi;
-
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#EEA5A6",
+    padding: 10,
+    backgroundColor: "#8E8FFA",
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -40,15 +50,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    padding: 10,
-    width: "28%",
-    borderRadius: 10,
+  },
+  textLength: {
+    flexDirection: "column",
+    justifyContent: "center",
   },
   textName: {
-    marginBottom: 10,
+    marginRight: 10,
+    fontWeight: "bold",
     fontSize: 16,
+    color: "#FFF",
   },
   countText: {
-    fontSize: 30,
+    fontSize: 16,
   },
 });
+
+export default CountAbsensi;

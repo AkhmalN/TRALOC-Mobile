@@ -27,4 +27,46 @@ export const getUserAbsenLength = async (userId) => {
   }
 };
 
-export default getUserAbsen;
+export const addAbsen = async ({
+  userId,
+  username,
+  latitude,
+  longitude,
+  lokasi_absen,
+  savedPhoto,
+}) => {
+  try {
+    const formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("username", username);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
+    formData.append("lokasi_absen", lokasi_absen);
+    formData.append("image", {
+      uri: savedPhoto.uri,
+      type: "image/jpeg",
+      name: "photo.jpg",
+    });
+
+    const response = await axios.post(`${baseUrl}/absensi/`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const deleteAbsensi = async (id) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/absensi/${id}`);
+    return response;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

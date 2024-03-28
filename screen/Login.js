@@ -15,8 +15,10 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { baseUrl } from "../api/apiConfig";
+import { useAuth } from "../context/userContext";
 
 export default function Login() {
+  const { setId, setRole } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(null);
@@ -52,7 +54,8 @@ export default function Login() {
           setLoading(false);
           if (response.data.username && response.data.userId) {
             AsyncStorage.setItem("username", response.data.username);
-            AsyncStorage.setItem("userId", response.data.userId);
+            setId(response.data.userId);
+            setRole(response.data.role);
           }
           setTimeout(() => {
             setLoading(false);
@@ -208,7 +211,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     width: "100%",
     height: 50,
-    backgroundColor: "#0B815A",
+    backgroundColor: "#088395",
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",

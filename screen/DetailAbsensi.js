@@ -39,14 +39,15 @@ export default function DetailAbsensi() {
       </View>
       <View style={styles.bottomContent}>
         <View style={styles.textContent}>
-          <Text style={{ fontSize: 18 }}>Username : {data.username}</Text>
           <Text style={{ fontSize: 18 }}>
             Waktu : {DateFormat(data.createdAt)}
           </Text>
           <Text style={{ fontSize: 18 }}>
             Koordinat : {data.latitude}, {data.longitude}
           </Text>
-          <Text style={{ fontSize: 18 }}>Keterangan : Absen Masuk</Text>
+          <Text style={{ fontSize: 18 }}>
+            Lokasi Absen : {data.lokasi_absen}
+          </Text>
         </View>
         <View style={styles.imageContent}>
           <Image

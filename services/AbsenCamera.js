@@ -114,53 +114,6 @@ export default function AbsenCamera() {
   return (
     <Camera style={styles.container} type={cameraType} ref={cameraRef}>
       <View style={styles.buttonContainer}>
-        {absenRoute.params && absenRoute.params.absenType === "masuk" && (
-          <View style={styles.flexOverlay}>
-            <View style={styles.locationContainer}>
-              <View>
-                {location ? (
-                  <View>
-                    <Text style={{ fontSize: 18, color: "#FFF" }}>
-                      <Text>Koordinat :</Text>
-                      {location.latitude}, {location.longitude}
-                    </Text>
-                  </View>
-                ) : (
-                  <ActivityIndicator />
-                )}
-              </View>
-              <Text style={{ fontSize: 18, color: "#FFF" }}>
-                Date : {DateFormat(new Date())}
-              </Text>
-              <Text style={{ fontSize: 18, color: "#FFF" }}>
-                Time : {TimeFormat(new Date())}
-              </Text>
-            </View>
-            {/* <View style={styles.mapContainer}>
-              <MapView
-                style={styles.map}
-                region={{
-                  latitude: latitude,
-                  longitude: longitude,
-                  latitudeDelta: 0.1,
-                  longitudeDelta: 0.1,
-                }}
-              >
-                <Marker
-                  coordinate={{
-                    latitude: latitude,
-                    longitude: longitude,
-                  }}
-                  title="Lokasi Anda"
-                  anchor={{ x: 0.5, y: 0.5 }} // Memusatkan marker di tengah
-                >
-                  <FontAwesome name="map-marker" size={40} color="red" />
-                </Marker>
-              </MapView>
-            </View> */}
-          </View>
-        )}
-
         <View style={styles.buttonFlex}>
           <TouchableOpacity onPress={takePic} style={styles.button}>
             <Text style={styles.buttonText}>

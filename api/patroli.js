@@ -63,3 +63,12 @@ export const addPatroli = async ({
     throw new Error(error);
   }
 };
+
+export const deletePatroli = async (id) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/patrol/${id}`);
+    return response;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

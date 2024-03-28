@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Button,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,6 +23,9 @@ import axios from "axios";
 import { getUserPatroli } from "../api/patroli";
 import { getUserAbsenLength } from "../api/absensi";
 import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from "../context/userContext";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Home = () => {
   const [username, setUsername] = useState("");
@@ -24,25 +34,10 @@ const Home = () => {
   const [valueAbsensi, setValueAbsensi] = useState(0);
   const [valuePatroli, setValuePatroli] = useState(0);
   const [valueAktivitas, setValueAktivitas] = useState(0);
+  const [atensi, setAtensi] = useState("");
 
   const currentDate = new Date();
-
-  useEffect(() => {
-    AsyncStorage.getItem("username")
-      .then((NAME) => {
-        setUsername(NAME);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-    AsyncStorage.getItem("userId")
-      .then((ID) => {
-        setUserId(ID);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  }, []);
+  const { id, role } = useAuth();
 
   const getCountAttendance = async () => {
     setLoading(true);
@@ -53,6 +48,9 @@ const Home = () => {
     } catch (error) {
       setLoading(false);
     }
+  };
+  const handleAtensi = () => {
+    setAtensi("ini atensi test");
   };
 
   useEffect(() => {
@@ -78,21 +76,16 @@ const Home = () => {
           </View>
         </View>
 
-        <View style={styles.sectionAtensi}>
-          <Text style={styles.textStyleAtensi}>
-            Tidak ada atensi yang ditampilkan!
-          </Text>
-        </View>
-
         <View style={styles.fragment}>
-          <CountAbsensi isLoading={loading} value={valueAbsensi} />
+          <CountAbsensi />
           <CountPatrol />
           <CountActivity />
         </View>
       </LinearGradient>
 
       <View style={styles.featureContent}>
-        <KodeSos />
+        {/* <KodeSos /> */}
+        <AbsenMasuk />
         <AbsenMasuk />
         <AbsenKeluar />
         <Patroli />
@@ -108,8 +101,8 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    marginBottom: 50,
-    height: "30%",
+    marginBottom: 60,
+    height: "20%",
   },
 
   userInfo: {
@@ -134,14 +127,31 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   sectionAtensi: {
+    flexDirection: "column",
     marginVertical: 10,
     marginHorizontal: 10,
+    justifyContent: "space-around",
+  },
+  containerAtensi: {
     height: 100,
-    justifyContent: "center",
-    alignItems: "center",
     borderWidth: 1,
     borderColor: "#FFF",
     borderRadius: 20,
+    padding: 10,
+  },
+  textAtensi: {},
+  formAtensi: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  formCatatan: {
+    fontSize: 16,
+    width: "90%",
+    borderWidth: 1,
+    borderColor: "#FFF",
+    borderRadius: 20,
+    height: 100,
+    padding: 5,
   },
   featureContent: {
     paddingLeft: 7,

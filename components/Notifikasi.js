@@ -27,7 +27,7 @@ export const Notifikasi = ({ visible, hideModal, message }) => (
       >
         <Text style={{ fontSize: 30, marginBottom: 10 }}>Notifikasi</Text>
         <Text style={{ fontSize: 20, marginBottom: 40 }}>{message}</Text>
-        <Button title="Tutup" onPress={hideModal} />
+        <Button title="Tutup" onPress={hideModal} color={"#088395"} />
       </View>
     </View>
   </Modal>

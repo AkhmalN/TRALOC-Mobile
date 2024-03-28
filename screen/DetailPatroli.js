@@ -17,7 +17,7 @@ export default function DetailPatroli() {
   const data = route.params?.data;
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.mapContainer}>
+      {/* <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           initialRegion={{
@@ -36,7 +36,7 @@ export default function DetailPatroli() {
             title="Lokasi Anda"
           ></Marker>
         </MapView>
-      </View>
+      </View> */}
       <View style={styles.bottomContent}>
         <View style={styles.textContent}>
           <Text style={{ fontSize: 18 }}>{data.location}</Text>

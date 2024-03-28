@@ -24,8 +24,10 @@ import {
 } from "../permission/CameraPermission";
 import { addPatroli } from "../api/patroli";
 import { Notifikasi } from "../components/Notifikasi";
+import { useAuth } from "../context/userContext";
 
 export default function Patroli({ route }) {
+  const { id } = useAuth();
   const navigation = useNavigation();
   const { savedPhoto } = route ? route.params || {} : {};
   const [hasPermission, setHasPermission] = useState(null);
@@ -57,13 +59,6 @@ export default function Patroli({ route }) {
   }, [savedPhoto]);
 
   useEffect(() => {
-    AsyncStorage.getItem("userId")
-      .then((ID) => {
-        if (ID) {
-          setUserId(ID);
-        }
-      })
-      .catch((error) => {});
     AsyncStorage.getItem("username")
       .then((value) => {
         if (value) {
@@ -110,7 +105,7 @@ export default function Patroli({ route }) {
     setLoading(true);
     try {
       const response = await addPatroli({
-        userId,
+        userId: id,
         username,
         scannedLabel,
         selectedItem,

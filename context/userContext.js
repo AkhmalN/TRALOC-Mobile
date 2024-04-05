@@ -8,7 +8,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [id, setId] = useState(null);
   const [role, setRole] = useState(null);
-  const [username, setUsername] = useState(null);
+  const [user, setUser] = useState(null);
 
   const storeID = async (value) => {
     try {
@@ -58,7 +58,7 @@ export const UserProvider = ({ children }) => {
     try {
       const value = await AsyncStorage.getItem("username");
       if (value !== null) {
-        setUsername(value);
+        setUser(value);
       }
     } catch (error) {
       console.error("Error retrieving token:", error);
@@ -69,6 +69,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     retrieveID();
     retrieveRole();
+    retrieveUsername();
   }, []);
 
   return (
@@ -80,8 +81,8 @@ export const UserProvider = ({ children }) => {
         role,
         setRole,
         storeRole,
-        username,
-        setUsername,
+        user,
+        setUser,
         storeUsername,
       }}
     >

@@ -39,7 +39,7 @@ export default function DetailPatroli() {
       </View> */}
       <View style={styles.bottomContent}>
         <View style={styles.textContent}>
-          <Text style={{ fontSize: 18 }}>{data.location}</Text>
+          <Text style={{ fontSize: 18 }}>Pos Patroli : {data.location}</Text>
           <Text style={{ fontSize: 18 }}>
             Waktu : {DateFormat(data.createdAt)}
           </Text>
@@ -49,10 +49,7 @@ export default function DetailPatroli() {
         <View style={styles.imageContent}>
           <Image
             source={{
-              uri: `${imageUrl}/patroli/${data.image.replace(
-                "public\\patroli\\",
-                ""
-              )}`,
+              uri: data.image,
             }}
             style={{ width: 120, height: 120, borderRadius: 10 }}
           />

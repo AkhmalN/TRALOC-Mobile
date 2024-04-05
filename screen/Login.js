@@ -18,7 +18,7 @@ import { baseUrl } from "../api/apiConfig";
 import { useAuth } from "../context/userContext";
 
 export default function Login() {
-  const { setId, setRole } = useAuth();
+  const { setId, setRole, setUser } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(null);
@@ -49,11 +49,10 @@ export default function Login() {
     axios
       .post(`${baseUrl}/auth/`, data)
       .then((response) => {
-        console.log(response.data);
         if (response.status === 200) {
           setLoading(false);
           if (response.data.username && response.data.userId) {
-            AsyncStorage.setItem("username", response.data.username);
+            setUser(response.data.username);
             setId(response.data.userId);
             setRole(response.data.role);
           }
@@ -69,16 +68,12 @@ export default function Login() {
           const status = error.response.status;
           if (status === 400) {
             setError("Username atau password salah");
-            setTimeout(() => {
-              setError("");
-              setLoading(false);
-            }, 2000);
+
+            setLoading(false);
           } else {
             setError("Terjadi kesalahan saat login atau ulangi!");
-            setTimeout(() => {
-              setError("");
-              setLoading(false);
-            }, 2000);
+
+            setLoading(false);
           }
         }
       });

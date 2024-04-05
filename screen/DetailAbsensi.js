@@ -52,10 +52,7 @@ export default function DetailAbsensi() {
         <View style={styles.imageContent}>
           <Image
             source={{
-              uri: `${imageUrl}/absensi/${data.image.replace(
-                "public\\absensi\\",
-                ""
-              )}`,
+              uri: data.image,
             }}
             style={{ width: 120, height: 120, borderRadius: 10 }}
           />

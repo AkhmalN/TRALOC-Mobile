@@ -26,6 +26,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../context/userContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Atensi from "../components/Atensi";
+import ListAtensi from "../components/ListAtensi";
 
 const Home = () => {
   const [username, setUsername] = useState("");
@@ -37,71 +39,55 @@ const Home = () => {
   const [atensi, setAtensi] = useState("");
 
   const currentDate = new Date();
-  const { id, role } = useAuth();
-
-  const getCountAttendance = async () => {
-    setLoading(true);
-    try {
-      const response = await getUserAbsenLength(userId);
-      setValueAbsensi(response.length);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  };
-  const handleAtensi = () => {
-    setAtensi("ini atensi test");
-  };
-
-  useEffect(() => {
-    getCountAttendance();
-  }, [userId]);
+  const { id, role, user } = useAuth();
 
   return (
-    <ScrollView>
-      <LinearGradient
-        colors={["#ffffff", "#088395"]}
-        style={styles.banner}
-        start={[0, 0]}
-        end={[0, 1]}
-        angle={45}
-      >
-        <View style={styles.userInfo}>
-          <View>
-            <Text style={styles.textDate}>{DateFormat(currentDate)}</Text>
-            <Text style={styles.helloText}>Selamat Datang, {username}</Text>
+    <View style={styles.container}>
+      <ScrollView>
+        <LinearGradient
+          colors={["#ffffff", "#088395"]}
+          style={styles.banner}
+          start={[0, 0]}
+          end={[0, 1]}
+          angle={45}
+        >
+          <View style={styles.userInfo}>
+            <View>
+              <Text style={styles.helloText}>Selamat Datang, {user}</Text>
+              <Text style={styles.textDate}>{DateFormat(currentDate)}</Text>
+            </View>
           </View>
-          <View>
-            <Ionicons name="reload-circle-outline" size={30} />
+
+          <View style={styles.fragment}>
+            {/* <CountAbsensi />
+          <CountPatrol /> */}
+            {/* <CountActivity /> */}
           </View>
-        </View>
+        </LinearGradient>
 
-        <View style={styles.fragment}>
-          <CountAbsensi />
-          <CountPatrol />
-          <CountActivity />
+        <View style={styles.featureContent}>
+          {/* <KodeSos /> */}
+          {role && role === "admin" && <Atensi />}
+          {role && role === "user" && <ListAtensi />}
+          <AbsenMasuk />
+          <AbsenKeluar />
+          <Patroli />
+          {/* <Aktivitas /> */}
+          <Footer />
         </View>
-      </LinearGradient>
-
-      <View style={styles.featureContent}>
-        {/* <KodeSos /> */}
-        <AbsenMasuk />
-        <AbsenMasuk />
-        <AbsenKeluar />
-        <Patroli />
-        <Aktivitas />
-      </View>
-      <Footer />
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   banner: {
     width: "100%",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    marginBottom: 60,
     height: "20%",
   },
 
@@ -117,10 +103,11 @@ const styles = StyleSheet.create({
   textDate: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "grey",
+    color: "#F2EFE5",
   },
   helloText: {
     fontSize: 25,
+    color: "#FFF",
   },
   fragment: {
     flexDirection: "row",
@@ -156,7 +143,7 @@ const styles = StyleSheet.create({
   featureContent: {
     paddingLeft: 7,
     paddingRight: 7,
-    margin: 10,
+    marginVertical: 15,
   },
   textStyleAtensi: {
     textAlign: "center",

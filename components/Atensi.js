@@ -1,24 +1,20 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-
-const Patroli = () => {
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+const Atensi = () => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => navigation.navigate("Patroli")}
+      onPress={() => navigation.navigate("Atensi")}
     >
       <View style={styles.iconMenu}>
-        <MaterialIcons name="qr-code-scanner" size={35} color={"#088395"} />
+        <MaterialCommunityIcons name="note-edit" size={35} color={"#088395"} />
       </View>
       <View style={styles.cardTitle}>
-        <Text style={styles.cardTextInd}>Buat Patroli</Text>
-        <Text style={styles.cardTextEng}>
-          Buat Laporan Patroli | Create Patrol Report
-        </Text>
+        <Text style={styles.cardTextInd}>Buat Atensi</Text>
+        <Text style={styles.cardTextEng}>Buat Atensi | Create Attention</Text>
       </View>
       <View style={styles.iconRight}>
         <Ionicons name="chevron-forward-outline" size={30} color={"#088395"} />
@@ -26,6 +22,7 @@ const Patroli = () => {
     </TouchableOpacity>
   );
 };
+
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
@@ -61,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Patroli;
+export default Atensi;

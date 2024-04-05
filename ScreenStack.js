@@ -16,6 +16,7 @@ import DetailPatroli from "./screen/DetailPatroli";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import RiwayatAbsensi from "./screen/RiwayatAbsensi";
 import RiwayatPatroli from "./screen/RiwayatPatroli";
+import Atensi from "./screen/Atensi";
 
 const queryClient = new QueryClient();
 const Stack = createStackNavigator();
@@ -40,6 +41,27 @@ function MainNavigator() {
             }}
           />
           <Stack.Screen
+            name="AbsenMasuk"
+            component={AbsenMasuk}
+            options={{
+              headerTitle: "Absensi Masuk",
+            }}
+          />
+          <Stack.Screen
+            name="AbsenKeluar"
+            component={AbsenKeluar}
+            options={{
+              headerTitle: "Absensi Keluar",
+            }}
+          />
+          <Stack.Screen
+            name="Atensi"
+            component={Atensi}
+            options={{
+              headerTitle: "Buat Atensi",
+            }}
+          />
+          <Stack.Screen
             name="Patroli"
             component={Patroli}
             options={{
@@ -53,6 +75,7 @@ function MainNavigator() {
               headerTitle: "Scan Barcode Pos",
             }}
           />
+
           <Stack.Screen
             name="PatrolCamera"
             component={PatrolCamera}
@@ -79,21 +102,6 @@ function MainNavigator() {
             component={AbsenCamera}
             options={{
               headerTitle: "Capture Absensi",
-            }}
-          />
-
-          <Stack.Screen
-            name="AbsenMasuk"
-            component={AbsenMasuk}
-            options={{
-              headerTitle: "Absensi Masuk",
-            }}
-          />
-          <Stack.Screen
-            name="AbsenKeluar"
-            component={AbsenKeluar}
-            options={{
-              headerTitle: "Absensi Keluar",
             }}
           />
 

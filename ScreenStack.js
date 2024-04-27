@@ -9,7 +9,6 @@ import ActivityCamera from "./services/ActivityCamera";
 import Barcode from "./services/Barcode";
 import PatrolCamera from "./services/PatrolCamera";
 import AbsenMasuk from "./controllers/add-AbsenMasuk";
-import Aktivitas from "./controllers/add-Aktivitas";
 import Atensi from "./controllers/add-Atensi";
 import Patroli from "./controllers/add-patroli";
 import BarStack from "./BarStack";
@@ -23,6 +22,7 @@ import RiwayatAbsensi from "./screen/RiwayatAbsensi";
 import RiwayatAktivitas from "./screen/RiwayatAktivitas";
 import RiwayatAtensi from "./screen/RiwayatAtensi";
 import RiwayatPatroli from "./screen/RiwayatPatroli";
+import FormAktivitas from "./controllers/add-Aktivitas";
 
 const queryClient = new QueryClient();
 const Stack = createStackNavigator();
@@ -109,7 +109,7 @@ function MainNavigator() {
           />
           <Stack.Screen
             name="Aktivitas"
-            component={Aktivitas}
+            component={FormAktivitas}
             options={{
               headerTitle: "Buat Aktivitas",
               headerTitleStyle: {

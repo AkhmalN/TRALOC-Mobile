@@ -4,9 +4,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screen/Login";
 import BarStack from "./BarStack";
 import Patroli from "./controllers/add-patroli";
+import Aktivitas from "./controllers/add-Aktivitas";
+import AbsenMasuk from "./controllers/add-AbsenMasuk";
+import Atensi from "./controllers/add-Atensi";
 import AbsenCamera from "./services/AbsenCamera";
 import PatrolCamera from "./services/PatrolCamera";
-import AbsenMasuk from "./controllers/add-AbsenMasuk";
 import Barcode from "./services/Barcode";
 import DetailAbsensi from "./screen/DetailAbsensi";
 import ActivityCamera from "./services/ActivityCamera";
@@ -16,8 +18,6 @@ import RiwayatAbsensi from "./screen/RiwayatAbsensi";
 import RiwayatPatroli from "./screen/RiwayatPatroli";
 import DataPribadi from "./screen/DataPribadi";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Atensi from "./controllers/add-Atensi";
-import Aktivitas from "./controllers/add-Aktivitas";
 import RiwayatAktivitas from "./screen/RiwayatAktivitas";
 import DetailAktivitas from "./screen/DetailAktivitas";
 import RiwayatAtensi from "./screen/RiwayatAtensi";
@@ -90,6 +90,26 @@ function MainNavigator() {
             component={Patroli}
             options={{
               headerTitle: "Buat Patroli",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Aktivitas"
+            component={Aktivitas}
+            options={{
+              headerTitle: "Buat Aktivitas",
               headerTitleStyle: {
                 color: "#FFF",
               },
@@ -314,26 +334,7 @@ function MainNavigator() {
               ),
             }}
           />
-          <Stack.Screen
-            name="Aktivitas"
-            component={Aktivitas}
-            options={{
-              headerTitle: "Buat Aktivitas",
-              headerTitleStyle: {
-                color: "#FFF",
-              },
-              headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
-              },
-              headerBackImage: () => (
-                <FontAwesome5
-                  name="chevron-circle-left"
-                  size={25}
-                  color={"#FFF"}
-                />
-              ),
-            }}
-          />
+
           <Stack.Screen
             name="ActivityCamera"
             component={ActivityCamera}

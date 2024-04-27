@@ -9,9 +9,7 @@
     "splash": {
       "image": "./assets/LOGO.png"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {

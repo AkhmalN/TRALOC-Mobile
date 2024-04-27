@@ -3,37 +3,36 @@ import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 
-export default function DetailPatroli() {
+export default function DetailAtensi() {
   const route = useRoute();
   const data = route.params?.data;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.formItem}>
-          <Text style={styles.label}>Instansi Patroli:</Text>
-          <Text style={styles.value}>{data.nama_instansi}</Text>
+          <Text style={styles.label}>Judul Atensi</Text>
+          <Text style={styles.value}>{data.judul_atensi}</Text>
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.label}>Pos Patroli:</Text>
-          <Text style={styles.value}>{data.lokasi_pos}</Text>
+          <Text style={styles.label}>Tanggal Mulai</Text>
+          <Text style={styles.value}>{DateFormat(data.tanggal_mulai)}</Text>
+        </View>
+        <View style={styles.formItem}>
+          <Text style={styles.label}>Tanggal Selesai</Text>
+          <Text style={styles.value}>{DateFormat(data.tanggal_selesai)}</Text>
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.label}>Waktu:</Text>
+          <Text style={styles.label}>Tanggal Atensi Dibuat:</Text>
           <Text style={styles.value}>
             {DateFormat(data.createdAt)}, {TimeFormat(data.createdAt)}
           </Text>
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.label}>Status:</Text>
-          <Text style={styles.value}>{data.status}</Text>
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.label}>Catatan:</Text>
-          <Text style={styles.value}>{data.notes}</Text>
+          <Text style={styles.label}>Catatan Atensi:</Text>
+          <Text style={styles.value}>{data.catatan}</Text>
         </View>
       </View>
 

@@ -7,17 +7,21 @@ import Patroli from "./controllers/add-patroli";
 import AbsenCamera from "./services/AbsenCamera";
 import PatrolCamera from "./services/PatrolCamera";
 import AbsenMasuk from "./controllers/add-AbsenMasuk";
-import AbsenKeluar from "./controllers/add-AbsenKeluar";
 import Barcode from "./services/Barcode";
 import DetailAbsensi from "./screen/DetailAbsensi";
-import Aktivitas from "./screen/Aktivitas";
 import ActivityCamera from "./services/ActivityCamera";
 import DetailPatroli from "./screen/DetailPatroli";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import RiwayatAbsensi from "./screen/RiwayatAbsensi";
 import RiwayatPatroli from "./screen/RiwayatPatroli";
-import Atensi from "./screen/Atensi";
-
+import DataPribadi from "./screen/DataPribadi";
+import { FontAwesome5 } from "@expo/vector-icons";
+import Atensi from "./controllers/add-Atensi";
+import Aktivitas from "./controllers/add-Aktivitas";
+import RiwayatAktivitas from "./screen/RiwayatAktivitas";
+import DetailAktivitas from "./screen/DetailAktivitas";
+import RiwayatAtensi from "./screen/RiwayatAtensi";
+import DetailAtensi from "./screen/DetailAtensi";
 const queryClient = new QueryClient();
 const Stack = createStackNavigator();
 
@@ -45,20 +49,40 @@ function MainNavigator() {
             component={AbsenMasuk}
             options={{
               headerTitle: "Absensi Masuk",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
-          <Stack.Screen
-            name="AbsenKeluar"
-            component={AbsenKeluar}
-            options={{
-              headerTitle: "Absensi Keluar",
-            }}
-          />
+
           <Stack.Screen
             name="Atensi"
             component={Atensi}
             options={{
               headerTitle: "Buat Atensi",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
           <Stack.Screen
@@ -66,6 +90,19 @@ function MainNavigator() {
             component={Patroli}
             options={{
               headerTitle: "Buat Patroli",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
           <Stack.Screen
@@ -81,6 +118,19 @@ function MainNavigator() {
             component={PatrolCamera}
             options={{
               headerTitle: "Capture Dokumentasi",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
           <Stack.Screen
@@ -88,6 +138,19 @@ function MainNavigator() {
             component={DetailAbsensi}
             options={{
               headerTitle: "Detail Absensi",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
           <Stack.Screen
@@ -95,6 +158,59 @@ function MainNavigator() {
             component={DetailPatroli}
             options={{
               headerTitle: "Detail Patroli",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="DetailAktivitas"
+            component={DetailAktivitas}
+            options={{
+              headerTitle: "Detail Aktivitas",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Detail Atensi"
+            component={DetailAtensi}
+            options={{
+              headerTitle: "Detail Atensi",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
           <Stack.Screen
@@ -102,6 +218,19 @@ function MainNavigator() {
             component={AbsenCamera}
             options={{
               headerTitle: "Capture Absensi",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
 
@@ -110,6 +239,19 @@ function MainNavigator() {
             component={RiwayatAbsensi}
             options={{
               headerTitle: "Riwayat Absensi",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
           <Stack.Screen
@@ -117,6 +259,59 @@ function MainNavigator() {
             component={RiwayatPatroli}
             options={{
               headerTitle: "Riwayat Patroli",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Riwayat Aktivitas"
+            component={RiwayatAktivitas}
+            options={{
+              headerTitle: "Riwayat Aktivitas",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Riwayat Atensi"
+            component={RiwayatAtensi}
+            options={{
+              headerTitle: "Riwayat Atensi",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
           <Stack.Screen
@@ -124,6 +319,19 @@ function MainNavigator() {
             component={Aktivitas}
             options={{
               headerTitle: "Buat Aktivitas",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
           <Stack.Screen
@@ -131,13 +339,46 @@ function MainNavigator() {
             component={ActivityCamera}
             options={{
               headerTitle: "Capture Activity",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Data Pribadi"
+            component={DataPribadi}
+            options={{
+              headerTitle: "Profil",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
         </Stack.Navigator>
         <StatusBar
           hidden={false}
           translucent={false}
-          backgroundColor="#F5F5F5"
+          // backgroundColor="#44B6C7"
         />
       </NavigationContainer>
     </QueryClientProvider>

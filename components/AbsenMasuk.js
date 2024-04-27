@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons, Octicons } from "@expo/vector-icons";
 
-const AbsenMasuk = () => {
+const Presensi = ({ status }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -18,8 +18,11 @@ const AbsenMasuk = () => {
         />
       </View>
       <View style={styles.cardTitle}>
-        <Text style={styles.cardTextInd}>Absen Masuk</Text>
-        <Text style={styles.cardTextEng}>Absen Masuk | Time In</Text>
+        <Text style={styles.cardTextInd}>Absensi Masuk</Text>
+        <Text style={styles.cardTextEng}>Absensi Masuk | Check In</Text>
+      </View>
+      <View style={styles.iconCenter}>
+        {status ? <Octicons name="verified" size={30} color="#6DBC46" /> : ""}
       </View>
       <View style={styles.iconRight}>
         <Ionicons name="chevron-forward-outline" size={30} color={"#088395"} />
@@ -39,12 +42,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#088395",
   },
+  iconCenter: {
+    width: "10%",
+  },
   iconMenu: {
     width: "10%",
     marginRight: 10,
   },
   cardTitle: {
-    width: "80%",
+    width: "70%",
     borderRadius: 20,
     marginTop: 10,
     marginBottom: 10,
@@ -54,13 +60,14 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   cardTextInd: {
-    fontSize: 18,
+    fontSize: 20,
     color: "#088395",
     fontWeight: "bold",
   },
   cardTextEng: {
     color: "#088395",
+    fontSize: 18,
   },
 });
 
-export default AbsenMasuk;
+export default Presensi;

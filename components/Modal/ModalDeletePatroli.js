@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteAbsensi } from "../../api/absensi";
 import { deletePatroli } from "../../api/patroli";
 
 const ModalDeletePatroli = ({ visible, onRequestClose, data }) => {
@@ -17,18 +16,13 @@ const ModalDeletePatroli = ({ visible, onRequestClose, data }) => {
   const deleteIzinMutation = useMutation({
     mutationFn: deletePatroli,
     onSuccess: () => {
-      console.log("delete success");
       queryClient.refetchQueries(["data"]);
       setTimeout(() => {
         onRequestClose();
       }, 1000);
     },
-    onError: () => {
-      console.log("delete error");
-    },
-    onSettled: async () => {
-      console.log("deleted state is reset");
-    },
+    onError: () => {},
+    onSettled: async () => {},
   });
 
   const handleOnDelete = () => {
@@ -55,7 +49,7 @@ const ModalDeletePatroli = ({ visible, onRequestClose, data }) => {
                 <View style={{ flexDirection: "row" }}>
                   <Text style={[styles.buttonText]}>
                     {deleteIzinMutation.isPending ? (
-                      <ActivityIndicator />
+                      <ActivityIndicator color={"#FFF"} />
                     ) : (
                       "Hapus"
                     )}

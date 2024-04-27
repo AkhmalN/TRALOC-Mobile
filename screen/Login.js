@@ -12,9 +12,8 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
-import { baseUrl } from "../api/apiConfig";
+import { baseUrl } from "../api/config";
 import { useAuth } from "../context/userContext";
 
 export default function Login() {
@@ -188,7 +187,8 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 5,
     marginBottom: 5,
-    fontSize: 16,
+    fontSize: 18,
+    color: "grey",
   },
   inputField: {
     height: 60,

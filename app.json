@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "unaspatrol",
-    "slug": "unaspatrol",
+    "slug": "smart-patrol",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon/LOGOICON.png",
@@ -9,7 +9,9 @@
     "splash": {
       "image": "./assets/LOGO.png"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -33,7 +35,9 @@
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
         "INTERNET",
-        "android.permission.CAMERA"
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
       ],
       "package": "com.akhmaln.unaspatrol"
     },
@@ -52,16 +56,17 @@
     "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
     "isAccessMediaLocationEnabled": "true",
     "androidStatusBar": {
-      "backgroundColor": "#C2185B",
-      "translucent": false
+      "backgroundColor": "#44B6C7",
+      "translucent": true
     },
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "2e68cc1e-ba07-4332-8b0c-430523de5d53"
+        "projectId": "f2a2edfd-8746-4076-81f4-eba2e84247f0"
       }
-    }
+    },
+    "owner": "akhmaln"
   }
 }

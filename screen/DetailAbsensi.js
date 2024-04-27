@@ -1,16 +1,8 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
 import MapView, { Marker, Callout } from "react-native-maps";
 import React from "react";
 import { useRoute } from "@react-navigation/native";
 import { DateFormat } from "../utils/DateFormat";
-import { imageUrl } from "../api/apiConfig";
 
 export default function DetailAbsensi() {
   const route = useRoute();

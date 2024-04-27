@@ -1,33 +1,60 @@
-import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { Notifikasi } from "../components/Notifikasi";
-import { baseUrl } from "../api/apiConfig";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import SelectDropdown from "react-native-select-dropdown";
 import { useAuth } from "../context/userContext";
 import { addAbsen } from "../api/absensi";
+import { getUser } from "../api/users";
+import ModalLoading from "../components/ModalLoading";
+import { useQuery } from "@tanstack/react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function FormAbsen({ route }) {
-  const { id } = useAuth();
+  const { id, user } = useAuth();
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const { savedPhoto } = route.params;
-  const [username, setUsername] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [images, setImages] = useState("");
-  const [lokasiAbsen, setLokasiAbsen] = useState("");
+  const [lokasiAbsen, setLokasiAbsen] = useState(null);
   const [loading, setLoading] = useState(null);
   const [isSuccess, setIsSuccess] = useState(null);
+  const [errorStatus, setErrorStatus] = useState(null);
+  const [noSelect, setNoSelect] = useState(false);
+
   const [notifikasiVisible, setNotifikasiVisible] = useState(false);
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorStatus(true);
+        setNotifikasiVisible(true);
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
+    })();
+  }, []);
 
   const navigation = useNavigation();
+
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ["user", id],
+    queryFn: () => getUser(id),
+  });
+
+  if (isLoading) {
+    return <ModalLoading />;
+  }
 
   const hideNotifikasi = () => {
     setNotifikasiVisible(false);
@@ -43,61 +70,47 @@ export default function FormAbsen({ route }) {
     setLokasiAbsen(selectedItem.title);
   };
 
-  useEffect(() => {
-    // Ambil username dari AsyncStorage saat komponen di-mount
-    AsyncStorage.getItem("username")
-      .then((value) => {
-        if (value) {
-          setUsername(value);
-        }
-      })
-      .catch((error) => {});
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (savedPhoto) {
-      setImages([savedPhoto]); // Assuming savedPhoto.uri is the image URI
-    }
-  }, [savedPhoto]);
-
   const handleOnSubmit = async () => {
-    try {
-      setLoading(true);
-      const response = await addAbsen({
-        userId: id,
-        username,
-        latitude,
-        longitude,
-        lokasi_absen: lokasiAbsen,
-        savedPhoto,
-      });
-      if (response.status === 201) {
+    if (lokasiAbsen === null) {
+      setNoSelect(true);
+      setNotifikasiVisible(true);
+      setTimeout(() => {
+        setNoSelect(false);
+        setNotifikasiVisible(false);
+      }, 1500);
+    } else {
+      try {
+        setLoading(true);
+        const response = await addAbsen({
+          userId: id,
+          nama_lengkap: data.nama_lengkap,
+          username: user,
+          latitude,
+          longitude,
+          lokasi_absen: lokasiAbsen,
+          savedPhoto,
+        });
+        if (response.status === 201) {
+          await AsyncStorage.setItem("status_absen", response.data.status);
+          setLoading(false);
+          setIsSuccess(true);
+          setNotifikasiVisible(true);
+          setTimeout(() => {
+            setNotifikasiVisible(false);
+            navigation.navigate("Home");
+          }, 5000);
+        }
+      } catch (error) {
         setLoading(false);
-        setIsSuccess(true);
         setNotifikasiVisible(true);
+        setErrorStatus(true);
+        setErrorMsg("Terjadi Kesalahan dalam mengirim Absen, Ulangi!");
         setTimeout(() => {
+          setErrorStatus(false);
+          setErrorMsg(null);
           setNotifikasiVisible(false);
-          navigation.navigate("Home");
-        }, 5000);
+        }, 2000);
       }
-      console.log(response.data);
-    } catch (error) {
-      setLoading(false);
     }
   };
 
@@ -106,16 +119,25 @@ export default function FormAbsen({ route }) {
       <View style={styles.mapContainer}>
         {isSuccess && notifikasiVisible && (
           <Notifikasi
-            message={"Berhasil mengirim absensi"}
+            message={"Berhasil membuat presensi"}
             hideModal={hideNotifikasi}
           />
+        )}
+        {noSelect && notifikasiVisible && (
+          <Notifikasi
+            message={"Pilih lokasi absen terlebih dahulu"}
+            hideModal={hideNotifikasi}
+          />
+        )}
+        {errorStatus && notifikasiVisible && (
+          <Notifikasi message={errorMsg} hideModal={hideNotifikasi} />
         )}
         {location ? (
           <MapView
             style={styles.map}
             initialRegion={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
+              latitude: location ? location.coords.latitude : "",
+              longitude: location ? location.coords.longitude : "",
               latitudeDelta: 0.001, // This sets the zoom level
               longitudeDelta: 0.001, // This sets the zoom level
             }}
@@ -123,8 +145,8 @@ export default function FormAbsen({ route }) {
             <Marker
               key={1}
               coordinate={{
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
+                latitude: location ? location.coords.latitude : "",
+                longitude: location ? location.coords.longitude : "",
               }}
               title="Lokasi Anda"
             ></Marker>
@@ -137,7 +159,7 @@ export default function FormAbsen({ route }) {
         <View style={styles.formSection}>
           <View style={[styles.form, styles.flexRow]}>
             <Text style={styles.textForm}>Ambil Swafoto</Text>
-            {images && (
+            {savedPhoto && (
               <AntDesign name="checkcircleo" size={28} color={"#088395"} />
             )}
           </View>
@@ -145,10 +167,12 @@ export default function FormAbsen({ route }) {
             <View>
               <Text style={styles.label}>koordinat Anda Saat ini :</Text>
               <View style={styles.form}>
-                <Text style={styles.textForm}>
-                  {location.coords.latitude}(lat),{location.coords.longitude}
-                  (lng)
-                </Text>
+                {location && (
+                  <Text style={styles.textForm}>
+                    {location.coords.latitude}(lat),{location.coords.longitude}
+                    (lng)
+                  </Text>
+                )}
               </View>
             </View>
           ) : (

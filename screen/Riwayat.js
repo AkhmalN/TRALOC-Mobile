@@ -1,8 +1,11 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { useAuth } from "../context/userContext";
+
 const Riwayat = () => {
+  const { role } = useAuth();
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -56,6 +59,58 @@ const Riwayat = () => {
           />
         </View>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.cardContainer}
+        onPress={() => navigation.navigate("Riwayat Aktivitas")}
+      >
+        <View style={styles.iconMenu}>
+          <MaterialCommunityIcons
+            name="note-edit"
+            size={35}
+            color={"#088395"}
+          />
+        </View>
+        <View style={styles.cardTitle}>
+          <Text style={styles.cardTextInd}>Riwayat Aktivitas</Text>
+          <Text style={styles.cardTextEng}>
+            Riwayat Aktivitas | Activity History
+          </Text>
+        </View>
+        <View style={styles.iconRight}>
+          <Ionicons
+            name="chevron-forward-outline"
+            size={30}
+            color={"#088395"}
+          />
+        </View>
+      </TouchableOpacity>
+      {(role === "admin" || role === "danru" || role === "danton") && (
+        <TouchableOpacity
+          style={styles.cardContainer}
+          onPress={() => navigation.navigate("Riwayat Atensi")}
+        >
+          <View style={styles.iconMenu}>
+            <MaterialCommunityIcons
+              name="note-edit"
+              size={35}
+              color={"#088395"}
+            />
+          </View>
+          <View style={styles.cardTitle}>
+            <Text style={styles.cardTextInd}>Riwayat Atensi</Text>
+            <Text style={styles.cardTextEng}>
+              Riwayat Atensi | Attention History
+            </Text>
+          </View>
+          <View style={styles.iconRight}>
+            <Ionicons
+              name="chevron-forward-outline"
+              size={30}
+              color={"#088395"}
+            />
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -90,12 +145,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   cardTextInd: {
-    fontSize: 18,
+    fontSize: 20,
     color: "#088395",
     fontWeight: "bold",
   },
   cardTextEng: {
     color: "#088395",
+    fontSize: 18,
   },
 });
 

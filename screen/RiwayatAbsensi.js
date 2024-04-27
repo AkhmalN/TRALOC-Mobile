@@ -4,12 +4,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
-import { DateFormat } from "../utils/DateFormat";
+import { DateFormat, TimeFormat } from "../utils/DateFormat";
 import { useNavigation } from "@react-navigation/native";
 import ModalDelete from "../components/Modal/ModalDelete";
 import { useAuth } from "../context/userContext";
@@ -21,10 +20,9 @@ const RiwayatAbsensi = () => {
   const { id } = useAuth();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const [isdelete, setIsDelete] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isdelete, setIsDelete] = useState(null);
 
-  const { isPending, isError, data, refetch } = useQuery({
+  const { isPending, isError, data } = useQuery({
     queryKey: ["data", id],
     queryFn: () => getUserAbsen(id),
   });
@@ -36,7 +34,6 @@ const RiwayatAbsensi = () => {
   const handleDelete = (data) => {
     setIsDelete(data);
     setModalVisible(true);
-    setIsEdit(true);
   };
 
   return (
@@ -46,16 +43,17 @@ const RiwayatAbsensi = () => {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.contentContainer}>
-        {isPending && <ModalLoading />}
-        {data && data.length === 0 && (
-          <View style={styles.dataNotFoundContainer}>
-            <Entypo name="warning" size={24} color="red" />
-            <Text style={styles.dataNotFoundText}>
-              Tidak ada data yang ditemukan
+        {isError && (
+          <View style={styles.errorSection}>
+            <Text style={styles.errorText}>
+              Terjadi masalah pada server, Ulangi!
             </Text>
           </View>
         )}
-        {data &&
+        {isPending && <ModalLoading />}
+
+        {data && data.length > 0 ? (
+          data &&
           data.map((data, id) => {
             return (
               <View style={styles.card} key={id}>
@@ -63,6 +61,14 @@ const RiwayatAbsensi = () => {
                   <View style={styles.labelContainer}>
                     <Text style={[styles.text, { fontSize: 18 }]}>
                       {DateFormat(data.createdAt)}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.text,
+                        { fontSize: 18, fontWeight: "bold" },
+                      ]}
+                    >
+                      {TimeFormat(data.createdAt)}
                     </Text>
                   </View>
                 </View>
@@ -87,7 +93,7 @@ const RiwayatAbsensi = () => {
 
                 <View style={[styles.row, { justifyContent: "flex-end" }]}>
                   <TouchableOpacity onPress={() => handleDetail(data)}>
-                    <Text style={[styles.button, styles.deleteButton]}>
+                    <Text style={[styles.button, styles.detailButton]}>
                       <Entypo name="chevron-with-circle-right" size={24} />
                     </Text>
                   </TouchableOpacity>
@@ -99,7 +105,15 @@ const RiwayatAbsensi = () => {
                 </View>
               </View>
             );
-          })}
+          })
+        ) : (
+          <View style={styles.dataNotFoundContainer}>
+            <Entypo name="warning" size={24} color="red" />
+            <Text style={styles.dataNotFoundText}>
+              Tidak ada data yang ditemukan
+            </Text>
+          </View>
+        )}
 
         {isdelete && (
           <ModalDelete
@@ -161,7 +175,10 @@ const styles = StyleSheet.create({
     height: 30,
   },
   labelContainer: {
-    width: "70%",
+    width: "100%",
+
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   labelContainerStatus: {
     width: "30%",
@@ -174,7 +191,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     marginHorizontal: 5,
   },
   textStatus: {
@@ -189,7 +206,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 18,
   },
   editButton: {
     color: "#fff",
@@ -199,7 +216,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   detailButton: {
-    backgroundColor: "#dc3545",
+    backgroundColor: "#088395",
     color: "#fff",
   },
   loadingContainer: {

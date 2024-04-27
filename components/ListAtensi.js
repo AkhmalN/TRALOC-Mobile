@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getAtensi } from "../api/atensi";
 import { DateFormat } from "../utils/DateFormat";
@@ -15,12 +14,7 @@ const ListAtensi = () => {
   return (
     <View style={styles.container}>
       {isLoading && <ModalLoading />}
-      <Ionicons
-        name="alert-circle"
-        size={30}
-        color={"#FEC100"}
-        style={styles.icon}
-      />
+
       {data && data.length === 0 && (
         <View style={styles.noDataContainer}>
           <Text style={styles.noDataText}>
@@ -56,24 +50,19 @@ const ListAtensi = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  atensiContainer: {
     marginBottom: 10,
     borderRadius: 20,
     padding: 10,
     height: "auto",
-    alignItems: "center",
     borderWidth: 2,
     borderColor: "#FEC100",
-  },
-  icon: {
-    position: "absolute",
-    right: "5%",
-    bottom: "10%",
   },
   noDataContainer: {},
   noDataText: {
     fontSize: 16,
     fontWeight: "bold",
+    marginVertical: 10,
   },
   headerContainer: {
     marginVertical: 5,

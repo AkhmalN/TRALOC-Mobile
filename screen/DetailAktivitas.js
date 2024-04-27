@@ -3,20 +3,20 @@ import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 
-export default function DetailPatroli() {
+export default function DetailAktivitas() {
   const route = useRoute();
   const data = route.params?.data;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.formItem}>
-          <Text style={styles.label}>Instansi Patroli:</Text>
-          <Text style={styles.value}>{data.nama_instansi}</Text>
+          <Text style={styles.label}>Instansi Aktivitas:</Text>
+          <Text style={styles.value}>{data.instansi_aktivitas}</Text>
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.label}>Pos Patroli:</Text>
-          <Text style={styles.value}>{data.lokasi_pos}</Text>
+          <Text style={styles.label}>Pos Aktivitas:</Text>
+          <Text style={styles.value}>{data.pos_aktivitas}</Text>
         </View>
 
         <View style={styles.formItem}>
@@ -27,13 +27,8 @@ export default function DetailPatroli() {
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.label}>Status:</Text>
-          <Text style={styles.value}>{data.status}</Text>
-        </View>
-
-        <View style={styles.formItem}>
           <Text style={styles.label}>Catatan:</Text>
-          <Text style={styles.value}>{data.notes}</Text>
+          <Text style={styles.value}>{data.notes_aktivitas}</Text>
         </View>
       </View>
 

@@ -52,12 +52,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   cardTextInd: {
-    fontSize: 18,
+    fontSize: 20,
     color: "#088395",
     fontWeight: "bold",
   },
   cardTextEng: {
     color: "#088395",
+    fontSize: 18,
   },
 });
 

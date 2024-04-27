@@ -19,8 +19,8 @@ const AbsenKeluar = () => {
         />
       </View>
       <View style={styles.cardTitle}>
-        <Text style={styles.cardTextInd}>Absen Keluar </Text>
-        <Text style={styles.cardTextEng}>Absen Keluar | Time Out</Text>
+        <Text style={styles.cardTextInd}>Absensi Keluar </Text>
+        <Text style={styles.cardTextEng}>Absensi Keluar | Check Out</Text>
       </View>
       <View style={styles.iconRight}>
         <Ionicons name="chevron-forward-outline" size={30} color={"#088395"} />
@@ -54,12 +54,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   cardTextInd: {
-    fontSize: 18,
+    fontSize: 20,
     color: "#088395",
     fontWeight: "bold",
   },
   cardTextEng: {
     color: "#088395",
+    fontSize: 18,
   },
 });
 

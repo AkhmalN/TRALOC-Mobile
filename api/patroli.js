@@ -1,5 +1,6 @@
 import axios from "axios";
-import { baseUrl } from "./apiConfig";
+import { baseUrl } from "./config";
+import { compressImage } from "../utils/CompressImage";
 
 export const getUserPatroli = async (userId) => {
   try {
@@ -29,25 +30,26 @@ export const getUserPatroliLength = async (userId) => {
 
 export const addPatroli = async ({
   userId,
-  username,
-  scannedLabel,
+  user,
+  namaLengkap,
+  lokasiBarcode,
+  namaInstansi,
   selectedItem,
   notes,
-  scannedLatitude,
-  scannedLongitude,
   savedPhoto,
 }) => {
   try {
+    const compressedImage = await compressImage(savedPhoto.uri);
     const formData = new FormData();
     formData.append("userId", userId);
-    formData.append("username", username);
-    formData.append("location", scannedLabel);
+    formData.append("username", user);
+    formData.append("lokasi_pos", lokasiBarcode);
+    formData.append("nama_instansi", namaInstansi);
+    formData.append("nama_lengkap", namaLengkap);
     formData.append("status", selectedItem);
     formData.append("notes", notes);
-    formData.append("latitude", scannedLatitude);
-    formData.append("longitude", scannedLongitude);
     formData.append("image", {
-      uri: savedPhoto.uri,
+      uri: compressedImage.uri,
       type: "image/jpeg",
       name: "photo.jpg",
     });
@@ -56,10 +58,12 @@ export const addPatroli = async ({
         "Content-Type": "multipart/form-data",
       },
     });
+
     if (response) {
       return response.status;
     }
   } catch (error) {
+    console.log(error);
     throw new Error(error);
   }
 };

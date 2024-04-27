@@ -1,5 +1,6 @@
 import axios from "axios";
-import { baseUrl } from "./apiConfig";
+import { baseUrl } from "./config";
+import { compressImage } from "../utils/CompressImage";
 
 export const getUserAbsen = async (userId) => {
   try {
@@ -29,6 +30,7 @@ export const getUserAbsenLength = async (userId) => {
 
 export const addAbsen = async ({
   userId,
+  nama_lengkap,
   username,
   latitude,
   longitude,
@@ -36,14 +38,16 @@ export const addAbsen = async ({
   savedPhoto,
 }) => {
   try {
+    const compressed = await compressImage(savedPhoto.uri);
     const formData = new FormData();
     formData.append("userId", userId);
+    formData.append("nama_lengkap", nama_lengkap);
     formData.append("username", username);
     formData.append("latitude", latitude);
     formData.append("longitude", longitude);
     formData.append("lokasi_absen", lokasi_absen);
     formData.append("image", {
-      uri: savedPhoto.uri,
+      uri: compressed.uri,
       type: "image/jpeg",
       name: "photo.jpg",
     });
@@ -53,11 +57,11 @@ export const addAbsen = async ({
         "Content-Type": "multipart/form-data",
       },
     });
-
     if (response) {
       return response;
     }
   } catch (error) {
+    console.log(error);
     throw new Error(error);
   }
 };

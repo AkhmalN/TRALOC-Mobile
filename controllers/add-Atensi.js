@@ -97,7 +97,10 @@ const Atensi = () => {
     createAtensiMutation.mutate(data);
   };
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      style={styles.container}
+    >
       {isLoading && <ModalLoading />}
       {isSuccess && notifikasiVisible && (
         <Notifikasi
@@ -176,14 +179,14 @@ const Atensi = () => {
           <Text style={styles.textButton}>Kirim Atensi</Text>
         </Button>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default Atensi;
 
 const styles = StyleSheet.create({
-  container: { padding: 20 },
+  container: { flex: 1, backgroundColor: "#FFF", padding: 20 },
   dateTimeContainer: {
     flexDirection: "row",
   },
@@ -193,15 +196,18 @@ const styles = StyleSheet.create({
   textOnDate: {
     fontSize: 18,
     marginBottom: 10,
+    marginTop: 10,
   },
 
   inputForm: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "#EEF5FF",
   },
   inputDisable: {
     width: "90%",
     marginRight: 5,
+    fontSize: 18,
   },
   dayText: {
     fontSize: 16,
@@ -214,6 +220,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   inputNote: {
+    backgroundColor: "#EEF5FF",
     padding: 5,
     marginVertical: 5,
     fontSize: 18,

@@ -8,29 +8,24 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteAbsensi } from "../../api/absensi";
-import { useAuth } from "../../context/userContext";
+import { deleteAktivitas } from "../../api/aktivitas";
 
-const ModalDelete = ({ visible, onRequestClose, data }) => {
-  const { id } = useAuth();
+const ModalDeleteAktivitas = ({ visible, onRequestClose, data }) => {
   const queryClient = useQueryClient();
-  const deleteIzinMutation = useMutation({
-    mutationFn: deleteAbsensi,
-    onSuccess: async () => {
-      console.log("delete success");
-      await queryClient.refetchQueries(["data", id]);
-      onRequestClose();
+  const deleteAktivitasMutation = useMutation({
+    mutationFn: deleteAktivitas,
+    onSuccess: () => {
+      queryClient.refetchQueries(["data_aktivitas"]);
+      setTimeout(() => {
+        onRequestClose();
+      }, 1000);
     },
-    onError: () => {
-      console.log("delete error");
-    },
-    onSettled: async () => {
-      console.log("deleted state is reset");
-    },
+    onError: () => {},
+    onSettled: async () => {},
   });
 
   const handleOnDelete = () => {
-    deleteIzinMutation.mutateAsync(data._id);
+    deleteAktivitasMutation.mutateAsync(data._id);
   };
 
   return (
@@ -43,7 +38,7 @@ const ModalDelete = ({ visible, onRequestClose, data }) => {
       <View style={styles.overlay}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hapus Absensi</Text>
+            <Text style={styles.modalText}>Hapus Aktivitas?</Text>
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity
@@ -52,8 +47,8 @@ const ModalDelete = ({ visible, onRequestClose, data }) => {
               >
                 <View style={{ flexDirection: "row" }}>
                   <Text style={[styles.buttonText]}>
-                    {deleteIzinMutation.isPending ? (
-                      <ActivityIndicator />
+                    {deleteAktivitasMutation.isPending ? (
+                      <ActivityIndicator color={"#FFF"} />
                     ) : (
                       "Hapus"
                     )}
@@ -147,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalDelete;
+export default ModalDeleteAktivitas;

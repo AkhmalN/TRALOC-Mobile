@@ -63,10 +63,10 @@ const ActivityCamera = () => {
         <Camera style={styles.camera} type={cameraType} ref={cameraRef}>
           <View style={styles.cameraButtonsContainer}>
             <TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
-              <Text style={styles.cameraButtonText}>Take Picture</Text>
+              <Text style={styles.cameraButtonText}>Capture</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cameraButton} onPress={pickImage}>
-              <Text style={styles.cameraButtonText}>Pick Image</Text>
+              <Text style={styles.cameraButtonText}>Gallery</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cameraButton}
@@ -74,22 +74,13 @@ const ActivityCamera = () => {
             >
               <Text style={styles.cameraButtonText}>
                 {cameraType === Camera.Constants.Type.back
-                  ? "Front Camera"
-                  : "Back Camera"}
+                  ? "Kamera Depan"
+                  : "Kamera belakang"}
               </Text>
             </TouchableOpacity>
           </View>
         </Camera>
       )}
-
-      {/* {capturedImage && (
-        <View style={styles.imagePreviewContainer}>
-          <Image
-            source={{ uri: capturedImage.uri }}
-            style={styles.imagePreview}
-          />
-        </View>
-      )} */}
     </View>
   );
 };
@@ -109,12 +100,13 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   cameraButton: {
-    backgroundColor: "white",
+    backgroundColor: "#44B6C7",
     padding: 15,
     borderRadius: 10,
   },
   cameraButtonText: {
-    color: "black",
+    color: "#FFF",
+    fontSize: 18,
   },
   imagePreviewContainer: {
     flex: 1,

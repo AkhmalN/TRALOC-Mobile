@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Modal, ActivityIndicator, StyleSheet } from "react-native";
 
 const ModalLoading = ({ visible }) => {

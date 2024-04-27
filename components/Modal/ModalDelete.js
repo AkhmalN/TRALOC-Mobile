@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
@@ -14,19 +13,32 @@ import { useAuth } from "../../context/userContext";
 
 const ModalDelete = ({ visible, onRequestClose, data }) => {
   const { id } = useAuth();
+
+  const [errorDelete, setErrorDelete] = useState(false);
+  const [successDelete, setSuccessDelete] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const queryClient = useQueryClient();
   const deleteIzinMutation = useMutation({
     mutationFn: deleteAbsensi,
-    onSuccess: async () => {
-      console.log("delete success");
+    onSuccess: async (response) => {
+      setSuccessDelete(true);
+      setSuccessMessage("Data absensi berhasil dihapus");
       await queryClient.refetchQueries(["data", id]);
-      onRequestClose();
+      setTimeout(() => {
+        setSuccessDelete(false);
+        setSuccessMessage(null);
+        onRequestClose();
+      }, 2000);
     },
-    onError: () => {
-      console.log("delete error");
-    },
-    onSettled: async () => {
-      console.log("deleted state is reset");
+    onError: (error) => {
+      setErrorDelete(true);
+      setErrorMessage(`Terjadi kesalahan, ${error.message}`);
+      setTimeout(() => {
+        setErrorDelete(false);
+        setErrorMessage(null);
+        onRequestClose();
+      }, 2000);
     },
   });
 
@@ -45,7 +57,12 @@ const ModalDelete = ({ visible, onRequestClose, data }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Hapus Absensi</Text>
-
+            {errorDelete && (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            )}
+            {successDelete && (
+              <Text style={styles.errorText}>{successMessage}</Text>
+            )}
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.button, { backgroundColor: "red" }]}
@@ -54,7 +71,7 @@ const ModalDelete = ({ visible, onRequestClose, data }) => {
                 <View style={{ flexDirection: "row" }}>
                   <Text style={[styles.buttonText]}>
                     {deleteIzinMutation.isPending ? (
-                      <ActivityIndicator />
+                      <ActivityIndicator color={"#FFF"} />
                     ) : (
                       "Hapus"
                     )}
@@ -116,6 +133,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: "grey",
   },
+  errorText: {
+    fontSize: 16,
+    color: "red",
+  },
   modalSubText: {
     color: "red",
     fontWeight: "400",
@@ -127,6 +148,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
+    marginTop: 30,
   },
   button: {
     width: "40%",

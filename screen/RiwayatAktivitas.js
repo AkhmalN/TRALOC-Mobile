@@ -4,33 +4,30 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Ionicons, Octicons } from "@expo/vector-icons";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/userContext";
-import { getUserPatroli } from "../api/patroli";
 import ModalLoading from "../components/ModalLoading";
-import { Fontisto } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import ModalDeletePatroli from "../components/Modal/ModalDeletePatroli";
-const RiwayatPatroli = () => {
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { getUserAktivitas } from "../api/aktivitas";
+import ModalDeleteAktivitas from "../components/Modal/ModalDeleteAktivitas";
+const RiwayatAktivitas = () => {
   const { id } = useAuth();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [isdelete, setIsDelete] = useState([]);
 
   const { isLoading, isError, data, error, refetch } = useQuery({
-    queryKey: ["data_patroli", id],
-    queryFn: () => getUserPatroli(id),
+    queryKey: ["data_aktivitas", id],
+    queryFn: () => getUserAktivitas(id),
   });
 
   const handleDetail = (data) => {
-    navigation.navigate("DetailPatroli", { data: data });
+    navigation.navigate("DetailAktivitas", { data: data });
   };
 
   const handleDelete = (data) => {
@@ -88,40 +85,17 @@ const RiwayatPatroli = () => {
                     color={"#088395"}
                     style={styles.icon}
                   />
-                  <Text style={styles.text}>{data.lokasi_pos}</Text>
+                  <Text style={styles.text}>{data.pos_aktivitas}</Text>
                 </View>
                 <View style={styles.row}>
-                  {data.status === "Kebakaran" ? (
-                    <Octicons
-                      name="dot-fill"
-                      size={45}
-                      color={"#FF4444"}
-                      style={styles.icon}
-                    />
-                  ) : data.status === "Demonstrasi" ? (
-                    <Octicons
-                      name="dot-fill"
-                      size={45}
-                      color={"#221715"}
-                      style={styles.icon}
-                    />
-                  ) : data.status === "Pencurian" ? (
-                    <Octicons
-                      name="dot-fill"
-                      size={45}
-                      color={"#FFCE08"}
-                      style={styles.icon}
-                    />
-                  ) : (
-                    <Octicons
-                      name="dot-fill"
-                      size={45}
-                      color={"#088395"}
-                      style={styles.icon}
-                    />
-                  )}
+                  <MaterialCommunityIcons
+                    name="office-building-marker-outline"
+                    size={35}
+                    color={"#088395"}
+                    style={styles.icon}
+                  />
                   <Text style={[styles.text, { fontSize: 18 }]}>
-                    {data.status}
+                    {data.instansi_aktivitas}
                   </Text>
                 </View>
 
@@ -142,7 +116,7 @@ const RiwayatPatroli = () => {
           })}
 
         {isdelete && (
-          <ModalDeletePatroli
+          <ModalDeleteAktivitas
             visible={modalVisible}
             onRequestClose={() => setModalVisible(false)}
             data={isdelete}
@@ -268,4 +242,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RiwayatPatroli;
+export default RiwayatAktivitas;

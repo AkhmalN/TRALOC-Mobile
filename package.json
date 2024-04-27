@@ -49,6 +49,7 @@
     "react-data-table-component": "^7.6.2",
     "react-native": "0.72.5",
     "react-native-backdrop": "^2.1.2",
+    "react-native-compressor": "^1.8.24",
     "react-native-element-dropdown": "^2.10.1",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
@@ -60,7 +61,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-select-dropdown": "^4.0.0",
     "react-native-toast-message": "^2.2.0",
-    "react-native-vector-icons": "^10.0.0"
+    "react-native-vector-icons": "^10.0.0",
+    "expo-image-manipulator": "~11.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

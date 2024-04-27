@@ -22,7 +22,7 @@ import RiwayatAbsensi from "./screen/RiwayatAbsensi";
 import RiwayatAktivitas from "./screen/RiwayatAktivitas";
 import RiwayatAtensi from "./screen/RiwayatAtensi";
 import RiwayatPatroli from "./screen/RiwayatPatroli";
-import FormAktivitas from "./controllers/add-Aktivitas";
+import FormAktivitas from "./controllers/FormAktivitas";
 
 const queryClient = new QueryClient();
 const Stack = createStackNavigator();

@@ -49,10 +49,6 @@
       "expo-location",
       "expo-notifications"
     ],
-    "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera.",
-    "savePhotosPermission": "Allow $(PRODUCT_NAME) to save your photos",
-    "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
-    "isAccessMediaLocationEnabled": "true",
     "androidStatusBar": {
       "backgroundColor": "#44B6C7",
       "translucent": true

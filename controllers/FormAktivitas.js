@@ -21,7 +21,7 @@ import { getUser } from "../api/users";
 import { useAuth } from "../context/userContext";
 import ModalLoading from "../components/ModalLoading";
 
-export default function Aktivitas({ route }) {
+export default function FormAktivitas({ route }) {
   const { id, user } = useAuth();
   const queryClient = useQueryClient();
   const navigation = useNavigation();

@@ -4,7 +4,7 @@
     "slug": "smart-patrol",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Universitas_Nasional_Logo.png",
+    "icon": "./assets/Image_Editor.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/LOGO.png"

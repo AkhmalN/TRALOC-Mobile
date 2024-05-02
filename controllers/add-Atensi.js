@@ -1,11 +1,12 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
-import React, { useState, useEffect } from "react";
 import {
-  TextInput,
-  Button,
-  ActivityIndicator,
-  Modal,
-} from "react-native-paper";
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import { TextInput } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -15,10 +16,11 @@ import { useAuth } from "../context/userContext";
 import { createAtensi } from "../api/atensi";
 import ModalLoading from "../components/ModalLoading";
 import { Notifikasi } from "../components/Notifikasi";
+import { useNavigation } from "@react-navigation/native";
 
 const Atensi = () => {
   const { id, user } = useAuth();
-
+  const navigation = useNavigation();
   // Lifecycle
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [notifikasiVisible, setNotifikasiVisible] = useState(false);
@@ -73,6 +75,7 @@ const Atensi = () => {
         setTglAwalAtensi("");
         setTglAkhirAtensi("");
         setIsiAtensi("");
+        navigation.navigate("Riwayat Atensi");
       }, 2000);
     },
     onError: (error) => {
@@ -174,11 +177,10 @@ const Atensi = () => {
         onChangeText={handleNoteChanges}
         value={isiAtensi}
       />
-      <View style={styles.buttonContainer}>
-        <Button style={styles.button} onPress={handleOnSubmit}>
-          <Text style={styles.textButton}>Kirim Atensi</Text>
-        </Button>
-      </View>
+      <TouchableOpacity style={styles.button} onPress={handleOnSubmit}>
+        <Text style={styles.buttonText}>Buat Atensi</Text>
+        <Ionicons name="chevron-forward-outline" color={"#FFF"} size={20} />
+      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
@@ -229,22 +231,21 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
+
   button: {
-    textAlign: "right",
-    height: 50,
+    flexDirection: "row",
     backgroundColor: "#088395",
-    borderRadius: 10,
+    paddingHorizontal: 25,
+    paddingVertical: 15,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 15,
-    width: "70%",
+    borderRadius: 10,
+    marginBottom: 10,
+    height: 60,
   },
-  textButton: {
+  buttonText: {
     color: "#FFF",
     fontSize: 18,
+    width: "90%",
   },
 });

@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import MapView, { Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { Notifikasi } from "../components/Notifikasi";
@@ -13,6 +12,11 @@ import { getUser } from "../api/users";
 import ModalLoading from "../components/ModalLoading";
 import { useQuery } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  calculateDistance,
+  cosineDistanceBetweenPoints,
+} from "../services/DistanceCalculate";
+import { officeLocation } from "../constant/officeLocation";
 
 export default function FormAbsen({ route }) {
   const { id, user } = useAuth();
@@ -26,6 +30,7 @@ export default function FormAbsen({ route }) {
   const [isSuccess, setIsSuccess] = useState(null);
   const [errorStatus, setErrorStatus] = useState(null);
   const [noSelect, setNoSelect] = useState(false);
+  const [distance, setDistance] = useState(null);
 
   const [notifikasiVisible, setNotifikasiVisible] = useState(false);
   useEffect(() => {
@@ -37,11 +42,19 @@ export default function FormAbsen({ route }) {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
+      if (location) {
+        const distance = calculateDistance(
+          officeLocation.latitude,
+          officeLocation.longitude,
+          location.coords.latitude,
+          location.coords.longitude
+        );
+        setDistance(distance.toFixed(2));
+      }
     })();
   }, []);
 
@@ -97,7 +110,7 @@ export default function FormAbsen({ route }) {
           setNotifikasiVisible(true);
           setTimeout(() => {
             setNotifikasiVisible(false);
-            navigation.navigate("Home");
+            navigation.navigate("Riwayat Absensi");
           }, 5000);
         }
       } catch (error) {
@@ -132,31 +145,16 @@ export default function FormAbsen({ route }) {
         {errorStatus && notifikasiVisible && (
           <Notifikasi message={errorMsg} hideModal={hideNotifikasi} />
         )}
-        {location ? (
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: location ? location.coords.latitude : "",
-              longitude: location ? location.coords.longitude : "",
-              latitudeDelta: 0.001, // This sets the zoom level
-              longitudeDelta: 0.001, // This sets the zoom level
-            }}
-          >
-            <Marker
-              key={1}
-              coordinate={{
-                latitude: location ? location.coords.latitude : "",
-                longitude: location ? location.coords.longitude : "",
-              }}
-              title="Lokasi Anda"
-            ></Marker>
-          </MapView>
-        ) : (
-          <Text>Loading location ...</Text>
-        )}
+        {loading && <ModalLoading />}
       </View>
       <View style={styles.bottomContent}>
+        <View style={styles.distanceContainer}>
+          <Text style={styles.distanceText}>
+            Jarak dari koordinat posisi ke kantor {distance} km
+          </Text>
+        </View>
         <View style={styles.formSection}>
+          <Text style={styles.label}>Swafoto : </Text>
           <View style={[styles.form, styles.flexRow]}>
             <Text style={styles.textForm}>Ambil Swafoto</Text>
             {savedPhoto && (
@@ -210,19 +208,15 @@ export default function FormAbsen({ route }) {
             />
           </View>
         </View>
+
         <TouchableOpacity style={styles.button} onPress={handleOnSubmit}>
-          <Text style={styles.buttonText}>
-            {loading ? "Mengirim Absen" : "Kirim Absen"}
-          </Text>
-          {loading ? (
-            <ActivityIndicator
-              size={"small"}
-              style={{ marginLeft: 10, marginRight: 10 }}
-              color={"#FFF"}
-            />
-          ) : (
-            <Ionicons name="send" size={24} color={"#FFF"} />
-          )}
+          <Text style={styles.buttonText}>Kirim Laporan Absensi</Text>
+          <Ionicons
+            name="chevron-forward-outline"
+            color={"#FFF"}
+            size={20}
+            style={styles.icon}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -233,13 +227,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  mapContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
+
   alertSuccess: {
     position: "absolute",
     backgroundColor: "#088395",
@@ -262,12 +250,23 @@ const styles = StyleSheet.create({
   },
   bottomContent: {
     width: "100%",
-    marginTop: 20,
     flex: 1,
     borderRadius: 10,
     padding: 10,
     alignItems: "center",
   },
+  distanceContainer: {
+    backgroundColor: "#E2A51A",
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  distanceText: {
+    color: "#FFF",
+    fontSize: 18,
+  },
+
   icon: {
     width: 25,
     height: 25,
@@ -281,6 +280,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: "bold",
+    fontSize: 20,
   },
   flexRow: {
     flexDirection: "row",
@@ -302,15 +302,15 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     backgroundColor: "#088395",
-    height: 50,
-    width: "70%",
+    height: 60,
     alignItems: "center",
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 8,
     padding: 10,
   },
   buttonText: {
+    width: "85%",
     color: "#FFF",
     fontSize: 18,
     marginHorizontal: 10,

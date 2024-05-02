@@ -14,8 +14,6 @@ const Home = () => {
   const currentDate = new Date();
   const { role, user } = useAuth();
   const [loadingStatus, setLoadingStatus] = useState(false);
-  const [errorStatus, setErrorStatus] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
   const [statusAbsen, setStatusAbsen] = useState("");
 
   useEffect(() => {
@@ -68,8 +66,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
   },
   userInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 10,
     marginTop: 20,
@@ -78,8 +74,8 @@ const styles = StyleSheet.create({
   },
   textDate: {
     fontSize: 16,
-    fontWeight: "bold",
     color: "#44B6C7",
+    fontWeight: "bold",
   },
   helloText: {
     fontSize: 25,

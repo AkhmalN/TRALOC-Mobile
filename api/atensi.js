@@ -43,7 +43,6 @@ export const getUserAtensi = async (userId) => {
 export const deleteAtensi = async (id) => {
   try {
     const response = await axios.delete(`${baseUrl}/atensi/${id}`);
-    console.log(response);
     return response;
   } catch (error) {
     throw new Error(error);

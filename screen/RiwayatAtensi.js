@@ -36,6 +36,10 @@ const RiwayatAtensi = () => {
     setIsDelete(data);
     setModalVisible(true);
   };
+
+  const sortByCreatedAtDesc = (data) => {
+    return data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  };
   return (
     <ScrollView
       style={styles.container}
@@ -61,7 +65,7 @@ const RiwayatAtensi = () => {
         )}
         {data &&
           data.length > 0 &&
-          data.map((data, id) => {
+          sortByCreatedAtDesc(data).map((data, id) => {
             return (
               <View style={styles.card} key={id}>
                 <View style={styles.rowFlexEnd}>

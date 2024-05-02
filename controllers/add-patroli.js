@@ -113,7 +113,7 @@ export default function Patroli({ route }) {
         setNotifikasiVisible(true);
         setTimeout(() => {
           setNotifikasiVisible(false);
-          navigation.navigate("Home");
+          navigation.navigate("Riwayat Patroli");
         }, 5000);
       }
     } catch (error) {
@@ -127,7 +127,7 @@ export default function Patroli({ route }) {
       {renderPermissionMessage(hasPermission, handleRequestCameraPermission)}
       {success && notifikasiVisible && (
         <Notifikasi
-          message={"Berhasil mengirim patroli"}
+          message={"Berhasil mengirim laporan patroli"}
           hideModal={hideNotifikasi}
         />
       )}
@@ -145,6 +145,7 @@ export default function Patroli({ route }) {
           <Text style={styles.overlayBarcode}>Dekatkan camera ke barcode</Text>
         </View>
       )}
+      {loading && <ModalLoading />}
 
       <View style={styles.formBox}>
         {isBarcode === false && (
@@ -159,7 +160,7 @@ export default function Patroli({ route }) {
           </View>
         )}
         <View style={{ padding: 10 }}>
-          <Text style={styles.label}>Lokasi Pos</Text>
+          <Text style={styles.label}>Lokasi Pos : </Text>
 
           <TouchableWithoutFeedback style={styles.formInput}>
             <View style={{ width: "100%" }}>
@@ -171,7 +172,7 @@ export default function Patroli({ route }) {
             </View>
           </TouchableWithoutFeedback>
 
-          <Text style={styles.label}>Instansi Patroli</Text>
+          <Text style={styles.label}>Instansi Patroli : </Text>
 
           <TouchableWithoutFeedback style={styles.formInput}>
             <View style={{ width: "100%" }}>
@@ -182,7 +183,7 @@ export default function Patroli({ route }) {
               )}
             </View>
           </TouchableWithoutFeedback>
-          <Text style={styles.label}>Status</Text>
+          <Text style={styles.label}>Status : </Text>
           <View style={styles.containerDropdown}>
             <TouchableOpacity onPress={toggleDropdown}>
               <View style={styles.dropdownToggle}>
@@ -210,7 +211,7 @@ export default function Patroli({ route }) {
               </View>
             )}
           </View>
-          <Text style={styles.label}>Catatan</Text>
+          <Text style={styles.label}>Catatan : </Text>
           <TextInput
             placeholder="Masukkan Catatan"
             style={styles.formCatatan}
@@ -218,45 +219,35 @@ export default function Patroli({ route }) {
             multiline={true}
             onChangeText={(text) => setNotes(text)}
           />
-          <Text style={styles.label}>Capture Dokumen</Text>
-          <TouchableOpacity
-            style={savedPhoto ? styles.formHasImage : styles.formInput}
-            onPress={() => navigation.navigate("PatrolCamera")}
+          <Text style={styles.label}>Dokumentasi : </Text>
+          <View
+            style={[
+              styles.formDokumentasi,
+              { flexDirection: "row", marginTop: 10 },
+            ]}
           >
-            <View>
-              {savedPhoto && (
-                <Image
-                  source={{ uri: savedPhoto.uri }}
-                  style={{ width: 100, height: 70, borderRadius: 10 }}
-                />
-              )}
-            </View>
-            <View>
-              <Image
-                source={require("../assets/icon/Camera.png")}
-                style={styles.docIcon}
-              />
-            </View>
-          </TouchableOpacity>
+            <Ionicons
+              name="camera-outline"
+              size={45}
+              onPress={() => navigation.navigate("PatrolCamera")}
+            />
+          </View>
+          {savedPhoto && (
+            <Image
+              source={{ uri: savedPhoto.uri }}
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 10,
+                marginLeft: 5,
+              }}
+            />
+          )}
         </View>
         <View style={{ alignItems: "flex-end", marginRight: 20 }}>
           <TouchableOpacity style={styles.button} onPress={handleOnSubmit}>
-            {loading ? (
-              <>
-                <Text style={styles.buttonText}>Mengirim</Text>
-                <ActivityIndicator size={20} color={"#FFF"} />
-              </>
-            ) : (
-              <>
-                <Text style={styles.buttonText}>Kirim Patroli</Text>
-                <Ionicons
-                  name="paper-plane-outline"
-                  size={25}
-                  style={styles.icon}
-                  color={"#FFF"}
-                />
-              </>
-            )}
+            <Text style={styles.buttonText}>Kirim Laporan Patroli</Text>
+            <Ionicons name="chevron-forward-outline" color={"#FFF"} size={20} />
           </TouchableOpacity>
         </View>
       </View>
@@ -312,6 +303,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     fontSize: 20,
+    fontWeight: "bold",
   },
   valueForm: {
     fontSize: 18,
@@ -346,20 +338,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  formHasImage: {
+  formDokumentasi: {
     width: "100%",
-    height: 80,
-    borderRadius: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
+    height: 70,
+    borderRadius: 10,
+    padding: 10,
     marginTop: 10,
-    marginBottom: 10,
-    backgroundColor: "#E6F4FF",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    marginBottom: 20,
+    backgroundColor: "#EEF5FF",
   },
 
   formCatatan: {
@@ -420,16 +406,18 @@ const styles = StyleSheet.create({
   },
   button: {
     flexDirection: "row",
-    backgroundColor: "#44B6C7",
+    backgroundColor: "#088395",
     paddingHorizontal: 25,
     paddingVertical: 15,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
     marginBottom: 10,
+    height: 60,
   },
   buttonText: {
     color: "#FFF",
     fontSize: 18,
+    width: "90%",
   },
 });

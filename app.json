@@ -4,7 +4,7 @@
     "slug": "smart-patrol",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Image_Editor.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/LOGO.png"

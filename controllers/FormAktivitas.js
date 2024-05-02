@@ -69,7 +69,7 @@ export default function FormAktivitas({ route }) {
       setTimeout(() => {
         setSuccessCreate(false);
         setNotifikasiVisible(false);
-        navigation.navigate("Home");
+        navigation.navigate("Riwayat Aktivitas");
       }, 2000);
     },
     onError: (error) => {

@@ -30,8 +30,9 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.FOREGROUND_SERVICE",
         "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE",
         "ACCESS_BACKGROUND_LOCATION",
         "INTERNET"
       ],
@@ -44,7 +45,13 @@
       "expo-router",
       "expo-camera",
       "expo-media-library",
-      "expo-location",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow App to use your location",
+          "isAndroidBackgroundLocationEnabled": "Allow App to use your location in the background"
+        }
+      ],
       "expo-notifications"
     ],
     "androidStatusBar": {

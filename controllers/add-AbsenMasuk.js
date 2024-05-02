@@ -31,18 +31,40 @@ export default function FormAbsen({ route }) {
   const [errorStatus, setErrorStatus] = useState(null);
   const [noSelect, setNoSelect] = useState(false);
   const [distance, setDistance] = useState(null);
-
+  const [region, setRegion] = useState(null);
   const [notifikasiVisible, setNotifikasiVisible] = useState(false);
+
+  const getRegionName = async (latitude, longitude) => {
+    try {
+      const location = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+      if (location && location.length > 0) {
+        const regionName = location[0].city;
+        const street = location[0].street;
+        const subRegion = location[0].subregion;
+        return { regionName, street, subRegion };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      return null;
+    }
+  };
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      let { status } = await Location.requestBackgroundPermissionsAsync();
       if (status !== "granted") {
         setErrorStatus(true);
         setNotifikasiVisible(true);
         setErrorMsg("Permission to access location was denied");
         return;
       }
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+      });
+
       setLocation(location);
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
@@ -53,7 +75,13 @@ export default function FormAbsen({ route }) {
           location.coords.latitude,
           location.coords.longitude
         );
+
         setDistance(distance.toFixed(2));
+        const regionName = await getRegionName(
+          location.coords.latitude,
+          location.coords.longitude
+        );
+        setRegion(regionName);
       }
     })();
   }, []);
@@ -148,11 +176,14 @@ export default function FormAbsen({ route }) {
         {loading && <ModalLoading />}
       </View>
       <View style={styles.bottomContent}>
-        <View style={styles.distanceContainer}>
-          <Text style={styles.distanceText}>
-            Jarak dari koordinat posisi ke kantor {distance} km
-          </Text>
-        </View>
+        {location && (
+          <View style={styles.distanceContainer}>
+            <Text style={styles.distanceText}>
+              Jarak dari koordinat posisi ke kantor {distance} km
+            </Text>
+          </View>
+        )}
+
         <View style={styles.formSection}>
           <Text style={styles.label}>Swafoto : </Text>
           <View style={[styles.form, styles.flexRow]}>
@@ -167,8 +198,8 @@ export default function FormAbsen({ route }) {
               <View style={styles.form}>
                 {location && (
                   <Text style={styles.textForm}>
-                    {location.coords.latitude}(lat),{location.coords.longitude}
-                    (lng)
+                    {region.street},{region.regionName}, {region.subRegion},{" "}
+                    {region.subRegion}
                   </Text>
                 )}
               </View>
@@ -288,7 +319,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   form: {
-    height: 50,
+    height: 65,
     borderRadius: 10,
     marginTop: 10,
     marginBottom: 10,
@@ -318,7 +349,7 @@ const styles = StyleSheet.create({
 
   dropdownButtonStyle: {
     width: "100%",
-    height: 50,
+    height: 60,
     borderRadius: 12,
     flexDirection: "row",
     justifyContent: "center",
@@ -352,7 +383,7 @@ const styles = StyleSheet.create({
   },
   textForm: {
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: "300",
     color: "#151E26",
   },
 });

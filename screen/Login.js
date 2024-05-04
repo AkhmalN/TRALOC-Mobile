@@ -79,10 +79,7 @@ export default function Login() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : null}
-      style={styles.container}
-    >
+    <KeyboardAvoidingView style={styles.container}>
       <ImageBackground
         source={require("../assets/BG_LOGIN.png")}
         style={{

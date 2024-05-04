@@ -56,8 +56,6 @@ export default function FormAbsen({ route }) {
     (async () => {
       let { status } = await Location.requestBackgroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorStatus(true);
-        setNotifikasiVisible(true);
         setErrorMsg("Permission to access location was denied");
         return;
       }
@@ -170,9 +168,7 @@ export default function FormAbsen({ route }) {
             hideModal={hideNotifikasi}
           />
         )}
-        {errorStatus && notifikasiVisible && (
-          <Notifikasi message={errorMsg} hideModal={hideNotifikasi} />
-        )}
+        {errorMsg && <Text>{errorMsg}</Text>}
         {loading && <ModalLoading />}
       </View>
       <View style={styles.bottomContent}>

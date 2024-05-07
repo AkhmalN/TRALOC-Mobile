@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 const ActivityCamera = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
-  const [capturedImage, setCapturedImage] = useState(null);
+
   const cameraRef = useRef(null);
   const navigation = useNavigation();
 
@@ -35,21 +35,7 @@ const ActivityCamera = () => {
   const takePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
-      setCapturedImage(photo);
       navigation.navigate("Aktivitas", { savedPhoto: photo });
-    }
-  };
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setCapturedImage(result);
     }
   };
 
@@ -65,9 +51,7 @@ const ActivityCamera = () => {
             <TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
               <Text style={styles.cameraButtonText}>Capture</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cameraButton} onPress={pickImage}>
-              <Text style={styles.cameraButtonText}>Gallery</Text>
-            </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.cameraButton}
               onPress={handleCameraTypeToggle}

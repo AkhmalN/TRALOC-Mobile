@@ -69,7 +69,7 @@ export default function FormAbsen({ route }) {
     })();
   }, []);
 
-  const { isLoading, data, isError, error } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["user", id],
     queryFn: () => getUser(id),
   });
@@ -113,13 +113,13 @@ export default function FormAbsen({ route }) {
           savedPhoto,
         });
         if (response.status === 201) {
-          await AsyncStorage.setItem("status_absen", response.data.status);
+          await AsyncStorage.setItem("waktu_absen", response.data.checkInTime);
           setLoading(false);
           setIsSuccess(true);
           setNotifikasiVisible(true);
           setTimeout(() => {
             setNotifikasiVisible(false);
-            navigation.navigate("Riwayat Absensi");
+            navigation.navigate("Home");
           }, 5000);
         }
       } catch (error) {
@@ -171,7 +171,7 @@ export default function FormAbsen({ route }) {
           </View>
           {region && (
             <View>
-              <Text style={styles.label}>koordinat Anda Saat ini :</Text>
+              <Text style={styles.label}>Lokasi Anda Saat ini :</Text>
               <View style={styles.form}>
                 {location && (
                   <Text style={styles.textForm}>
@@ -181,7 +181,7 @@ export default function FormAbsen({ route }) {
               </View>
             </View>
           )}
-          <Text style={styles.label}>Lokasi Absen :</Text>
+          <Text style={styles.label}>Lokasi Instansi :</Text>
           <View style={styles.form}>
             <SelectDropdown
               data={data_lokasi}
@@ -191,7 +191,7 @@ export default function FormAbsen({ route }) {
                   <View style={styles.dropdownButtonStyle}>
                     <Text style={styles.dropdownButtonTxtStyle}>
                       {(selectedItem && selectedItem.title) ||
-                        "Pilih Lokasi Absen"}
+                        "Pilih Lokasi Instansi"}
                     </Text>
                   </View>
                 );
@@ -290,8 +290,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     borderWidth: 1,
     borderColor: "#088395",
-    padding: 5,
     justifyContent: "center",
+    paddingHorizontal: 15,
   },
   button: {
     flexDirection: "row",
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
   },
   textForm: {
     fontSize: 18,
-    fontWeight: "300",
-    color: "#151E26",
+    fontWeight: "bold",
+    color: "grey",
   },
 });

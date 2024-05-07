@@ -12,19 +12,22 @@ export const addAktivitas = async ({
   savedPhoto,
 }) => {
   try {
-    const compressedImage = await compressImage(savedPhoto.uri);
     const formData = new FormData();
+    for (const images of savedPhoto) {
+      const compressedImage = await compressImage(images);
+      formData.append("image", {
+        uri: compressedImage.uri,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+    }
     formData.append("userId", userId);
     formData.append("username", username);
     formData.append("nama_lengkap", nama_lengkap);
     formData.append("instansi_aktivitas", instansi_aktivitas);
     formData.append("pos_aktivitas", pos_aktivitas);
     formData.append("notes_aktivitas", notes_aktivitas);
-    formData.append("image", {
-      uri: compressedImage.uri,
-      type: "image/jpeg",
-      name: "photo.jpg",
-    });
+
     const response = await axios.post(`${baseUrl}/aktivitas/`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

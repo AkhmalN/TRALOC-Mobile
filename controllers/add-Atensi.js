@@ -75,7 +75,7 @@ const Atensi = () => {
         setTglAwalAtensi("");
         setTglAkhirAtensi("");
         setIsiAtensi("");
-        navigation.navigate("Riwayat Atensi");
+        navigation.navigate("Home");
       }, 2000);
     },
     onError: (error) => {
@@ -100,10 +100,7 @@ const Atensi = () => {
     createAtensiMutation.mutate(data);
   };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : null}
-      style={styles.container}
-    >
+    <KeyboardAvoidingView style={styles.container}>
       {isLoading && <ModalLoading />}
       {isSuccess && notifikasiVisible && (
         <Notifikasi

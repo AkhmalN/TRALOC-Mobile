@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  Dimensions,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import {
   ScrollView,
@@ -14,64 +6,56 @@ import {
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { BarCodeScanner } from "expo-barcode-scanner";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import {
-  askForCameraPermission,
-  renderPermissionMessage,
-} from "../permission/CameraPermission";
 import { addPatroli } from "../api/patroli";
 import { Notifikasi } from "../components/Notifikasi";
 import { useAuth } from "../context/userContext";
 import { getUser } from "../api/users";
 import { useQuery } from "@tanstack/react-query";
 import ModalLoading from "../components/ModalLoading";
-
-const { width, height } = Dimensions.get("window");
+import { CameraView, Camera } from "expo-camera/next";
 
 export default function Patroli({ route }) {
   const { id, user } = useAuth();
   const navigation = useNavigation();
   const { savedPhoto } = route ? route.params || {} : {};
-  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [scanResult, setScanResult] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [scanedData, setScannedData] = useState(false);
-  const [items, setItems] = useState([
-    "Aman",
-    "Demonstrasi",
-    "Kebakaran",
-    "Pencurian",
-  ]);
-  const [notes, setNotes] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
   const [namaInstansi, setNamaInstansi] = useState("");
   const [lokasiBarcode, setLokasiBarcode] = useState("");
+  const [images, setImages] = useState([]);
+  const [items] = useState(["Aman", "Demonstrasi", "Kebakaran", "Pencurian"]);
+  const [notes, setNotes] = useState("");
+  const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [success, setIsSuccess] = useState("");
   const [error, setError] = useState("");
   const [notifikasiVisible, setNotifikasiVisible] = useState(false);
-  const [isBarcode, setIsBarcode] = useState(true);
+  const [hasPermission, setHasPermission] = useState(null);
 
   useEffect(() => {
-    const requestCameraPermission = async () => {
-      const permissionStatus = await askForCameraPermission();
-      setHasPermission(permissionStatus);
+    const getCameraPermissions = async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
     };
-    requestCameraPermission();
-  }, []);
-  const handleRequestCameraPermission = async () => {
-    const permissionStatus = await askForCameraPermission();
-    setHasPermission(permissionStatus);
-  };
 
-  const { isLoading, data } = useQuery({
+    getCameraPermissions();
+  }, []);
+
+  useEffect(() => {
+    if (savedPhoto && savedPhoto.uri) {
+      const newImages = [...images, savedPhoto.uri];
+
+      setImages(newImages);
+    }
+  }, [savedPhoto]);
+
+  const { isLoading: isLoadingUser, data } = useQuery({
     queryKey: ["user", id],
     queryFn: () => getUser(id),
   });
 
-  if (isLoading) {
-    return <ModalLoading />;
-  }
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -84,16 +68,33 @@ export default function Patroli({ route }) {
   const hideNotifikasi = () => {
     setNotifikasiVisible(false);
   };
-
-  const handleBarCodeScanner = ({ data }) => {
-    if (data) {
-      setIsBarcode(false);
-      const { namaInstansi, lokasiBarcode } = JSON.parse(data);
-
-      setNamaInstansi(namaInstansi);
-      setLokasiBarcode(lokasiBarcode);
+  const handleQrScanner = ({ data }) => {
+    let parseData = JSON.parse(data);
+    setNamaInstansi(parseData.namaInstansi);
+    setLokasiBarcode(parseData.lokasiBarcode);
+    setScanResult({ data });
+    if (scanResult) {
+      setScanned(false);
     }
   };
+  const handleQrCode = () => {
+    setScanned(true);
+  };
+  const handleToCamera = () => {
+    if (images.length >= 4) {
+      alert("Melebihi maksimal foto yang disarankan");
+    } else {
+      navigation.navigate("PatrolCamera");
+    }
+  };
+
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
   const handleOnSubmit = async () => {
     setLoading(true);
     try {
@@ -101,11 +102,11 @@ export default function Patroli({ route }) {
         userId: id,
         user,
         namaLengkap: data.nama_lengkap,
-        lokasiBarcode,
-        namaInstansi,
+        lokasiBarcode: lokasiBarcode,
+        namaInstansi: namaInstansi,
         selectedItem,
         notes,
-        savedPhoto,
+        savedPhoto: images,
       });
       if (response) {
         setLoading(false);
@@ -113,7 +114,7 @@ export default function Patroli({ route }) {
         setNotifikasiVisible(true);
         setTimeout(() => {
           setNotifikasiVisible(false);
-          navigation.navigate("Riwayat Patroli");
+          navigation.navigate("Home");
         }, 5000);
       }
     } catch (error) {
@@ -124,7 +125,26 @@ export default function Patroli({ route }) {
 
   return (
     <ScrollView style={styles.container}>
-      {renderPermissionMessage(hasPermission, handleRequestCameraPermission)}
+      {scanned && (
+        <CameraView
+          onBarcodeScanned={scanned ? handleQrScanner : undefined}
+          barcodeScannerSettings={{
+            barcodeTypes: ["qr", "pdf417"],
+          }}
+          style={{
+            flex: 1,
+            height: 500,
+          }}
+        />
+      )}
+      {scanned && (
+        <View style={styles.faceOverlay}>
+          <View style={[styles.topLeft, styles.border]} />
+          <View style={[styles.topRight, styles.border]} />
+          <View style={[styles.bottomLeft, styles.border]} />
+          <View style={[styles.bottomRight, styles.border]} />
+        </View>
+      )}
       {success && notifikasiVisible && (
         <Notifikasi
           message={"Berhasil mengirim laporan patroli"}
@@ -132,33 +152,18 @@ export default function Patroli({ route }) {
         />
       )}
 
-      {isBarcode && (
-        <View
-          style={[styles.barcodeBox, { height: height * 0.5, width: width }]}
-        >
-          <BarCodeScanner
-            onBarCodeScanned={scanedData ? undefined : handleBarCodeScanner}
-            style={{
-              flex: 1,
-            }}
-          />
-          <Text style={styles.overlayBarcode}>Dekatkan camera ke barcode</Text>
-        </View>
-      )}
       {loading && <ModalLoading />}
+      {isLoadingUser && <ModalLoading />}
 
       <View style={styles.formBox}>
-        {isBarcode === false && (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <TouchableOpacity
-              style={styles.scanButton}
-              onPress={() => setIsBarcode(true)}
-            >
-              <Text style={styles.scanButtonText}>Scan Ulang</Text>
-              <Feather name="refresh-cw" size={24} color="#FFF" />
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          {!scanned && (
+            <TouchableOpacity style={styles.scanButton} onPress={handleQrCode}>
+              <Text style={styles.scanButtonText}>Scan Qr Code</Text>
+              <Ionicons name="qr-code-outline" size={24} color="#FFF" />
             </TouchableOpacity>
-          </View>
-        )}
+          )}
+        </View>
         <View style={{ padding: 10 }}>
           <Text style={styles.label}>Lokasi Pos : </Text>
 
@@ -229,20 +234,44 @@ export default function Patroli({ route }) {
             <Ionicons
               name="camera-outline"
               size={45}
-              onPress={() => navigation.navigate("PatrolCamera")}
+              onPress={handleToCamera}
             />
           </View>
-          {savedPhoto && (
-            <Image
-              source={{ uri: savedPhoto.uri }}
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 10,
-                marginLeft: 5,
-              }}
-            />
-          )}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+            }}
+          >
+            {images.map((image, index) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    width: 90,
+                    borderRadius: 10,
+                  }}
+                >
+                  <Feather
+                    name="x"
+                    size={24}
+                    color="#FFF"
+                    style={{ position: "absolute", zIndex: 1, left: 50 }}
+                    onPress={() => handleRemoveImage(index)}
+                  />
+                  <Image
+                    source={{ uri: image }}
+                    style={{
+                      width: 90,
+                      height: 90,
+                      borderRadius: 10,
+                      marginLeft: 5,
+                    }}
+                  />
+                </View>
+              );
+            })}
+          </View>
         </View>
         <View style={{ alignItems: "flex-end", marginRight: 20 }}>
           <TouchableOpacity style={styles.button} onPress={handleOnSubmit}>
@@ -314,8 +343,8 @@ const styles = StyleSheet.create({
   scanButton: {
     backgroundColor: "#FC676B",
     borderRadius: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "space-evenly",
@@ -393,7 +422,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: 400,
     zIndex: 1,
-    borderRadius: 20,
+    borderRadius: 5,
   },
   dropdownItem: {
     height: 50,
@@ -419,5 +448,57 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 18,
     width: "90%",
+  },
+  faceOverlay: {
+    borderWidth: 2,
+    borderColor: "transparent", // Menyembunyikan warna border secara umum
+    position: "absolute",
+    width: "70%",
+    height: "20%",
+    zIndex: 1,
+    top: "9%",
+    left: "15%",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+  },
+  border: {
+    position: "absolute",
+    width: 20,
+    height: 20,
+    borderWidth: 4,
+  },
+  topLeft: {
+    top: -2,
+    left: -2,
+    borderTopColor: "#FFF",
+    borderLeftColor: "#FFF",
+    borderRightColor: "transparent", // Tidak menampilkan warna di sisi right
+    borderBottomColor: "transparent", // Tidak menampilkan warna di sisi bottom
+  },
+  topRight: {
+    top: -2,
+    right: -2,
+    borderTopColor: "#FFF",
+    borderRightColor: "#FFF",
+    borderLeftColor: "transparent", // Tidak menampilkan warna di sisi left
+    borderBottomColor: "transparent", // Tidak menampilkan warna di sisi bottom
+  },
+  bottomLeft: {
+    bottom: -2,
+    left: -2,
+    borderBottomColor: "#FFF",
+    borderLeftColor: "#FFF",
+    borderTopColor: "transparent", // Tidak menampilkan warna di sisi top
+    borderRightColor: "transparent", // Tidak menampilkan warna di sisi right
+  },
+  bottomRight: {
+    bottom: -2,
+    right: -2,
+    borderBottomColor: "#FFF",
+    borderRightColor: "#FFF",
+    borderTopColor: "transparent", // Tidak menampilkan warna di sisi top
+    borderLeftColor: "transparent", // Tidak menampilkan warna di sisi left
   },
 });

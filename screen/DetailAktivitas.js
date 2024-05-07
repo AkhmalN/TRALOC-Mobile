@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 
@@ -10,17 +17,17 @@ export default function DetailAktivitas() {
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.formItem}>
-          <Text style={styles.label}>Instansi Aktivitas:</Text>
+          <Text style={styles.label}>Instansi Aktivitas :</Text>
           <Text style={styles.value}>{data.instansi_aktivitas}</Text>
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.label}>Pos Aktivitas:</Text>
+          <Text style={styles.label}>Pos Aktivitas :</Text>
           <Text style={styles.value}>{data.pos_aktivitas}</Text>
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.label}>Waktu:</Text>
+          <Text style={styles.label}>Waktu :</Text>
           <Text style={styles.value}>
             {DateFormat(data.createdAt)}, {TimeFormat(data.createdAt)}
           </Text>
@@ -32,8 +39,16 @@ export default function DetailAktivitas() {
         </View>
       </View>
 
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: data.image }} style={styles.image} />
+      <View>
+        <Text style={styles.label}>Dokumentasi :</Text>
+
+        <ScrollView style={styles.imageContainer}>
+          {data.image.map((uri, id) => {
+            return (
+              <Image source={{ uri: uri }} style={styles.image} key={id} />
+            );
+          })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -61,11 +76,12 @@ const styles = StyleSheet.create({
     maxWidth: 250,
   },
   imageContainer: {
-    alignItems: "center",
+    height: "100%",
   },
   image: {
-    width: 200,
-    height: 200,
+    width: "100%",
+    height: 300,
     borderRadius: 10,
+    marginVertical: 5,
   },
 });

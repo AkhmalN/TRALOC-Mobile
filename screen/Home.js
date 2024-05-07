@@ -14,19 +14,19 @@ const Home = () => {
   const currentDate = new Date();
   const { role, user } = useAuth();
   const [loadingStatus, setLoadingStatus] = useState(false);
-  const [statusAbsen, setStatusAbsen] = useState("");
+  const [jamAbsen, setJamAbsen] = useState("");
 
   useEffect(() => {
-    const getStatusAbsen = async () => {
+    const getJamAbsen = async () => {
       try {
-        const status = await AsyncStorage.getItem("status_absen");
-        setStatusAbsen(status);
+        const jam = await AsyncStorage.getItem("waktu_absen");
+        setJamAbsen(jam);
       } catch (error) {
         console.error("Error getting status_absen from AsyncStorage:", error);
       }
     };
 
-    getStatusAbsen();
+    getJamAbsen();
   }, []);
 
   return (
@@ -45,8 +45,7 @@ const Home = () => {
             <Atensi />
           )}
           {role === "user" && <ListAtensi />}
-          <Presensi status={statusAbsen} />
-          {/* <AbsenKeluar /> */}
+          <Presensi status={jamAbsen} />
           <Aktivitas />
           <Patroli />
           <Footer />

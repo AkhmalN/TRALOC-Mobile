@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 
@@ -37,8 +44,16 @@ export default function DetailPatroli() {
         </View>
       </View>
 
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: data.image }} style={styles.image} />
+      <View>
+        <Text style={styles.label}>Dokumentasi :</Text>
+
+        <ScrollView style={styles.imageContainer}>
+          {data.image.map((uri, id) => {
+            return (
+              <Image source={{ uri: uri }} style={styles.image} key={id} />
+            );
+          })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -65,12 +80,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     maxWidth: 250,
   },
-  imageContainer: {
-    alignItems: "center",
-  },
   image: {
-    width: 200,
-    height: 200,
+    width: "100%",
+    height: 300,
     borderRadius: 10,
+    marginVertical: 5,
   },
 });

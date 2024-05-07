@@ -39,8 +39,15 @@ export const addPatroli = async ({
   savedPhoto,
 }) => {
   try {
-    const compressedImage = await compressImage(savedPhoto.uri);
     const formData = new FormData();
+    for (const images of savedPhoto) {
+      const compressedImage = await compressImage(images);
+      formData.append("image", {
+        uri: compressedImage.uri,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+    }
     formData.append("userId", userId);
     formData.append("username", user);
     formData.append("lokasi_pos", lokasiBarcode);
@@ -48,11 +55,6 @@ export const addPatroli = async ({
     formData.append("nama_lengkap", namaLengkap);
     formData.append("status", selectedItem);
     formData.append("notes", notes);
-    formData.append("image", {
-      uri: compressedImage.uri,
-      type: "image/jpeg",
-      name: "photo.jpg",
-    });
     const response = await axios.post(`${baseUrl}/patrol/`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

@@ -81,19 +81,6 @@ const DataPribadi = () => {
             />
             <TextInput value={data ? data.nik : ""} style={styles.formInput} />
           </View>
-          <Text style={styles.title}>Unit Kerja : </Text>
-
-          <View style={styles.form}>
-            <MaterialCommunityIcons
-              name="badge-account-horizontal-outline"
-              size={24}
-              color={"#088395"}
-            />
-            <TextInput
-              value={data ? data.unit_kerja : ""}
-              style={styles.formInput}
-            />
-          </View>
         </View>
       </View>
     </ScrollView>

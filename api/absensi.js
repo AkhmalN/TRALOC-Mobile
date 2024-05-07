@@ -61,7 +61,6 @@ export const addAbsen = async ({
       return response;
     }
   } catch (error) {
-    console.log(error);
     throw new Error(error);
   }
 };

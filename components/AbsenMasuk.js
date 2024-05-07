@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5, Ionicons, Octicons } from "@expo/vector-icons";
+import { DateFormat, TimeFormat } from "../utils/DateFormat";
 
 const Presensi = ({ status }) => {
   const navigation = useNavigation();
@@ -18,12 +19,20 @@ const Presensi = ({ status }) => {
         />
       </View>
       <View style={styles.cardTitle}>
-        <Text style={styles.cardTextInd}>Absensi Masuk</Text>
-        <Text style={styles.cardTextEng}>Absensi Masuk | Check In</Text>
+        <Text style={styles.cardTextInd}>Absensi Masuk | Check In</Text>
+        {status ? (
+          <View style={styles.flexCardtext}>
+            <Text style={styles.cardTextEng}>Check In : </Text>
+            <Text style={styles.cardTextHour}>{TimeFormat(status)}</Text>
+            <Text style={[styles.cardTextHour, { marginLeft: 5 }]}>
+              {DateFormat(status)}
+            </Text>
+          </View>
+        ) : (
+          <Text style={styles.cardTextEng}>Check In Absensi Saat Ini</Text>
+        )}
       </View>
-      <View style={styles.iconCenter}>
-        {status ? <Octicons name="verified" size={30} color="#6DBC46" /> : ""}
-      </View>
+
       <View style={styles.iconRight}>
         <Ionicons name="chevron-forward-outline" size={30} color={"#088395"} />
       </View>
@@ -42,15 +51,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#088395",
   },
-  iconCenter: {
-    width: "10%",
-  },
+
   iconMenu: {
     width: "10%",
     marginRight: 10,
   },
   cardTitle: {
-    width: "70%",
+    width: "80%",
     borderRadius: 20,
     marginTop: 10,
     marginBottom: 10,
@@ -64,9 +71,22 @@ const styles = StyleSheet.create({
     color: "#088395",
     fontWeight: "bold",
   },
+  flexCardtext: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
   cardTextEng: {
     color: "#088395",
     fontSize: 18,
+  },
+  cardTextHour: {
+    fontSize: 18,
+    color: "#FFF",
+    backgroundColor: "#1BDD9E",
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderRadius: 10,
   },
 });
 

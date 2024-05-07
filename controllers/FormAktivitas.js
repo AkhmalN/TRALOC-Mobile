@@ -11,7 +11,7 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Notifikasi } from "../components/Notifikasi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -34,7 +34,7 @@ export default function FormAktivitas({ route }) {
   const [selectedInstansi, setSelectedInstansi] = useState("");
   const [selectedPos, setSelectedPos] = useState("");
   const [catatan, setCatatan] = useState("");
-  const [image, setImage] = useState("");
+  const [images, setImages] = useState([]);
   const [items, setItems] = useState([
     "UNAS Pejanten",
     "UNAS Ragunan",
@@ -84,10 +84,23 @@ export default function FormAktivitas({ route }) {
 
   useEffect(() => {
     if (savedPhoto && savedPhoto.uri) {
-      setImage(savedPhoto.uri);
+      const newImages = [...images, savedPhoto.uri];
+
+      setImages(newImages);
     }
   }, [savedPhoto]);
 
+  const handleToCamera = () => {
+    if (images.length >= 4) {
+      console.log("Error");
+    } else {
+      navigation.navigate("ActivityCamera");
+    }
+  };
+
+  const handleRemoveImage = (index) => {
+    console.log((index += 1));
+  };
   const hideNotifikasi = () => {
     setNotifikasiVisible(false);
   };
@@ -97,7 +110,11 @@ export default function FormAktivitas({ route }) {
   };
 
   const togglePos = () => {
-    setDropdownPos(!dropdownPos);
+    if (selectedInstansi === "") {
+      setDropdownPos(false);
+    } else {
+      setDropdownPos(!dropdownPos);
+    }
   };
 
   const handleSelectInstansi = (item) => {
@@ -131,16 +148,13 @@ export default function FormAktivitas({ route }) {
         instansi_aktivitas: selectedInstansi,
         pos_aktivitas: selectedPos,
         notes_aktivitas: catatan,
-        savedPhoto,
+        savedPhoto: images,
       });
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : null}
-      style={styles.container}
-    >
+    <KeyboardAvoidingView style={styles.container}>
       {noSelect && notifikasiVisible && (
         <Notifikasi
           message={"Isi semua form yang tersedia"}
@@ -218,30 +232,52 @@ export default function FormAktivitas({ route }) {
           multiline={true}
           onChangeText={(text) => setCatatan(text)}
         />
-        <Text style={styles.label}>Dokumentasi : </Text>
+        <Text style={styles.label}>Dokumentasi : (Max 4) </Text>
         <View
           style={[
             styles.formDokumentasi,
             { flexDirection: "row", marginTop: 10 },
           ]}
         >
-          <Ionicons
-            name="camera-outline"
-            size={45}
-            onPress={() => navigation.navigate("ActivityCamera")}
-          />
+          <Ionicons name="camera-outline" size={45} onPress={handleToCamera} />
         </View>
-        {savedPhoto && (
-          <Image
-            source={{ uri: savedPhoto.uri }}
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 10,
-              marginLeft: 5,
-            }}
-          />
-        )}
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          {images.map((image, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  width: 90,
+                  borderRadius: 10,
+                }}
+              >
+                <Feather
+                  name="x"
+                  size={24}
+                  color="#FFF"
+                  style={{ position: "absolute", zIndex: 1, left: 50 }}
+                  onPress={() => handleRemoveImage(index)}
+                />
+                <Image
+                  source={{ uri: image }}
+                  style={{
+                    width: 90,
+                    height: 90,
+                    borderRadius: 10,
+                    marginLeft: 5,
+                  }}
+                />
+              </View>
+            );
+          })}
+        </View>
+
         <TouchableOpacity style={styles.button} onPress={handleFormSubmit}>
           <Text style={styles.buttonText}>Kirim</Text>
           <Ionicons name="chevron-forward-outline" color={"#FFF"} size={20} />

@@ -6,7 +6,7 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 import AbsenCamera from "./services/AbsenCamera";
 import ActivityCamera from "./services/ActivityCamera";
-import Barcode from "./services/Barcode";
+import QrCode from "./services/QrCode";
 import PatrolCamera from "./services/PatrolCamera";
 import AbsenMasuk from "./controllers/add-AbsenMasuk";
 import Atensi from "./controllers/add-Atensi";
@@ -128,10 +128,23 @@ function MainNavigator() {
             }}
           />
           <Stack.Screen
-            name="Barcode"
-            component={Barcode}
+            name="QrCode"
+            component={QrCode}
             options={{
-              headerTitle: "Scan Barcode Pos",
+              headerTitle: "Scan QR CODE Pos",
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
             }}
           />
 
@@ -341,7 +354,7 @@ function MainNavigator() {
             name="ActivityCamera"
             component={ActivityCamera}
             options={{
-              headerTitle: "Capture Activity",
+              headerTitle: "Capture Dokumentasi",
               headerTitleStyle: {
                 color: "#FFF",
               },

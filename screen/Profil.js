@@ -1,9 +1,38 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons, Ionicons, Feather } from "@expo/vector-icons";
+import { Entypo, Ionicons, Feather } from "@expo/vector-icons";
 const Profil = () => {
   const navigation = useNavigation();
+
+  const handleLogout = async () => {
+    try {
+      // Lakukan validasi sebelum logout (misalnya: konfirmasi dengan alert)
+      Alert.alert(
+        "Konfirmasi",
+        "Apakah Anda yakin ingin keluar dari aplikasi?",
+        [
+          {
+            text: "Batal",
+            style: "cancel",
+          },
+          {
+            text: "Keluar",
+            onPress: async () => {
+              // Hapus data autentikasi dari AsyncStorage (atau tempat penyimpanan lainnya)
+              // await AsyncStorage.removeItem("authToken");
+              // Navigasi kembali ke halaman login atau halaman awal aplikasi
+              // Ganti 'Login' dengan nama halaman login atau halaman awal aplikasi Anda
+              navigation.navigate("Login");
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -24,6 +53,20 @@ const Profil = () => {
           />
         </View>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.cardContainer, { borderColor: "red" }]}
+        onPress={handleLogout}
+      >
+        <View style={styles.iconMenu}>
+          <Entypo name="log-out" size={35} color={"red"} />
+        </View>
+        <View style={styles.cardTitle}>
+          <Text style={[styles.cardText, { color: "red" }]}>Log Out</Text>
+        </View>
+        <View style={styles.iconRight}>
+          <Ionicons name="chevron-forward-outline" size={30} color={"red"} />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -38,7 +81,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 20,
     padding: 10,
-    height: 80,
+    height: 65,
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#088395",

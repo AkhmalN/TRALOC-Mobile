@@ -20,17 +20,7 @@ const Presensi = ({ status }) => {
       </View>
       <View style={styles.cardTitle}>
         <Text style={styles.cardTextInd}>Absensi Masuk | Check In</Text>
-        {status ? (
-          <View style={styles.flexCardtext}>
-            <Text style={styles.cardTextEng}>Check In : </Text>
-            <Text style={styles.cardTextHour}>{TimeFormat(status)}</Text>
-            <Text style={[styles.cardTextHour, { marginLeft: 5 }]}>
-              {DateFormat(status)}
-            </Text>
-          </View>
-        ) : (
-          <Text style={styles.cardTextEng}>Check In Absensi Saat Ini</Text>
-        )}
+        <Text style={styles.cardTextEng}>Buat laporan absensi harian</Text>
       </View>
 
       <View style={styles.iconRight}>

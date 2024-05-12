@@ -91,7 +91,7 @@ function MainNavigator() {
             name="Patroli"
             component={Patroli}
             options={{
-              headerTitle: "Buat Patroli",
+              headerTitle: "Buat Laporan Patroli",
               headerTitleStyle: {
                 color: "#FFF",
               },
@@ -111,7 +111,7 @@ function MainNavigator() {
             name="Aktivitas"
             component={FormAktivitas}
             options={{
-              headerTitle: "Buat Aktivitas",
+              headerTitle: "Buat Laporan Aktivitas",
               headerTitleStyle: {
                 color: "#FFF",
               },
@@ -391,11 +391,7 @@ function MainNavigator() {
             }}
           />
         </Stack.Navigator>
-        <StatusBar
-          hidden={false}
-          translucent={false}
-          // backgroundColor="#44B6C7"
-        />
+        <StatusBar hidden={false} translucent={false} backgroundColor="#FFF" />
       </NavigationContainer>
     </QueryClientProvider>
   );

@@ -193,9 +193,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   textOnDate: {
-    fontSize: 18,
     marginBottom: 10,
     marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 20,
   },
 
   inputForm: {

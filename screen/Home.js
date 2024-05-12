@@ -7,27 +7,12 @@ import Patroli from "../components/Patroli";
 import Atensi from "../components/Atensi";
 import ListAtensi from "../components/ListAtensi";
 import Presensi from "../components/AbsenMasuk";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Aktivitas from "../components/Aktivitas";
 
 const Home = () => {
   const currentDate = new Date();
   const { role, user } = useAuth();
   const [loadingStatus, setLoadingStatus] = useState(false);
-  const [jamAbsen, setJamAbsen] = useState("");
-
-  useEffect(() => {
-    const getJamAbsen = async () => {
-      try {
-        const jam = await AsyncStorage.getItem("waktu_absen");
-        setJamAbsen(jam);
-      } catch (error) {
-        console.error("Error getting status_absen from AsyncStorage:", error);
-      }
-    };
-
-    getJamAbsen();
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -45,7 +30,7 @@ const Home = () => {
             <Atensi />
           )}
           {role === "user" && <ListAtensi />}
-          <Presensi status={jamAbsen} />
+          <Presensi />
           <Aktivitas />
           <Patroli />
           <Footer />
@@ -72,7 +57,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   textDate: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#44B6C7",
     fontWeight: "bold",
   },

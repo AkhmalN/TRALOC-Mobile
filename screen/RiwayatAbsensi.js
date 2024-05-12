@@ -75,16 +75,7 @@ const RiwayatAbsensi = () => {
                     </Text>
                   </View>
                 </View>
-                <View style={styles.row}>
-                  <Ionicons
-                    name="arrow-forward-circle-outline"
-                    size={30}
-                    color={"#088395"}
-                  />
-                  <Text style={styles.text}>
-                    {data.latitude}, {data.longitude}
-                  </Text>
-                </View>
+
                 <View style={styles.row}>
                   <Ionicons
                     name="arrow-back-circle-outline"
@@ -95,11 +86,11 @@ const RiwayatAbsensi = () => {
                 </View>
 
                 <View style={[styles.row, { justifyContent: "flex-end" }]}>
-                  <TouchableOpacity onPress={() => handleDetail(data)}>
+                  {/* <TouchableOpacity onPress={() => handleDetail(data)}>
                     <Text style={[styles.button, styles.detailButton]}>
                       <Entypo name="chevron-with-circle-right" size={24} />
                     </Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <TouchableOpacity onPress={() => handleDelete(data)}>
                     <Text style={[styles.button, styles.deleteButton]}>
                       <Ionicons name="trash-outline" size={25} />

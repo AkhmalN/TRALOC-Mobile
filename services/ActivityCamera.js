@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 const ActivityCamera = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -39,6 +40,24 @@ const ActivityCamera = () => {
     }
   };
 
+  const selectImageFromGallery = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const processedPhoto = {
+        uri: result.assets[0].uri,
+        width: result.assets[0].width,
+        height: result.assets[0].height,
+      };
+      navigation.navigate("Aktivitas", { savedPhoto: processedPhoto });
+    }
+  };
+
   return (
     <View style={styles.container}>
       {hasPermission === null ? (
@@ -48,18 +67,29 @@ const ActivityCamera = () => {
       ) : (
         <Camera style={styles.camera} type={cameraType} ref={cameraRef}>
           <View style={styles.cameraButtonsContainer}>
-            <TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
-              <Text style={styles.cameraButtonText}>Capture</Text>
+            <TouchableOpacity
+              style={styles.cameraButton}
+              onPress={selectImageFromGallery}
+            >
+              <Text style={styles.cameraButtonText}>
+                <MaterialIcons name="perm-media" size={28} color="#FFF" />
+              </Text>
             </TouchableOpacity>
-
+            <TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
+              <Text style={styles.cameraButtonText}>
+                <Feather name="camera" size={32} color="#FFF" />
+              </Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.cameraButton}
               onPress={handleCameraTypeToggle}
             >
               <Text style={styles.cameraButtonText}>
-                {cameraType === Camera.Constants.Type.back
-                  ? "Kamera Depan"
-                  : "Kamera belakang"}
+                <MaterialIcons
+                  name="flip-camera-android"
+                  size={28}
+                  color="#FFF"
+                />
               </Text>
             </TouchableOpacity>
           </View>

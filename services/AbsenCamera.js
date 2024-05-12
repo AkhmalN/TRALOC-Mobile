@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 export default function AbsenCamera() {
   const absenRoute = useRoute();
@@ -70,21 +71,17 @@ export default function AbsenCamera() {
         <View style={styles.buttonFlex}>
           <TouchableOpacity onPress={takePic} style={styles.button}>
             <Text style={styles.buttonText}>
-              <Ionicons name="radio-button-on-outline" size={80} />
+              <Feather name="camera" size={32} color="#FFF" />
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={toggleCameraType} style={styles.button}>
             <Text style={styles.buttonText}>
-              {cameraType === Camera.Constants.Type.front ? (
-                <Ionicons name="reload-outline" size={70} />
-              ) : (
-                <Ionicons
-                  name="reload-outline"
-                  size={70}
-                  style={{ transform: [{ rotate: "180deg" }] }}
-                />
-              )}
+              <MaterialIcons
+                name="flip-camera-android"
+                size={28}
+                color="#FFF"
+              />
             </Text>
           </TouchableOpacity>
         </View>
@@ -107,15 +104,12 @@ const styles = StyleSheet.create({
   },
   buttonFlex: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
   },
   button: {
+    backgroundColor: "#44B6C7",
     padding: 15,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 0.4, // Sesuaikan lebar tombol
-    margin: 10,
   },
   buttonText: {
     color: "#FFFFFF",

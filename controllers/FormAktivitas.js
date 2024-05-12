@@ -69,7 +69,7 @@ export default function FormAktivitas({ route }) {
       setTimeout(() => {
         setSuccessCreate(false);
         setNotifikasiVisible(false);
-        navigation.navigate("Riwayat Aktivitas");
+        navigation.navigate("Home");
       }, 2000);
     },
     onError: (error) => {
@@ -92,7 +92,7 @@ export default function FormAktivitas({ route }) {
 
   const handleToCamera = () => {
     if (images.length >= 4) {
-      console.log("Error");
+      alert("Melebihi maksimal foto yang disarankan");
     } else {
       navigation.navigate("ActivityCamera");
     }
@@ -279,7 +279,7 @@ export default function FormAktivitas({ route }) {
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleFormSubmit}>
-          <Text style={styles.buttonText}>Kirim</Text>
+          <Text style={styles.buttonText}>Kirim Laporan Aktivitas</Text>
           <Ionicons name="chevron-forward-outline" color={"#FFF"} size={20} />
         </TouchableOpacity>
       </View>
@@ -303,7 +303,9 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 
   dropdownToggle: {

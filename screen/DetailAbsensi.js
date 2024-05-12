@@ -24,9 +24,7 @@ export default function DetailAbsensi() {
           <Text style={{ fontSize: 19 }}>
             Jam : {TimeFormat(data.checkInTime)}
           </Text>
-          <Text style={{ fontSize: 19 }}>
-            Koordinat : {data.latitude}, {data.longitude}
-          </Text>
+
           <Text style={{ fontSize: 19 }}>
             Lokasi Absen : {data.lokasi_absen}
           </Text>

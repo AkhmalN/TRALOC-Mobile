@@ -67,12 +67,16 @@ export default function Login() {
           const status = error.response.status;
           if (status === 400) {
             setError("Username atau password salah");
-
             setLoading(false);
+            setTimeout(() => {
+              setError("");
+            }, 2000);
           } else {
             setError("Terjadi kesalahan saat login atau ulangi!");
-
             setLoading(false);
+            setTimeout(() => {
+              setError("");
+            }, 2000);
           }
         }
       });

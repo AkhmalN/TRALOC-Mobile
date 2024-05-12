@@ -2,9 +2,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screen/Home";
 import Profil from "./screen/Profil";
 import { View, Image } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import RiwayatAbsensi from "./screen/RiwayatAbsensi";
-import RiwayatPatroli from "./screen/RiwayatPatroli";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  AntDesign,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import Riwayat from "./screen/Riwayat";
 
 const Tab = createBottomTabNavigator();
@@ -14,8 +17,11 @@ const BarStack = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          height: 55,
-          padding: 5,
+          height: 60,
+          paddingBottom: 3,
+          marginHorizontal: 20,
+          marginVertical: 10,
+          borderRadius: 10,
         },
       }}
     >
@@ -24,7 +30,7 @@ const BarStack = () => {
         component={Home}
         options={{
           tabBarLabelStyle: {
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: "bold",
           },
           headerTitle: () => (
@@ -50,9 +56,9 @@ const BarStack = () => {
           tabBarActiveTintColor: "#088395",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Ionicons name="home" size={30} color={"#088395"} />
+              <AntDesign name="home" size={35} color={"#088395"} />
             ) : (
-              <Ionicons name="home-outline" size={28} color="grey" />
+              <AntDesign name="home" size={30} color="grey" />
             ),
         }}
       />
@@ -61,78 +67,35 @@ const BarStack = () => {
         component={Riwayat}
         options={{
           tabBarLabelStyle: {
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: "bold",
           },
           tabBarInactiveTintColor: "#607274",
           tabBarActiveTintColor: "#088395",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <MaterialCommunityIcons
-                name="archive-clock-outline"
-                size={30}
-                color="#088395"
-              />
+              <MaterialIcons name="manage-history" size={35} color="#088395" />
             ) : (
-              <MaterialCommunityIcons
-                name="archive-clock-outline"
-                size={28}
-                color="#B0A695"
-              />
+              <MaterialIcons name="manage-history" size={30} color="#B0A695" />
             ),
         }}
       />
-      {/* <Tab.Screen
-        name="Riwayat Patroli"
-        component={RiwayatPatroli}
-        options={{
-          tabBarLabelStyle: {
-            fontSize: 14,
-            fontWeight: "bold",
-          },
-          tabBarInactiveTintColor: "#607274",
-          tabBarActiveTintColor: "#088395",
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <Ionicons name="shield-outline" size={30} color="#088395" />
-            ) : (
-              <Ionicons name="shield-outline" size={28} color="#B0A695" />
-            ),
-        }}
-      />
-      <Tab.Screen
-        name="Riwayat Absensi"
-        component={RiwayatAbsensi}
-        options={{
-          tabBarLabelStyle: {
-            fontSize: 14,
-            fontWeight: "bold",
-          },
-          tabBarInactiveTintColor: "#607274",
-          tabBarActiveTintColor: "#088395",
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <Ionicons name="reader" size={30} color="#088395" />
-            ) : (
-              <Ionicons name="reader-outline" size={28} color="#B0A695" />
-            ),
-        }}
-      /> */}
+
       <Tab.Screen
         name="Profil"
         component={Profil}
         options={{
           tabBarLabelStyle: {
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: "bold",
           },
           tabBarInactiveTintColor: "#607274",
           tabBarActiveTintColor: "#088395",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Ionicons name="person" size={30} color="#088395" />
+              <Ionicons name="person" size={35} color="#088395" />
             ) : (
-              <Ionicons name="person-outline" size={28} color="#B0A695" />
+              <Ionicons name="person-outline" size={30} color="#B0A695" />
             ),
         }}
       />

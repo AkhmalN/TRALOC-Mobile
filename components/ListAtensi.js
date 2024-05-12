@@ -60,9 +60,11 @@ const styles = StyleSheet.create({
   },
   noDataContainer: {},
   noDataText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginVertical: 10,
+    textAlign: "center",
+    color: "#FEC100",
   },
   headerContainer: {
     marginVertical: 5,
@@ -79,10 +81,10 @@ const styles = StyleSheet.create({
   dateView: {
     flexDirection: "row",
   },
-  dateText: { fontSize: 16, fontWeight: "bold" },
+  dateText: { fontSize: 18, fontWeight: "bold" },
   noteContainer: {},
   noteText: {
-    fontSize: 16,
+    fontSize: 17,
   },
 });
 

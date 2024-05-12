@@ -16,9 +16,7 @@ const Aktivitas = () => {
       </View>
       <View style={styles.cardTitle}>
         <Text style={styles.cardTextInd}>Buat Aktivitas</Text>
-        <Text style={styles.cardTextEng}>
-          Buat Laporan Aktivitas | Create Activity Report
-        </Text>
+        <Text style={styles.cardTextEng}>Buat Laporan aktivitas harian</Text>
       </View>
       <View style={styles.iconRight}>
         <Ionicons name="chevron-forward-outline" size={30} color={"#088395"} />

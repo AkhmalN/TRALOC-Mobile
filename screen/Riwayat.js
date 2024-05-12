@@ -21,7 +21,7 @@ const Riwayat = () => {
           />
         </View>
         <View style={styles.cardTitle}>
-          <Text style={styles.cardTextInd}>Riwayat Kehadiran</Text>
+          <Text style={styles.cardTextInd}>Riwayat Absensi</Text>
           <Text style={styles.cardTextEng}>
             Riwayat Kehadiran | Attendance History
           </Text>

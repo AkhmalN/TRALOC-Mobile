@@ -16,9 +16,7 @@ const Patroli = () => {
       </View>
       <View style={styles.cardTitle}>
         <Text style={styles.cardTextInd}>Buat Patroli</Text>
-        <Text style={styles.cardTextEng}>
-          Buat Laporan Patroli | Create Patrol Report
-        </Text>
+        <Text style={styles.cardTextEng}>Buat laporan patroli harian</Text>
       </View>
       <View style={styles.iconRight}>
         <Ionicons name="chevron-forward-outline" size={30} color={"#088395"} />

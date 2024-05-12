@@ -50,7 +50,6 @@ export default function Patroli({ route }) {
       setImages(newImages);
     }
   }, [savedPhoto]);
-
   const { isLoading: isLoadingUser, data } = useQuery({
     queryKey: ["user", id],
     queryFn: () => getUser(id),
@@ -224,7 +223,7 @@ export default function Patroli({ route }) {
             multiline={true}
             onChangeText={(text) => setNotes(text)}
           />
-          <Text style={styles.label}>Dokumentasi : </Text>
+          <Text style={styles.label}>Dokumentasi : (Max 4)</Text>
           <View
             style={[
               styles.formDokumentasi,

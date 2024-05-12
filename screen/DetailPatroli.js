@@ -15,46 +15,46 @@ export default function DetailPatroli() {
   const data = route.params?.data;
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.formContainer}>
-        <View style={styles.formItem}>
-          <Text style={styles.label}>Instansi Patroli:</Text>
-          <Text style={styles.value}>{data.nama_instansi}</Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.formContainer}>
+          <View style={styles.formItem}>
+            <Text style={styles.label}>Instansi Patroli:</Text>
+            <Text style={styles.value}>{data.nama_instansi}</Text>
+          </View>
+
+          <View style={styles.formItem}>
+            <Text style={styles.label}>Pos Patroli:</Text>
+            <Text style={styles.value}>{data.lokasi_pos}</Text>
+          </View>
+
+          <View style={styles.formItem}>
+            <Text style={styles.label}>Waktu:</Text>
+            <Text style={styles.value}>
+              {DateFormat(data.createdAt)}, {TimeFormat(data.createdAt)}
+            </Text>
+          </View>
+
+          <View style={styles.formItem}>
+            <Text style={styles.label}>Status:</Text>
+            <Text style={styles.value}>{data.status}</Text>
+          </View>
+
+          <View style={styles.formItem}>
+            <Text style={styles.label}>Catatan:</Text>
+            <Text style={styles.value}>{data.notes}</Text>
+          </View>
         </View>
 
-        <View style={styles.formItem}>
-          <Text style={styles.label}>Pos Patroli:</Text>
-          <Text style={styles.value}>{data.lokasi_pos}</Text>
-        </View>
+        <View>
+          <Text style={styles.label}>Dokumentasi :</Text>
 
-        <View style={styles.formItem}>
-          <Text style={styles.label}>Waktu:</Text>
-          <Text style={styles.value}>
-            {DateFormat(data.createdAt)}, {TimeFormat(data.createdAt)}
-          </Text>
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.label}>Status:</Text>
-          <Text style={styles.value}>{data.status}</Text>
-        </View>
-
-        <View style={styles.formItem}>
-          <Text style={styles.label}>Catatan:</Text>
-          <Text style={styles.value}>{data.notes}</Text>
-        </View>
-      </View>
-
-      <View>
-        <Text style={styles.label}>Dokumentasi :</Text>
-
-        <ScrollView style={styles.imageContainer}>
           {data.image.map((uri, id) => {
             return (
               <Image source={{ uri: uri }} style={styles.image} key={id} />
             );
           })}
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

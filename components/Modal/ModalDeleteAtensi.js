@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   View,
@@ -11,16 +11,33 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteAtensi } from "../../api/atensi";
 
 const ModalDeleteAtensi = ({ visible, onRequestClose, data }) => {
+  const [errorDelete, setErrorDelete] = useState(false);
+  const [successDelete, setSuccessDelete] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const queryClient = useQueryClient();
   const deleteAtensiMutation = useMutation({
     mutationFn: deleteAtensi,
     onSuccess: () => {
+      setSuccessDelete(true);
+      setSuccessMessage("Data atensi berhasil di hapus!");
+      queryClient.refetchQueries(["data_aktivitas"]);
       queryClient.refetchQueries(["data_atensi"]);
       setTimeout(() => {
+        setSuccessDelete(false);
+        setSuccessMessage(null);
         onRequestClose();
-      }, 1000);
+      }, 2000);
     },
-    onError: () => {},
+    onError: (error) => {
+      setErrorDelete(true);
+      setErrorMessage(`Terjadi kesalahan, ${error.message}`);
+      setTimeout(() => {
+        setErrorDelete(false);
+        setErrorMessage(null);
+        onRequestClose();
+      }, 2000);
+    },
     onSettled: async () => {},
   });
 
@@ -39,7 +56,12 @@ const ModalDeleteAtensi = ({ visible, onRequestClose, data }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Hapus Atensi?</Text>
-
+            {errorDelete && (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            )}
+            {successDelete && (
+              <Text style={styles.errorText}>{successMessage}</Text>
+            )}
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.button, { backgroundColor: "red" }]}
@@ -98,6 +120,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 5,
+  },
+  errorText: {
+    fontSize: 16,
+    color: "red",
   },
   modalText: {
     width: "100%",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   View,
@@ -12,17 +12,32 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deletePatroli } from "../../api/patroli";
 
 const ModalDeletePatroli = ({ visible, onRequestClose, data }) => {
+  const [errorDelete, setErrorDelete] = useState(false);
+  const [successDelete, setSuccessDelete] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const queryClient = useQueryClient();
   const deleteIzinMutation = useMutation({
     mutationFn: deletePatroli,
     onSuccess: () => {
-      queryClient.refetchQueries(["data"]);
+      setSuccessDelete(true);
+      setSuccessMessage("Data patroli berhasil di hapus!");
+      queryClient.refetchQueries(["data_patroli"]);
       setTimeout(() => {
+        setSuccessDelete(false);
+        setSuccessMessage(null);
         onRequestClose();
-      }, 1000);
+      }, 2000);
     },
-    onError: () => {},
-    onSettled: async () => {},
+    onError: (error) => {
+      setErrorDelete(true);
+      setErrorMessage(`Terjadi kesalahan, ${error.message}`);
+      setTimeout(() => {
+        setErrorDelete(false);
+        setErrorMessage(null);
+        onRequestClose();
+      }, 2000);
+    },
   });
 
   const handleOnDelete = () => {
@@ -40,7 +55,12 @@ const ModalDeletePatroli = ({ visible, onRequestClose, data }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Hapus Patroli?</Text>
-
+            {errorDelete && (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            )}
+            {successDelete && (
+              <Text style={styles.errorText}>{successMessage}</Text>
+            )}
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.button, { backgroundColor: "red" }]}
@@ -99,6 +119,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 4,
     elevation: 5,
+  },
+  errorText: {
+    fontSize: 16,
+    color: "red",
   },
   modalText: {
     width: "100%",

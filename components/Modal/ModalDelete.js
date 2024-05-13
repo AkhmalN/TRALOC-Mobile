@@ -10,6 +10,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteAbsensi } from "../../api/absensi";
 import { useAuth } from "../../context/userContext";
+import { BG_COLOR, TEXT_COLOR } from "../../constant/color";
 
 const ModalDelete = ({ visible, onRequestClose, data }) => {
   const { id } = useAuth();
@@ -24,7 +25,7 @@ const ModalDelete = ({ visible, onRequestClose, data }) => {
     onSuccess: async (response) => {
       setSuccessDelete(true);
       setSuccessMessage("Data absensi berhasil dihapus");
-      await queryClient.refetchQueries(["data", id]);
+      await queryClient.refetchQueries(["data_absensi", id]);
       setTimeout(() => {
         setSuccessDelete(false);
         setSuccessMessage(null);
@@ -65,7 +66,7 @@ const ModalDelete = ({ visible, onRequestClose, data }) => {
             )}
             <View style={styles.buttonContainer}>
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: "red" }]}
+                style={[styles.button, { backgroundColor: BG_COLOR.danger }]}
                 onPress={handleOnDelete}
               >
                 <View style={{ flexDirection: "row" }}>
@@ -83,7 +84,9 @@ const ModalDelete = ({ visible, onRequestClose, data }) => {
                 onPress={onRequestClose}
               >
                 <View style={{ flexDirection: "row" }}>
-                  <Text style={[styles.buttonText, { color: "red" }]}>
+                  <Text
+                    style={[styles.buttonText, { color: TEXT_COLOR.danger }]}
+                  >
                     Cancel
                   </Text>
                 </View>
@@ -109,7 +112,6 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "80%",
-    height: "20%",
     backgroundColor: "#F6F5F5",
     borderRadius: 10,
     alignItems: "center",
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "grey",
   },
   errorText: {
-    fontSize: 16,
+    fontSize: 18,
     color: "red",
   },
   modalSubText: {
@@ -148,7 +150,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    marginTop: 30,
   },
   button: {
     width: "40%",

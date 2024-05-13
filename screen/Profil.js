@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo, Ionicons, Feather } from "@expo/vector-icons";
+import { BG_COLOR, ICON_COLOR, TEXT_COLOR } from "../constant/color";
 const Profil = () => {
   const navigation = useNavigation();
 
@@ -54,17 +55,23 @@ const Profil = () => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.cardContainer, { borderColor: "red" }]}
+        style={[styles.cardContainer, { borderColor: BG_COLOR.danger }]}
         onPress={handleLogout}
       >
         <View style={styles.iconMenu}>
-          <Entypo name="log-out" size={35} color={"red"} />
+          <Entypo name="log-out" size={35} color={ICON_COLOR.danger} />
         </View>
         <View style={styles.cardTitle}>
-          <Text style={[styles.cardText, { color: "red" }]}>Log Out</Text>
+          <Text style={[styles.cardText, { color: TEXT_COLOR.danger }]}>
+            Log Out
+          </Text>
         </View>
         <View style={styles.iconRight}>
-          <Ionicons name="chevron-forward-outline" size={30} color={"red"} />
+          <Ionicons
+            name="chevron-forward-outline"
+            size={30}
+            color={ICON_COLOR.danger}
+          />
         </View>
       </TouchableOpacity>
     </View>

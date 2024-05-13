@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/userContext";
@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 5,
   },
   errorSection: {
     padding: 15,

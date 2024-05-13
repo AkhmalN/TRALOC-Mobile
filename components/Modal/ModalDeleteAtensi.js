@@ -21,7 +21,6 @@ const ModalDeleteAtensi = ({ visible, onRequestClose, data }) => {
     onSuccess: () => {
       setSuccessDelete(true);
       setSuccessMessage("Data atensi berhasil di hapus!");
-      queryClient.refetchQueries(["data_aktivitas"]);
       queryClient.refetchQueries(["data_atensi"]);
       setTimeout(() => {
         setSuccessDelete(false);

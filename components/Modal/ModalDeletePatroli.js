@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deletePatroli } from "../../api/patroli";
+import { TEXT_COLOR } from "../../constant/color";
 
 const ModalDeletePatroli = ({ visible, onRequestClose, data }) => {
   const [errorDelete, setErrorDelete] = useState(false);
@@ -121,8 +122,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   errorText: {
-    fontSize: 16,
-    color: "red",
+    fontSize: 18,
+    color: TEXT_COLOR.danger,
   },
   modalText: {
     width: "100%",
@@ -138,11 +139,6 @@ const styles = StyleSheet.create({
   modalSubText: {
     color: "red",
     fontWeight: "400",
-  },
-  modalImgPreview: {
-    width: "50%",
-    height: "50%",
-    marginBottom: 10,
   },
   buttonContainer: {
     flexDirection: "row",

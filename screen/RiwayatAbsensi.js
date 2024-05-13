@@ -15,6 +15,7 @@ import { useAuth } from "../context/userContext";
 import { getUserAbsen } from "../api/absensi";
 import ModalLoading from "../components/ModalLoading";
 import { Entypo } from "@expo/vector-icons";
+import { TEXT_COLOR } from "../constant/color";
 
 const RiwayatAbsensi = () => {
   const { id } = useAuth();
@@ -23,7 +24,7 @@ const RiwayatAbsensi = () => {
   const [isdelete, setIsDelete] = useState(null);
 
   const { isPending, isError, data } = useQuery({
-    queryKey: ["data", id],
+    queryKey: ["data_absensi", id],
     queryFn: () => getUserAbsen(id),
   });
 
@@ -86,11 +87,6 @@ const RiwayatAbsensi = () => {
                 </View>
 
                 <View style={[styles.row, { justifyContent: "flex-end" }]}>
-                  {/* <TouchableOpacity onPress={() => handleDetail(data)}>
-                    <Text style={[styles.button, styles.detailButton]}>
-                      <Entypo name="chevron-with-circle-right" size={24} />
-                    </Text>
-                  </TouchableOpacity> */}
                   <TouchableOpacity onPress={() => handleDelete(data)}>
                     <Text style={[styles.button, styles.deleteButton]}>
                       <Ionicons name="trash-outline" size={25} />
@@ -131,6 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 10,
   },
   dataNotFoundContainer: {
     flexDirection: "row",
@@ -139,7 +136,7 @@ const styles = StyleSheet.create({
   },
   dataNotFoundText: {
     fontSize: 20,
-    color: "red", // Adjust color as needed
+    color: TEXT_COLOR.danger, // Adjust color as needed
     marginHorizontal: 10,
   },
   card: {
@@ -206,7 +203,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   deleteButton: {
-    backgroundColor: "#dc3545",
+    backgroundColor: TEXT_COLOR.danger,
     color: "#fff",
   },
   detailButton: {

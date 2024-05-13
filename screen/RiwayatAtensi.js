@@ -4,11 +4,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/userContext";
@@ -86,7 +85,7 @@ const RiwayatAtensi = () => {
                 <View style={styles.row}>
                   <Entypo
                     name="new-message"
-                    size={35}
+                    size={32}
                     color={"#088395"}
                     style={styles.icon}
                   />
@@ -95,7 +94,7 @@ const RiwayatAtensi = () => {
                 <View style={styles.row}>
                   <FontAwesome
                     name="calendar-check-o"
-                    size={35}
+                    size={32}
                     color={"#088395"}
                     style={styles.icon}
                   />
@@ -106,7 +105,7 @@ const RiwayatAtensi = () => {
                 <View style={styles.row}>
                   <FontAwesome
                     name="calendar-times-o"
-                    size={35}
+                    size={32}
                     color={"#088395"}
                     style={styles.icon}
                   />
@@ -153,6 +152,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 5,
   },
   errorSection: {
     padding: 15,
@@ -201,7 +201,6 @@ const styles = StyleSheet.create({
   },
   labelContainer: {
     width: "100%",
-
     flexDirection: "row",
     justifyContent: "space-between",
   },

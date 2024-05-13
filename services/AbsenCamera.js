@@ -1,8 +1,6 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 
@@ -86,7 +84,6 @@ export default function AbsenCamera() {
           </TouchableOpacity>
         </View>
       </View>
-      <StatusBar style="auto" />
     </Camera>
   );
 }

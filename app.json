@@ -32,7 +32,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Universitas_Nasional_Logo.png",
+        "foregroundImage": "./assets/play_store_512.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [

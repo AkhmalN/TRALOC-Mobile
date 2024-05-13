@@ -4,20 +4,18 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Ionicons, Octicons } from "@expo/vector-icons";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/userContext";
 import { getUserPatroli } from "../api/patroli";
 import ModalLoading from "../components/ModalLoading";
-import { Fontisto } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ModalDeletePatroli from "../components/Modal/ModalDeletePatroli";
+import { BG_COLOR } from "../constant/color";
 const RiwayatPatroli = () => {
   const { id } = useAuth();
   const navigation = useNavigation();
@@ -167,6 +165,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 5,
   },
   errorSection: {
     padding: 15,
@@ -258,7 +257,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   deleteButton: {
-    backgroundColor: "#dc3545",
+    backgroundColor: BG_COLOR.danger,
     color: "#fff",
   },
   detailButton: {

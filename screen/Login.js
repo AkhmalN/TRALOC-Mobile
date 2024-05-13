@@ -96,7 +96,7 @@ export default function Login() {
         <View style={styles.formBox}>
           <Image
             source={require("../assets/LOGO.png")}
-            style={{ width: 300, height: 50 }}
+            style={{ width: 330, height: 50, marginLeft: 5 }}
           />
           <Text style={styles.title}>
             Smart Solutions for Safer Communities
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   inputField: {
-    height: 60,
-    borderWidth: 1,
+    height: 55,
+    borderWidth: 0.5,
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
@@ -215,6 +215,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: 20,
   },
 });

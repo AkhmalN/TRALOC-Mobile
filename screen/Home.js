@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useAuth } from "../context/userContext";
 import Footer from "../components/Footer";
@@ -12,7 +12,6 @@ import Aktivitas from "../components/Aktivitas";
 const Home = () => {
   const currentDate = new Date();
   const { role, user } = useAuth();
-  const [loadingStatus, setLoadingStatus] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -20,7 +19,6 @@ const Home = () => {
         <View style={styles.banner}>
           <View style={styles.userInfo}>
             <Text style={styles.helloText}>Selamat Datang, {user}</Text>
-            {loadingStatus && <Text>Mengambil nilai asyncstorage ...</Text>}
             <Text style={styles.textDate}>{DateFormat(currentDate)}</Text>
           </View>
         </View>

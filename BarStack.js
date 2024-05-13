@@ -4,7 +4,7 @@ import Profil from "./screen/Profil";
 import { View, Image } from "react-native";
 import {
   Ionicons,
-  MaterialCommunityIcons,
+  FontAwesome5,
   AntDesign,
   MaterialIcons,
 } from "@expo/vector-icons";
@@ -93,9 +93,9 @@ const BarStack = () => {
           tabBarActiveTintColor: "#088395",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Ionicons name="person" size={35} color="#088395" />
+              <FontAwesome5 name="user-cog" size={32} color="#088395" />
             ) : (
-              <Ionicons name="person-outline" size={30} color="#B0A695" />
+              <FontAwesome5 name="user-cog" size={28} color="#B0A695" />
             ),
         }}
       />

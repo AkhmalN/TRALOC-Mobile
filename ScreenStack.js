@@ -55,7 +55,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -76,7 +76,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -96,7 +96,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -116,7 +116,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -136,7 +136,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -157,7 +157,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -177,7 +177,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -197,7 +197,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -217,7 +217,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -237,7 +237,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -257,8 +257,9 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
+
               headerBackImage: () => (
                 <FontAwesome5
                   name="chevron-circle-left"
@@ -278,7 +279,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -298,7 +299,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -318,7 +319,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -338,7 +339,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -359,7 +360,7 @@ function MainNavigator() {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5
@@ -374,12 +375,12 @@ function MainNavigator() {
             name="Data Pribadi"
             component={DataPribadi}
             options={{
-              headerTitle: "Profil",
+              headerTitle: "Data Pribadi",
               headerTitleStyle: {
                 color: "#FFF",
               },
               headerStyle: {
-                backgroundColor: "#44B6C7", // Ubah sesuai warna yang diinginkan
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
               },
               headerBackImage: () => (
                 <FontAwesome5

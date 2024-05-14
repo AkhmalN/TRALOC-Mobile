@@ -84,7 +84,7 @@ const RiwayatAktivitas = () => {
                 <View style={styles.row}>
                   <Entypo
                     name="location"
-                    size={35}
+                    size={30}
                     color={"#088395"}
                     style={styles.icon}
                   />
@@ -93,7 +93,7 @@ const RiwayatAktivitas = () => {
                 <View style={styles.row}>
                   <MaterialCommunityIcons
                     name="office-building-marker-outline"
-                    size={35}
+                    size={30}
                     color={"#088395"}
                     style={styles.icon}
                   />

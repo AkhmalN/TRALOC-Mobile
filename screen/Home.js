@@ -8,6 +8,7 @@ import Atensi from "../components/Atensi";
 import ListAtensi from "../components/ListAtensi";
 import Presensi from "../components/AbsenMasuk";
 import Aktivitas from "../components/Aktivitas";
+import AbsenKeluar from "../components/AbsenKeluar";
 
 const Home = () => {
   const currentDate = new Date();
@@ -31,6 +32,7 @@ const Home = () => {
           <Presensi />
           <Aktivitas />
           <Patroli />
+          <AbsenKeluar />
           <Footer />
         </View>
       </ScrollView>

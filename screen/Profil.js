@@ -10,7 +10,7 @@ const Profil = () => {
     try {
       // Lakukan validasi sebelum logout (misalnya: konfirmasi dengan alert)
       Alert.alert(
-        "Konfirmasi",
+        "Sistem",
         "Apakah Anda yakin ingin keluar dari aplikasi?",
         [
           {

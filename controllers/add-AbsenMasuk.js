@@ -126,7 +126,7 @@ export default function FormAbsen({ route }) {
         setLoading(false);
         setNotifikasiVisible(true);
         setErrorStatus(true);
-        setErrorMsg("Terjadi Kesalahan dalam mengirim Absen, Ulangi!");
+        setErrorMsg(error.message);
         setTimeout(() => {
           setErrorStatus(false);
           setErrorMsg(null);
@@ -141,7 +141,7 @@ export default function FormAbsen({ route }) {
       <View style={styles.mapContainer}>
         {isSuccess && notifikasiVisible && (
           <Notifikasi
-            message={"Berhasil membuat presensi"}
+            message={"Laporan absen masuk berhasil dibuat"}
             hideModal={hideNotifikasi}
           />
         )}
@@ -152,12 +152,8 @@ export default function FormAbsen({ route }) {
           />
         )}
         {errorStatus && notifikasiVisible && (
-          <Notifikasi
-            message={"Terjadi kesalahan dalam membuat presensi atau ulangi!"}
-            hideModal={hideNotifikasi}
-          />
+          <Notifikasi message={errorMsg} hideModal={hideNotifikasi} />
         )}
-        {errorMsg && <Text>{errorMsg}</Text>}
         {loading && <ModalLoading />}
       </View>
       <View style={styles.bottomContent}>

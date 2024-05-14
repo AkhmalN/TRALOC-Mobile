@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, Modal, Button } from "react-native";
+import { View, Text, Modal, TouchableOpacity } from "react-native";
+import { BG_COLOR } from "../constant/color";
 
 export const Notifikasi = ({ visible, hideModal, message }) => (
   <Modal
@@ -22,12 +23,24 @@ export const Notifikasi = ({ visible, hideModal, message }) => (
           padding: 20,
           borderRadius: 10,
           width: 300,
-          height: 200,
+          maxHeight: 200,
         }}
       >
-        <Text style={{ fontSize: 30, marginBottom: 10 }}>Notifikasi</Text>
-        <Text style={{ fontSize: 20, marginBottom: 40 }}>{message}</Text>
-        <Button title="Tutup" onPress={hideModal} color={"#088395"} />
+        <Text style={{ fontSize: 30, marginBottom: 5 }}>Notifikasi</Text>
+        <Text style={{ fontSize: 19, marginBottom: 15 }}>{message}</Text>
+        <TouchableOpacity
+          onPress={hideModal}
+          style={{
+            backgroundColor: BG_COLOR.primary,
+            borderRadius: 10,
+            height: 45,
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ textAlign: "center", fontSize: 18, color: "#FFF" }}>
+            Tutup
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   </Modal>

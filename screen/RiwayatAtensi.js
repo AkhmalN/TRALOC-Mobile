@@ -85,7 +85,7 @@ const RiwayatAtensi = () => {
                 <View style={styles.row}>
                   <Entypo
                     name="new-message"
-                    size={32}
+                    size={30}
                     color={"#088395"}
                     style={styles.icon}
                   />
@@ -94,7 +94,7 @@ const RiwayatAtensi = () => {
                 <View style={styles.row}>
                   <FontAwesome
                     name="calendar-check-o"
-                    size={32}
+                    size={30}
                     color={"#088395"}
                     style={styles.icon}
                   />
@@ -105,7 +105,7 @@ const RiwayatAtensi = () => {
                 <View style={styles.row}>
                   <FontAwesome
                     name="calendar-times-o"
-                    size={32}
+                    size={30}
                     color={"#088395"}
                     style={styles.icon}
                   />

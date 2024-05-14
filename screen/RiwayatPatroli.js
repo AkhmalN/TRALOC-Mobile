@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import { Ionicons, Octicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/userContext";
@@ -86,38 +86,50 @@ const RiwayatPatroli = () => {
                 <View style={styles.row}>
                   <Entypo
                     name="location"
-                    size={35}
+                    size={30}
                     color={"#088395"}
                     style={styles.icon}
                   />
                   <Text style={styles.text}>{data.lokasi_pos}</Text>
                 </View>
                 <View style={styles.row}>
+                  <MaterialCommunityIcons
+                    name="office-building-marker-outline"
+                    size={30}
+                    color={"#088395"}
+                    style={styles.icon}
+                  />
+                  <Text style={[styles.text, { fontSize: 18 }]}>
+                    {data.nama_instansi}
+                  </Text>
+                </View>
+
+                <View style={styles.row}>
                   {data.status === "Kebakaran" ? (
                     <Octicons
                       name="dot-fill"
-                      size={45}
+                      size={40}
                       color={"#FF4444"}
                       style={styles.icon}
                     />
                   ) : data.status === "Demonstrasi" ? (
                     <Octicons
                       name="dot-fill"
-                      size={45}
+                      size={40}
                       color={"#221715"}
                       style={styles.icon}
                     />
                   ) : data.status === "Pencurian" ? (
                     <Octicons
                       name="dot-fill"
-                      size={45}
+                      size={40}
                       color={"#FFCE08"}
                       style={styles.icon}
                     />
                   ) : (
                     <Octicons
                       name="dot-fill"
-                      size={45}
+                      size={40}
                       color={"#088395"}
                       style={styles.icon}
                     />
@@ -203,7 +215,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginBottom: 5,
+    marginBottom: 2,
     alignItems: "center",
   },
   rowFlexEnd: {

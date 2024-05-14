@@ -30,9 +30,11 @@ export default function Login() {
   };
 
   const handleLogin = () => {
+    setLoading(true);
+
     if (!username || !password) {
-      setError("Masukkan username dan password!");
-      setLoading(true);
+      setError("Harap input username dan password!");
+      setLoading(false);
       setTimeout(() => {
         setError("");
         setLoading(false);
@@ -40,7 +42,6 @@ export default function Login() {
       return;
     }
 
-    setLoading(true);
     const data = {
       username: username,
       password: password,
@@ -98,9 +99,7 @@ export default function Login() {
             source={require("../assets/LOGO.png")}
             style={{ width: 330, height: 50, marginLeft: 5 }}
           />
-          <Text style={styles.title}>
-            Smart Solutions for Safer Communities
-          </Text>
+          {/* <Text style={styles.title}>Unas Smart-patrol</Text> */}
           {error && (
             <View style={styles.errorField}>
               <Text style={styles.errorText}>{error}</Text>
@@ -109,7 +108,7 @@ export default function Login() {
           <Text style={styles.label}>Username :</Text>
           <View style={styles.inputField}>
             <TextInput
-              placeholder="Username"
+              placeholder="Masukkan nama pengguna"
               value={username}
               onChangeText={(text) => setUsername(text)}
               style={styles.input}
@@ -118,7 +117,7 @@ export default function Login() {
           <Text style={styles.label}>Password :</Text>
           <View style={styles.inputField}>
             <TextInput
-              placeholder="Password"
+              placeholder="Masukkan kata sandi"
               value={password}
               onChangeText={(text) => setPassword(text)}
               secureTextEntry={showPassword}
@@ -136,7 +135,7 @@ export default function Login() {
               {loading ? (
                 <ActivityIndicator size={"small"} color={"#FFF"} />
               ) : (
-                "Login"
+                "Masuk"
               )}
             </Text>
           </TouchableOpacity>
@@ -172,11 +171,15 @@ const styles = StyleSheet.create({
   },
   errorField: {
     backgroundColor: "#EF4040",
-    padding: 10,
-    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 7,
+    borderRadius: 7,
+    marginBottom: 10,
+    marginTop: 10,
   },
   errorText: {
     color: "#FFF",
+    fontSize: 18,
   },
   title: {
     fontSize: 20,

@@ -52,16 +52,45 @@ export const addAbsen = async ({
       name: "photo.jpg",
     });
 
-    const response = await axios.post(`${baseUrl}/absensi/`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axios.post(
+      `${baseUrl}/absensi/absen_masuk`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     if (response) {
       return response;
     }
   } catch (error) {
-    throw new Error(error);
+    throw new Error(
+      error.response ? error.response.data.message : error.message
+    );
+  }
+};
+
+export const addAbsenKeluar = async ({ userId }) => {
+  try {
+    const formData = new FormData();
+    formData.append("userId", userId);
+    const response = await axios.post(
+      `${baseUrl}/absensi/absen_keluar`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    throw new Error(
+      error.response ? error.response.data.message : error.message
+    );
   }
 };
 

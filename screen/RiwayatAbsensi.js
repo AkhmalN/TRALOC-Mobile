@@ -7,15 +7,14 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 import { useNavigation } from "@react-navigation/native";
 import ModalDelete from "../components/Modal/ModalDelete";
 import { useAuth } from "../context/userContext";
 import { getUserAbsen } from "../api/absensi";
 import ModalLoading from "../components/ModalLoading";
-import { Entypo } from "@expo/vector-icons";
-import { TEXT_COLOR } from "../constant/color";
+import { ICON_COLOR, TEXT_COLOR } from "../constant/color";
 
 const RiwayatAbsensi = () => {
   const { id } = useAuth();
@@ -40,6 +39,7 @@ const RiwayatAbsensi = () => {
   const sortByCreatedAtDesc = (data) => {
     return data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   };
+
   return (
     <ScrollView
       style={styles.container}
@@ -78,12 +78,36 @@ const RiwayatAbsensi = () => {
                 </View>
 
                 <View style={styles.row}>
-                  <Ionicons
-                    name="arrow-back-circle-outline"
+                  <MaterialCommunityIcons
+                    name="office-building"
                     size={30}
                     color={"#088395"}
                   />
                   <Text style={styles.text}>{data.lokasi_absen}</Text>
+                </View>
+                <View style={styles.row}>
+                  <Ionicons name="timer" size={30} color={ICON_COLOR.primary} />
+                  <Text style={styles.text}>
+                    Masuk : {TimeFormat(data.checkInTime)}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Ionicons name="timer" size={30} color={ICON_COLOR.danger} />
+                  <Text
+                    style={[
+                      styles.text,
+                      { flexDirection: "row", alignItems: "center" },
+                    ]}
+                  >
+                    Keluar :
+                    {data.checkOutTime ? TimeFormat(data.checkOutTime) : "  -"}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text style={styles.text}>
+                    Total Jam Kerja :{" "}
+                    {data.total_jam_kerja ? data.total_jam_kerja : "  -"}
+                  </Text>
                 </View>
 
                 <View style={[styles.row, { justifyContent: "flex-end" }]}>

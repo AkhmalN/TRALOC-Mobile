@@ -1,6 +1,6 @@
 // Theme.js
 export const BG_COLOR = {
-  primary: "#00008B",
+  primary: "#088395",
   secondary: "#41C9E2",
   success: "#79AC78",
   danger: "#D80032",
@@ -10,7 +10,7 @@ export const BG_COLOR = {
   dark: "#343a40",
 };
 export const ICON_COLOR = {
-  primary: "#00008B",
+  primary: "#088395",
   secondary: "#41C9E2",
   success: "#79AC78",
   danger: "#D80032",
@@ -21,7 +21,7 @@ export const ICON_COLOR = {
 };
 
 export const TEXT_COLOR = {
-  primary: "#00008B",
+  primary: "#088395",
   secondary: "#41C9E2",
   success: "#79AC78",
   danger: "#D80032",

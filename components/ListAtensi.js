@@ -51,12 +51,20 @@ const ListAtensi = () => {
 
 const styles = StyleSheet.create({
   atensiContainer: {
+    backgroundColor: "#FFF",
     marginBottom: 10,
     borderRadius: 20,
-    padding: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 12,
     height: "auto",
-    borderWidth: 2,
-    borderColor: "#FEC100",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   noDataContainer: {},
   noDataText: {
@@ -70,10 +78,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    borderBottomWidth: 1,
-    borderColor: "grey",
+    textAlign: "center",
   },
   dateContainer: {
     marginVertical: 5,
@@ -81,10 +88,14 @@ const styles = StyleSheet.create({
   dateView: {
     flexDirection: "row",
   },
-  dateText: { fontSize: 18, fontWeight: "bold" },
+  dateText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "grey",
+  },
   noteContainer: {},
   noteText: {
-    fontSize: 17,
+    fontSize: 18,
   },
 });
 

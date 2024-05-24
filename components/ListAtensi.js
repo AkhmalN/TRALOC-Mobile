@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAtensi } from "../api/atensi";
 import { DateFormat } from "../utils/DateFormat";
 import ModalLoading from "./ModalLoading";
+import { TEXT_COLOR } from "../constant/color";
 
 const ListAtensi = () => {
   const { isLoading, isError, data, error } = useQuery({
@@ -18,7 +19,7 @@ const ListAtensi = () => {
       {data && data.length === 0 && (
         <View style={styles.noDataContainer}>
           <Text style={styles.noDataText}>
-            Tidak ada atensi yang ditampilkan
+            Tidak ada atensi yang ditampilkan!
           </Text>
         </View>
       )}
@@ -51,7 +52,7 @@ const ListAtensi = () => {
 
 const styles = StyleSheet.create({
   atensiContainer: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#F8D082",
     marginBottom: 10,
     borderRadius: 20,
     paddingVertical: 15,
@@ -66,7 +67,15 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  noDataContainer: {},
+  noDataContainer: {
+    backgroundColor: "grey",
+    width: "70%",
+    height: 40,
+    marginBottom: 20,
+    borderRadius: 7,
+    justifyContent: "center",
+    marginHorizontal: "15%",
+  },
   noDataText: {
     fontSize: 18,
     fontWeight: "bold",
@@ -75,12 +84,19 @@ const styles = StyleSheet.create({
     color: "#FEC100",
   },
   headerContainer: {
-    marginVertical: 5,
+    flexDirection: "row",
+    justifyContent: "center",
   },
   headerText: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
+    backgroundColor: "#DD761C",
+    color: TEXT_COLOR.light,
+    maxWidth: "80%",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
   },
   dateContainer: {
     marginVertical: 5,
@@ -91,7 +107,6 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "grey",
   },
   noteContainer: {},
   noteText: {

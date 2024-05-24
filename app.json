@@ -16,6 +16,14 @@
       "expo-camera",
       "expo-media-library",
       [
+        "expo-notifications",
+        {
+          "icon": "./assets/Universitas_Nasional_Logo.png",
+          "color": "#ffffff"
+        }
+      ],
+      [
+        
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."

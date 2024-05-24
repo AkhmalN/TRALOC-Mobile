@@ -4,14 +4,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
+import BarStack from "./BarStack";
+import FormAktivitas from "./controllers/FormAktivitas";
+import Patroli from "./controllers/add-patroli";
+import AbsenMasuk from "./controllers/add-AbsenMasuk";
+import Atensi from "./controllers/add-Atensi";
 import AbsenCamera from "./services/AbsenCamera";
 import ActivityCamera from "./services/ActivityCamera";
 import QrCode from "./services/QrCode";
 import PatrolCamera from "./services/PatrolCamera";
-import AbsenMasuk from "./controllers/add-AbsenMasuk";
-import Atensi from "./controllers/add-Atensi";
-import Patroli from "./controllers/add-patroli";
-import BarStack from "./BarStack";
 import DataPribadi from "./screen/DataPribadi";
 import DetailAbsensi from "./screen/DetailAbsensi";
 import DetailAktivitas from "./screen/DetailAktivitas";
@@ -22,7 +23,8 @@ import RiwayatAbsensi from "./screen/RiwayatAbsensi";
 import RiwayatAktivitas from "./screen/RiwayatAktivitas";
 import RiwayatAtensi from "./screen/RiwayatAtensi";
 import RiwayatPatroli from "./screen/RiwayatPatroli";
-import FormAktivitas from "./controllers/FormAktivitas";
+import PatroliHarian from "./screen/PatroliHarian";
+import { DateFormat } from "./utils/DateFormat";
 
 const queryClient = new QueryClient();
 const Stack = createStackNavigator();
@@ -248,6 +250,27 @@ function MainNavigator() {
               ),
             }}
           />
+          <Stack.Screen
+            name="Patroli Harian Petugas"
+            component={PatroliHarian}
+            options={{
+              headerTitle: `Patroli hari : ${DateFormat(new Date())}`,
+              headerTitleStyle: {
+                color: "#FFF",
+              },
+              headerStyle: {
+                backgroundColor: "#088395", // Ubah sesuai warna yang diinginkan
+              },
+              headerBackImage: () => (
+                <FontAwesome5
+                  name="chevron-circle-left"
+                  size={25}
+                  color={"#FFF"}
+                />
+              ),
+            }}
+          />
+
           <Stack.Screen
             name="AbsenCamera"
             component={AbsenCamera}

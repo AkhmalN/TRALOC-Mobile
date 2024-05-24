@@ -15,9 +15,9 @@ export const getUserPatroli = async (userId) => {
   }
 };
 
-export const getUserPatroliLength = async (userId) => {
+export const getAllPatroli = async (userId) => {
   try {
-    const response = await axios.get(`${baseUrl}/patrol/user/${userId}`);
+    const response = await axios.get(`${baseUrl}/patrol/`);
     return response.data;
   } catch (error) {
     if (error.response && error.response.status === 404) {

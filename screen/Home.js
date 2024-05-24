@@ -2,37 +2,30 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useAuth } from "../context/userContext";
 import Footer from "../components/Footer";
-import { DateFormat } from "../utils/DateFormat";
 import Patroli from "../components/Patroli";
 import Atensi from "../components/Atensi";
 import ListAtensi from "../components/ListAtensi";
 import Presensi from "../components/AbsenMasuk";
 import Aktivitas from "../components/Aktivitas";
 import AbsenKeluar from "../components/AbsenKeluar";
+import KodeSos from "../components/KodeSos";
 
 const Home = () => {
-  const currentDate = new Date();
-  const { role, user } = useAuth();
+  const { role } = useAuth();
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View style={styles.banner}>
-          <View style={styles.userInfo}>
-            <Text style={styles.helloText}>Selamat Datang, {user}</Text>
-            <Text style={styles.textDate}>{DateFormat(currentDate)}</Text>
-          </View>
-        </View>
-
         <View style={styles.featureContent}>
-          {(role === "admin" || role === "danru" || role === "danton") && (
+          {(role === "admin" || role === "danru" || role === "chief") && (
             <Atensi />
           )}
-          {role === "user" && <ListAtensi />}
+          {role === "anggota" && <ListAtensi />}
           <Presensi />
           <Aktivitas />
           <Patroli />
           <AbsenKeluar />
+          <KodeSos />
           <Footer />
         </View>
       </ScrollView>
@@ -43,11 +36,6 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  banner: {
-    width: "100%",
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
   },
   userInfo: {
     alignItems: "center",

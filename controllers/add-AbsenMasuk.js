@@ -83,7 +83,7 @@ export default function FormAbsen({ route }) {
   };
 
   const data_lokasi = [
-    { title: "UNAS Pejanten" },
+    { title: "UNAS Pejaten" },
     { title: "UNAS Ragunan" },
     { title: "UNAS Bambu Kuning" },
   ];

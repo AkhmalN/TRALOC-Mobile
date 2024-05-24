@@ -5,7 +5,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { TextInput } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -17,6 +17,7 @@ import { createAtensi } from "../api/atensi";
 import ModalLoading from "../components/ModalLoading";
 import { Notifikasi } from "../components/Notifikasi";
 import { useNavigation } from "@react-navigation/native";
+import { getUser } from "../api/users";
 
 const Atensi = () => {
   const { id, user } = useAuth();
@@ -28,11 +29,39 @@ const Atensi = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-
+  const [nullField, setNullField] = useState(false);
   const [judulAtensi, setJudulAtensi] = useState("");
   const [tglAwalAtensi, setTglAwalAtensi] = useState("");
   const [tglAkhirAtensi, setTglAkhirAtensi] = useState("");
   const [isiAtensi, setIsiAtensi] = useState("");
+
+  const { isLoading: isLoadingUser, data: dataUser } = useQuery({
+    queryKey: ["user", id],
+    queryFn: () => getUser(id),
+  });
+
+  const createAtensiMutation = useMutation({
+    mutationFn: createAtensi,
+    onSuccess: (response) => {
+      setIsLoading(false);
+      setIsSuccess(true);
+      setNotifikasiVisible(true);
+      setTimeout(() => {
+        setNotifikasiVisible(false);
+        setIsSuccess(false);
+        setJudulAtensi("");
+        setTglAwalAtensi("");
+        setTglAkhirAtensi("");
+        setIsiAtensi("");
+        navigation.navigate("Home");
+      }, 2000);
+    },
+    onError: (error) => {
+      setIsLoading(false);
+      setIsError(true);
+      console.error(error);
+    },
+  });
 
   const showDatePicker = (type) => {
     setDatePickerVisible(true);
@@ -62,49 +91,46 @@ const Atensi = () => {
     setIsiAtensi(text);
   };
 
-  const createAtensiMutation = useMutation({
-    mutationFn: createAtensi,
-    onSuccess: () => {
-      setIsLoading(false);
-      setIsSuccess(true);
-      setNotifikasiVisible(true);
-      setTimeout(() => {
-        setNotifikasiVisible(false);
-        setIsSuccess(false);
-        setJudulAtensi("");
-        setTglAwalAtensi("");
-        setTglAkhirAtensi("");
-        setIsiAtensi("");
-        navigation.navigate("Home");
-      }, 2000);
-    },
-    onError: (error) => {
-      setIsLoading(false);
-      setIsError(true);
-      console.error(error);
-    },
-  });
-
-  const data = {
-    userId: id,
-    username: user,
-    judul_atensi: judulAtensi,
-    tanggal_mulai: tglAwalAtensi,
-    tanggal_selesai: tglAkhirAtensi,
-    catatan: isiAtensi,
-  };
-
   const handleOnSubmit = async () => {
-    setIsLoading(true);
-
-    createAtensiMutation.mutate(data);
+    if (
+      judulAtensi === "" ||
+      tglAwalAtensi === "" ||
+      tglAkhirAtensi === "" ||
+      isiAtensi === ""
+    ) {
+      setNullField(true);
+      setNotifikasiVisible(true);
+    } else {
+      setIsLoading(true);
+      const data = {
+        userId: id,
+        username: user,
+        nama_lengkap: dataUser.nama_lengkap,
+        judul_atensi: judulAtensi,
+        tanggal_mulai: tglAwalAtensi,
+        tanggal_selesai: tglAkhirAtensi,
+        catatan: isiAtensi,
+      };
+      createAtensiMutation.mutate(data);
+    }
   };
+
+  if (isLoadingUser) {
+    return <ModalLoading />;
+  }
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       {isLoading && <ModalLoading />}
       {isSuccess && notifikasiVisible && (
         <Notifikasi
           message={"Atensi berhasil dibuat"}
+          hideModal={hideNotifikasi}
+        />
+      )}
+      {nullField && notifikasiVisible && (
+        <Notifikasi
+          message={"Isi Semua Form yang tersedia"}
           hideModal={hideNotifikasi}
         />
       )}
@@ -203,11 +229,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#EEF5FF",
+    borderRadius: 7,
   },
   inputDisable: {
     width: "90%",
     marginRight: 5,
-    fontSize: 18,
+    fontSize: 20,
   },
   dayText: {
     fontSize: 16,
@@ -223,7 +250,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEF5FF",
     padding: 5,
     marginVertical: 5,
-    fontSize: 18,
+    fontSize: 20,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,

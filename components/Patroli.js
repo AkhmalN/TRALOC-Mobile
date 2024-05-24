@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { BG_COLOR, ICON_COLOR, TEXT_COLOR } from "../constant/color";
 
 const Patroli = () => {
   const navigation = useNavigation();
@@ -12,14 +13,22 @@ const Patroli = () => {
       onPress={() => navigation.navigate("Patroli")}
     >
       <View style={styles.iconMenu}>
-        <MaterialIcons name="qr-code-scanner" size={35} color={"#088395"} />
+        <MaterialIcons
+          name="qr-code-scanner"
+          size={35}
+          color={ICON_COLOR.light}
+        />
       </View>
       <View style={styles.cardTitle}>
         <Text style={styles.cardTextInd}>Buat Patroli</Text>
         <Text style={styles.cardTextEng}>Buat laporan patroli harian</Text>
       </View>
       <View style={styles.iconRight}>
-        <Ionicons name="chevron-forward-outline" size={30} color={"#088395"} />
+        <Ionicons
+          name="chevron-forward-outline"
+          size={30}
+          color={ICON_COLOR.light}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -27,14 +36,23 @@ const Patroli = () => {
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
-    marginBottom: 10,
-    borderRadius: 20,
     padding: 10,
     height: 80,
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#088395",
+    backgroundColor: BG_COLOR.primary,
+    marginBottom: 10,
+    borderRadius: 20,
+    height: "auto",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
+
   iconMenu: {
     width: "10%",
     marginRight: 10,
@@ -51,11 +69,16 @@ const styles = StyleSheet.create({
   },
   cardTextInd: {
     fontSize: 20,
-    color: "#088395",
+    color: TEXT_COLOR.light,
     fontWeight: "bold",
   },
+  flexCardtext: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
   cardTextEng: {
-    color: "#088395",
+    color: TEXT_COLOR.light,
     fontSize: 18,
   },
 });

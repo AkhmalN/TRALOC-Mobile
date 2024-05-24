@@ -11,11 +11,12 @@ import { addPatroli } from "../api/patroli";
 import { Notifikasi } from "../components/Notifikasi";
 import { useAuth } from "../context/userContext";
 import { getUser } from "../api/users";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import ModalLoading from "../components/ModalLoading";
 import { CameraView, Camera } from "expo-camera/next";
 
 export default function Patroli({ route }) {
+  const queryClient = useQueryClient();
   const { id, user } = useAuth();
   const navigation = useNavigation();
   const { savedPhoto } = route ? route.params || {} : {};
@@ -33,6 +34,7 @@ export default function Patroli({ route }) {
   const [error, setError] = useState("");
   const [notifikasiVisible, setNotifikasiVisible] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
+  const [emptyField, setEmptyField] = useState(false);
 
   useEffect(() => {
     const getCameraPermissions = async () => {
@@ -53,6 +55,30 @@ export default function Patroli({ route }) {
   const { isLoading: isLoadingUser, data } = useQuery({
     queryKey: ["user", id],
     queryFn: () => getUser(id),
+  });
+
+  const createPatroli = useMutation({
+    mutationFn: addPatroli,
+    onSuccess: async (response) => {
+      setLoading(false);
+      setIsSuccess(true);
+      setNotifikasiVisible(true);
+      setTimeout(() => {
+        setNotifikasiVisible(false);
+        navigation.navigate("Home");
+      }, 2000);
+      await queryClient.refetchQueries(["data_patroli", id]);
+    },
+    onError: (error) => {
+      console.log(error);
+      setLoading(false);
+      setNotifikasiVisible(true);
+      setError(error);
+      setTimeout(() => {
+        setNotifikasiVisible(false);
+        setError("");
+      }, 2000);
+    },
   });
 
   const toggleDropdown = () => {
@@ -96,8 +122,21 @@ export default function Patroli({ route }) {
 
   const handleOnSubmit = async () => {
     setLoading(true);
-    try {
-      const response = await addPatroli({
+    if (
+      namaInstansi === "" ||
+      lokasiBarcode === "" ||
+      notes === "" ||
+      savedPhoto === undefined
+    ) {
+      setEmptyField(true);
+      setNotifikasiVisible(true);
+      setLoading(false);
+      setTimeout(() => {
+        setEmptyField(false);
+        setNotifikasiVisible(false);
+      }, 1500);
+    } else {
+      createPatroli.mutate({
         userId: id,
         user,
         namaLengkap: data.nama_lengkap,
@@ -107,19 +146,31 @@ export default function Patroli({ route }) {
         notes,
         savedPhoto: images,
       });
-      if (response) {
-        setLoading(false);
-        setIsSuccess(true);
-        setNotifikasiVisible(true);
-        setTimeout(() => {
-          setNotifikasiVisible(false);
-          navigation.navigate("Home");
-        }, 5000);
-      }
-    } catch (error) {
-      setLoading(false);
-      setError(error);
     }
+    // try {
+    //   const response = await addPatroli({
+    //     userId: id,
+    //     user,
+    //     namaLengkap: data.nama_lengkap,
+    //     lokasiBarcode: lokasiBarcode,
+    //     namaInstansi: namaInstansi,
+    //     selectedItem,
+    //     notes,
+    //     savedPhoto: images,
+    //   });
+    //   if (response) {
+    //     setLoading(false);
+    //     setIsSuccess(true);
+    //     setNotifikasiVisible(true);
+    //     setTimeout(() => {
+    //       setNotifikasiVisible(false);
+    //       navigation.navigate("Home");
+    //     }, 5000);
+    //   }
+    // } catch (error) {
+    //   setLoading(false);
+    //   setError(error);
+    // }
   };
 
   return (
@@ -150,7 +201,18 @@ export default function Patroli({ route }) {
           hideModal={hideNotifikasi}
         />
       )}
-
+      {error && notifikasiVisible && (
+        <Notifikasi
+          message={"Terjadi Kesalahan dalam mengirim laporan patroli"}
+          hideModal={hideNotifikasi}
+        />
+      )}
+      {emptyField && notifikasiVisible && (
+        <Notifikasi
+          message={"Harap isi semua form yang tersedia!"}
+          hideModal={hideNotifikasi}
+        />
+      )}
       {loading && <ModalLoading />}
       {isLoadingUser && <ModalLoading />}
 

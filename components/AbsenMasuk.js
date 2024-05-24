@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5, Ionicons, Octicons } from "@expo/vector-icons";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
+import { BG_COLOR, ICON_COLOR, TEXT_COLOR } from "../constant/color";
 
 const Presensi = ({ status }) => {
   const navigation = useNavigation();
@@ -15,7 +16,7 @@ const Presensi = ({ status }) => {
         <Ionicons
           name="arrow-forward-circle-outline"
           size={35}
-          color={"#088395"}
+          color={ICON_COLOR.light}
         />
       </View>
       <View style={styles.cardTitle}>
@@ -24,7 +25,11 @@ const Presensi = ({ status }) => {
       </View>
 
       <View style={styles.iconRight}>
-        <Ionicons name="chevron-forward-outline" size={30} color={"#088395"} />
+        <Ionicons
+          name="chevron-forward-outline"
+          size={30}
+          color={ICON_COLOR.light}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -33,13 +38,21 @@ const Presensi = ({ status }) => {
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
-    marginBottom: 10,
-    borderRadius: 20,
     padding: 10,
     height: 80,
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#088395",
+    backgroundColor: BG_COLOR.primary,
+    marginBottom: 10,
+    borderRadius: 20,
+    height: "auto",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 
   iconMenu: {
@@ -58,7 +71,7 @@ const styles = StyleSheet.create({
   },
   cardTextInd: {
     fontSize: 20,
-    color: "#088395",
+    color: TEXT_COLOR.light,
     fontWeight: "bold",
   },
   flexCardtext: {
@@ -67,16 +80,8 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   cardTextEng: {
-    color: "#088395",
+    color: TEXT_COLOR.light,
     fontSize: 18,
-  },
-  cardTextHour: {
-    fontSize: 18,
-    color: "#FFF",
-    backgroundColor: "#1BDD9E",
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-    borderRadius: 10,
   },
 });
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, StyleSheet, View, TextInput, ScrollView } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import { useAuth } from "../context/userContext";
 import { getUser } from "../api/users";
 import ModalLoading from "../components/ModalLoading";
@@ -15,17 +15,37 @@ const DataPribadi = () => {
   };
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["data", id],
+    queryKey: ["data_users", id],
     queryFn: () => getUser(id),
   });
 
   if (isLoading) return <ModalLoading />;
   if (isError) return <Text>Error: {error.message}</Text>;
 
+  const formFormat = (createdAt) => {
+    let date = new Date(createdAt);
+    let dateMDY = `${date.getDate()}-${
+      date.getMonth() + 1
+    }-${date.getFullYear()}`;
+    return dateMDY;
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profileContainer}>
         <View style={styles.sectionForm}>
+          <Text style={styles.title}>Nama Lengkap : </Text>
+          <View style={styles.form}>
+            <MaterialCommunityIcons
+              name="account"
+              size={24}
+              color={"#088395"}
+            />
+            <TextInput
+              value={data ? data.nama_lengkap : ""}
+              style={styles.formInput}
+            />
+          </View>
           <Text style={styles.title}>Username : </Text>
           <View style={styles.form}>
             <MaterialCommunityIcons
@@ -71,15 +91,16 @@ const DataPribadi = () => {
               style={styles.formInput}
             />
           </View>
-          <Text style={styles.title}>NIK : </Text>
+          <Text style={styles.title}>Tempat ,Tanggal Lahir : </Text>
 
           <View style={styles.form}>
-            <MaterialCommunityIcons
-              name="badge-account-horizontal-outline"
-              size={24}
-              color={"#088395"}
-            />
-            <TextInput value={data ? data.nik : ""} style={styles.formInput} />
+            <FontAwesome5 name="calendar-alt" size={24} color={"#088395"} />
+            <View style={styles.formInput}>
+              <Text style={{ fontSize: 20, marginTop: 5 }}>
+                {data ? data.tempat_lahir : ""},{" "}
+                {data ? formFormat(data.tanggal_lahir) : ""}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -90,7 +111,6 @@ const DataPribadi = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F3F8FF",
   },
   profileContainer: {
     padding: 20,

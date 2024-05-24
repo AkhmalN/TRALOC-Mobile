@@ -36,7 +36,7 @@ export default function FormAktivitas({ route }) {
   const [catatan, setCatatan] = useState("");
   const [images, setImages] = useState([]);
   const [items, setItems] = useState([
-    "UNAS Pejanten",
+    "UNAS Pejaten",
     "UNAS Ragunan",
     "UNAS Bambu Kuning",
   ]);
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     height: 70,
     paddingVertical: 22,
     paddingHorizontal: 10,
-    fontSize: 18,
+    fontSize: 20,
   },
   formCatatan: {
     width: "100%",
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: "#EEF5FF",
-    fontSize: 18,
+    fontSize: 20,
   },
   dropdown: {
     position: "absolute",
@@ -366,6 +366,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#FFF",
-    fontSize: 18,
+    fontSize: 20,
   },
 });

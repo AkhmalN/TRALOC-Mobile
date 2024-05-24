@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../context/userContext";
+import { BG_COLOR, ICON_COLOR, TEXT_COLOR } from "../constant/color";
 
 const Riwayat = () => {
   const { role } = useAuth();
@@ -17,7 +18,7 @@ const Riwayat = () => {
           <MaterialCommunityIcons
             name="note-edit"
             size={35}
-            color={"#088395"}
+            color={ICON_COLOR.light}
           />
         </View>
         <View style={styles.cardTitle}>
@@ -30,7 +31,7 @@ const Riwayat = () => {
           <Ionicons
             name="chevron-forward-outline"
             size={30}
-            color={"#088395"}
+            color={ICON_COLOR.light}
           />
         </View>
       </TouchableOpacity>
@@ -42,7 +43,7 @@ const Riwayat = () => {
           <MaterialCommunityIcons
             name="note-edit"
             size={35}
-            color={"#088395"}
+            color={ICON_COLOR.light}
           />
         </View>
         <View style={styles.cardTitle}>
@@ -55,7 +56,7 @@ const Riwayat = () => {
           <Ionicons
             name="chevron-forward-outline"
             size={30}
-            color={"#088395"}
+            color={ICON_COLOR.light}
           />
         </View>
       </TouchableOpacity>
@@ -67,7 +68,7 @@ const Riwayat = () => {
           <MaterialCommunityIcons
             name="note-edit"
             size={35}
-            color={"#088395"}
+            color={ICON_COLOR.light}
           />
         </View>
         <View style={styles.cardTitle}>
@@ -80,7 +81,7 @@ const Riwayat = () => {
           <Ionicons
             name="chevron-forward-outline"
             size={30}
-            color={"#088395"}
+            color={ICON_COLOR.light}
           />
         </View>
       </TouchableOpacity>
@@ -93,7 +94,7 @@ const Riwayat = () => {
             <MaterialCommunityIcons
               name="note-edit"
               size={35}
-              color={"#088395"}
+              color={ICON_COLOR.light}
             />
           </View>
           <View style={styles.cardTitle}>
@@ -106,7 +107,7 @@ const Riwayat = () => {
             <Ionicons
               name="chevron-forward-outline"
               size={30}
-              color={"#088395"}
+              color={ICON_COLOR.light}
             />
           </View>
         </TouchableOpacity>
@@ -122,14 +123,23 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flexDirection: "row",
-    marginBottom: 10,
-    borderRadius: 20,
     padding: 10,
     height: 80,
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#088395",
+    backgroundColor: BG_COLOR.primary,
+    marginBottom: 10,
+    borderRadius: 20,
+    height: "auto",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
+
   iconMenu: {
     width: "10%",
     marginRight: 10,
@@ -146,11 +156,16 @@ const styles = StyleSheet.create({
   },
   cardTextInd: {
     fontSize: 20,
-    color: "#088395",
+    color: TEXT_COLOR.light,
     fontWeight: "bold",
   },
+  flexCardtext: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
   cardTextEng: {
-    color: "#088395",
+    color: TEXT_COLOR.light,
     fontSize: 18,
   },
 });

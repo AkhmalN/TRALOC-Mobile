@@ -54,7 +54,13 @@ export default function FormAktivitas({ route }) {
     queryFn: () => getUser(id),
   });
 
-  const { isLoading, isError, data, error, isSuccess } = useQuery({
+  const {
+    isLoading: isLoadingPos,
+    isError,
+    data,
+    error,
+    isSuccess,
+  } = useQuery({
     queryKey: ["getPos", { lokasi_pos: selectedInstansi }],
     queryFn: ({ queryKey }) => GetPosByInstansi(queryKey[1]),
     enabled: !!selectedInstansi,
@@ -96,10 +102,6 @@ export default function FormAktivitas({ route }) {
     } else {
       navigation.navigate("ActivityCamera");
     }
-  };
-
-  const handleRemoveImage = (index) => {
-    console.log((index += 1));
   };
   const hideNotifikasi = () => {
     setNotifikasiVisible(false);
@@ -198,29 +200,27 @@ export default function FormAktivitas({ route }) {
           )}
         </View>
         <Text style={styles.label}>Pos Aktivitas : </Text>
+        {isLoadingPos && (
+          <Text style={{ fontSize: 16 }}>Sedang memuat data pos ...</Text>
+        )}
         <View style={styles.formInput}>
           <TouchableOpacity onPress={togglePos}>
             <Text style={styles.dropdownToggle}>
               {selectedPos || "Lokasi Pos"}
             </Text>
           </TouchableOpacity>
-
           {dropdownPos && data && (
             <View style={styles.dropdown}>
-              {isLoading ? (
-                <ActivityIndicator size="large" color="#0000ff" />
-              ) : (
-                <FlatList
-                  data={data}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => handleSelectPos(item)}>
-                      <Text style={styles.dropdownItem}>
-                        {item.lokasi_barcode}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              )}
+              <FlatList
+                data={data}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => handleSelectPos(item)}>
+                    <Text style={styles.dropdownItem}>
+                      {item.lokasi_barcode}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              />
             </View>
           )}
         </View>
@@ -257,13 +257,6 @@ export default function FormAktivitas({ route }) {
                   borderRadius: 10,
                 }}
               >
-                <Feather
-                  name="x"
-                  size={24}
-                  color="#FFF"
-                  style={{ position: "absolute", zIndex: 1, left: 50 }}
-                  onPress={() => handleRemoveImage(index)}
-                />
                 <Image
                   source={{ uri: image }}
                   style={{

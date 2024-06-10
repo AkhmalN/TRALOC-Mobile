@@ -313,13 +313,6 @@ export default function Patroli({ route }) {
                     borderRadius: 10,
                   }}
                 >
-                  <Feather
-                    name="x"
-                    size={24}
-                    color="#FFF"
-                    style={{ position: "absolute", zIndex: 1, left: 50 }}
-                    onPress={() => handleRemoveImage(index)}
-                  />
                   <Image
                     source={{ uri: image }}
                     style={{

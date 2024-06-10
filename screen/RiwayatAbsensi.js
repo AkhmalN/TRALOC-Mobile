@@ -7,7 +7,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  Entypo,
+  MaterialCommunityIcons,
+  FontAwesome5,
+} from "@expo/vector-icons";
 import { DateFormat, TimeFormat } from "../utils/DateFormat";
 import { useNavigation } from "@react-navigation/native";
 import ModalDelete from "../components/Modal/ModalDelete";
@@ -66,13 +71,13 @@ const RiwayatAbsensi = () => {
                     <Text style={[styles.text, { fontSize: 18 }]}>
                       {DateFormat(data.createdAt)}
                     </Text>
-                    <Text
-                      style={[
-                        styles.text,
-                        { fontSize: 18, fontWeight: "bold" },
-                      ]}
-                    >
-                      {TimeFormat(data.createdAt)}
+                    <FontAwesome5
+                      name="arrow-circle-right"
+                      size={24}
+                      color={ICON_COLOR.danger}
+                    />
+                    <Text style={[styles.text, { fontSize: 18 }]}>
+                      {DateFormat(data.updatedAt)}
                     </Text>
                   </View>
                 </View>
@@ -88,24 +93,20 @@ const RiwayatAbsensi = () => {
                 <View style={styles.row}>
                   <Ionicons name="timer" size={30} color={ICON_COLOR.primary} />
                   <Text style={styles.text}>
-                    Masuk : {TimeFormat(data.checkInTime)}
+                    Masuk :{" "}
+                    {data.checkInTime ? TimeFormat(data.checkInTime) : "-"}
                   </Text>
                 </View>
                 <View style={styles.row}>
                   <Ionicons name="timer" size={30} color={ICON_COLOR.danger} />
-                  <Text
-                    style={[
-                      styles.text,
-                      { flexDirection: "row", alignItems: "center" },
-                    ]}
-                  >
+                  <Text style={[styles.text]}>
                     Keluar :
                     {data.checkOutTime ? TimeFormat(data.checkOutTime) : "  -"}
                   </Text>
                 </View>
                 <View style={styles.row}>
                   <Text style={styles.text}>
-                    Total Jam Kerja :{" "}
+                    Total Jam Kerja :
                     {data.total_jam_kerja ? data.total_jam_kerja : "  -"}
                   </Text>
                 </View>

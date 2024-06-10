@@ -280,7 +280,7 @@ const PatroliHarian = () => {
                 fontSize: 18,
               }}
             >
-              Tidak ada data yang ditampikan!
+              Tidak ada patroli yang ditampikan!
             </Text>
           </View>
         )}

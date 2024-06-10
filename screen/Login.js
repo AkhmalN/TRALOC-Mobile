@@ -15,6 +15,7 @@ import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { baseUrl } from "../api/config";
 import { useAuth } from "../context/userContext";
+import { ICON_COLOR } from "../constant/color";
 
 export default function Login() {
   const { setId, setRole, setUser } = useAuth();
@@ -23,7 +24,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(null);
   const [error, setError] = useState("");
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -33,7 +34,7 @@ export default function Login() {
     setLoading(true);
 
     if (!username || !password) {
-      setError("Harap input username dan password!");
+      setError("Harap masukkan username dan password!");
       setLoading(false);
       setTimeout(() => {
         setError("");
@@ -131,13 +132,18 @@ export default function Login() {
             />
           </View>
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
               {loading ? (
-                <ActivityIndicator size={"small"} color={"#FFF"} />
+                <>
+                  <Text style={styles.buttonText}>Loading</Text>
+                  <ActivityIndicator color={ICON_COLOR.light} />
+                </>
               ) : (
-                "Masuk"
+                <Text style={styles.buttonText}>Masuk</Text>
               )}
-            </Text>
+            </View>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -180,6 +186,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: "#FFF",
     fontSize: 18,
+    textAlign: "center",
   },
   title: {
     fontSize: 20,
@@ -219,5 +226,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#FFFFFF",
     fontSize: 20,
+    marginHorizontal: 10,
   },
 });
